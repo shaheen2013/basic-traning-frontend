@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Vollkorn, Inter } from "next/font/google";
 import "./globals.css";
+import { neueHaasDisplay } from "@/public/fonts";
 
 const vollkorn = Vollkorn({
   variable: "--font-vollkorn",
@@ -24,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${vollkorn.variable} ${inter.variable} antialiased`}>
+      <body
+        className={`${neueHaasDisplay.variable} ${vollkorn.variable} ${inter.variable}  antialiased`}
+      >
         {children}
       </body>
     </html>

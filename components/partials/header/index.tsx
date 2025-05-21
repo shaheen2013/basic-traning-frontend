@@ -2,12 +2,14 @@ import Link from "next/link";
 import { menus } from "./constans";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "@/components/icons";
 
 const Header = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "max-w-[1696px] mx-auto px-4 flex justify-between items-center relative",
+        "container flex justify-between items-center relative",
         className
       )}
     >
@@ -37,7 +39,18 @@ const Header = ({ className }: { className?: string }) => {
           </Link>
         ))}
       </div>
-      <div>actions</div>
+      <div className="flex gap-3 items-center">
+        <Button variant="ghost" size="2xl" className="text-white">
+          My Account
+        </Button>
+        <Button
+          size="2xl"
+          className="bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900 px-8"
+        >
+          Start Training Today
+          <ArrowRight className="ml-3 size-6 text-900" />
+        </Button>
+      </div>
     </div>
   );
 };
