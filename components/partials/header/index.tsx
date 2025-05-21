@@ -48,7 +48,11 @@ const Header = ({ className }: { className?: string }) => {
       </div>
       <>
         <div className="flex gap-3 items-center">
-          <Button variant="ghost" size="2xl" className="text-white">
+          <Button
+            variant="ghost"
+            size="2xl"
+            className="text-white hover:bg-transparent"
+          >
             My Account
           </Button>
           <Button
