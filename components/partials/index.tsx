@@ -5,3 +5,5 @@ export { default as HowWorks } from "./how-it-works";
 export { default as UpcomingCourse } from "./upcoming-course";
 export { default as WhyChooseUs } from "./why-choose-us";
 export { default as OurStory } from "./our-story";
+export { default as UpcomingEvents } from "./upcoming-events";
+export { default as Faq } from "./faq";

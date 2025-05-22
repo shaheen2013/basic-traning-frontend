@@ -4,7 +4,7 @@ import { reasons } from "./constants";
 const WhyChooseUs = () => {
   return (
     <div className="bg-slate-50">
-      <div className="container py-12 lg:py-36 flex flex-col gap-8 lg:gap-24">
+      <div className="container py-12 lg:py-32 flex flex-col gap-8 lg:gap-24">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <h2 className="text-3xl lg:text-7xl font-semibold text-center text-primary">
             Why{" "}
@@ -34,12 +34,14 @@ const WhyChooseUs = () => {
                 <div className="text-blue-600 size-12 lg:size-16">
                   {reason.icon}
                 </div>
-                <h3 className="text-primary text-2xl lg:text-4xl font-semibold">
-                  {reason.title}
-                </h3>
-                <p className="text-slate-700 text-xl lg:text-3xl font-medium">
-                  {reason.desc}
-                </p>
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-primary text-2xl lg:text-3xl font-semibold">
+                    {reason.title}
+                  </h3>
+                  <p className="text-slate-700 text-xl lg:text-2xl font-medium">
+                    {reason.desc}
+                  </p>
+                </div>
               </div>
             </div>
           ))}

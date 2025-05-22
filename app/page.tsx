@@ -1,5 +1,6 @@
 import {
   AboutBasicTraning,
+  Faq,
   Hero,
   HowWorks,
   OurStory,
@@ -14,6 +15,7 @@ export default function Home() {
       <AboutBasicTraning />
       <HowWorks />
       <UpcomingCourse />
+      <Faq />
       <WhyChooseUs />
       <OurStory />
     </div>

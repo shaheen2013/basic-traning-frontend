@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 const UpcomingCourse = () => {
   return (
-    <div className="container p-6 lg:p-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-8 bg-blue-100 py-12 lg:py-36">
+    <div className="container p-6 lg:p-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-8 bg-blue-100 my-12 lg:my-36">
       <h2 className="text-3xl lg:text-6xl font-semibold text-center text-primary">
         Upcoming{" "}
         <span className="font-vollkorn italic font-normal">Courses</span>{" "}

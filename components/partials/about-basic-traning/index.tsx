@@ -4,7 +4,7 @@ import UpcomingEvents from "../upcoming-events";
 
 const AboutBasicTraning = () => {
   return (
-    <section className="container grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 lg:py-36">
+    <section className="container grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 lg:py-32">
       <div className="flex flex-col gap-4 lg:gap-8">
         <h3 className="text-3xl lg:text-7xl font-semibold text-primary">
           What is{" "}

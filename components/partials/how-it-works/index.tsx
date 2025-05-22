@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 const HowWorks = () => {
   return (
-    <section className="container flex flex-col gap-8 lg:gap-24 py-12 lg:py-36">
+    <section className="container flex flex-col gap-8 lg:gap-24 py-12 lg:py-32">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
         <h3 className="text-primary text-3xl lg:text-7xl font-semibold">
           How <span className="font-normal font-vollkorn">It Works</span>
@@ -14,13 +14,13 @@ const HowWorks = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16">
-        <div className="flex flex-col gap-8 lg:gap-12 group py-8 lg:py-16">
+        <div className="flex flex-col gap-8 lg:gap-12 group py-8 lg:py-16 hover:shadow-sm transition-shadow duration-50 px-4">
           <One className="w-9 lg:w-[60px] h-16 lg:h-[104px] text-slate-700 group-active:text-blue-600 group-hover:text-blue-600 fill-white group-active:fill-current group-hover:fill-current transition-colors duration-50" />
-          <div className="flex flex-col gap-4 lg:gap-6">
-            <h4 className="text-primary text-2xl lg:text-5xl font-semibold">
+          <div className="flex flex-col gap-4">
+            <h4 className="text-primary text-2xl lg:text-3xl font-semibold">
               Complete Enrollment
             </h4>
-            <p className="text-slate-700 text-base lg:text-4xl font-medium">
+            <p className="text-slate-700 text-base lg:text-2xl font-medium">
               Create your account, enter your new employee’s information.
             </p>
           </div>
@@ -32,11 +32,11 @@ const HowWorks = () => {
         </div>
         <div className="flex flex-col gap-8 lg:gap-12 border-t lg:border-none border-slate-500 group py-8 lg:py-16">
           <Two className="w-9 lg:w-[60px] h-16 lg:h-[104px] text-slate-700 group-active:text-blue-600 group-hover:text-blue-600 fill-white group-active:fill-current group-hover:fill-current transition-colors duration-50" />
-          <div className="flex flex-col gap-4 lg:gap-6">
-            <h4 className="text-primary text-2xl lg:text-5xl font-semibold">
+          <div className="flex flex-col gap-4">
+            <h4 className="text-primary text-2xl lg:text-3xl font-semibold">
               Prepare to Join Class
             </h4>
-            <p className="text-slate-700 text-base lg:text-4xl font-medium">
+            <p className="text-slate-700 text-base lg:text-2xl font-medium">
               Attend live sessions and follow our interactive curriculum.
             </p>
           </div>
@@ -47,11 +47,11 @@ const HowWorks = () => {
         </div>
         <div className="flex flex-col gap-8 lg:gap-12 border-t border-slate-500 py-8 lg:py-16 group">
           <Three className="w-9 lg:w-[60px] h-16 lg:h-[104px] text-slate-700 group-active:text-blue-600 group-hover:text-blue-600 fill-white group-active:fill-current group-hover:fill-current transition-colors duration-50" />
-          <div className="flex flex-col gap-4 lg:gap-6">
-            <h4 className="text-primary text-2xl lg:text-5xl font-semibold">
+          <div className="flex flex-col gap-4">
+            <h4 className="text-primary text-2xl lg:text-3xl font-semibold">
               Track Progress and See Results
             </h4>
-            <p className="text-slate-700 text-base lg:text-4xl font-medium">
+            <p className="text-slate-700 text-base lg:text-2xl font-medium">
               Monitor your team’s learning with progress tracking and
               interactive testing.
             </p>
@@ -59,11 +59,11 @@ const HowWorks = () => {
         </div>
         <div className="flex flex-col gap-8 lg:gap-12 border-t border-slate-500 py-8 lg:py-16 group">
           <Four className="w-9 lg:w-[60px] h-16 lg:h-[104px] text-slate-700 group-active:text-blue-600 group-hover:text-blue-600 fill-white group-active:fill-current group-hover:fill-current transition-colors duration-50" />
-          <div className="flex flex-col gap-4 lg:gap-6">
-            <h4 className="text-primary text-2xl lg:text-5xl font-semibold">
+          <div className="flex flex-col gap-4">
+            <h4 className="text-primary text-2xl lg:text-3xl font-semibold">
               Get Certified
             </h4>
-            <p className="text-slate-700 text-base lg:text-4xl font-medium">
+            <p className="text-slate-700 text-base lg:text-2xl font-medium">
               Earn your Basic Training certification and move forward with
               confidence.
             </p>
