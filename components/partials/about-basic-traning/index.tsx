@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import UpcomingEvents from "../upcoming-events";
 
 const AboutBasicTraning = () => {
   return (
@@ -39,9 +40,7 @@ const AboutBasicTraning = () => {
           <ArrowUpRight className="ml-2 lg:ml-3 text-white" />
         </Button>
       </div>
-      <div className="border border-red-300 flex items-center justify-center">
-        <h3>Calender</h3>
-      </div>
+      <UpcomingEvents />
     </section>
   );
 };
