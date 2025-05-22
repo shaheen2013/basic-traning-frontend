@@ -15,23 +15,25 @@ const AboutBasicTraning = () => {
           A comprehensive 20-day training program designed to take an
           inexperienced employee from new to a functional member of your team.
         </p>
-        <ul className="flex flex-col gap-2">
-          <li className="text-slate-700 text-3xl font-medium list-disc">
-            Daily Instructor-Led Sessions
-          </li>
-          <li className="text-slate-700 text-3xl font-medium list-disc">
-            Interactive Learning Materials
-          </li>
-          <li className="text-slate-700 text-3xl font-medium list-disc">
-            Comprehensive Testing and Topic Certification
-          </li>
-          <li className="text-slate-700 text-3xl font-medium list-disc">
-            Expert Guidance and Mentorship
-          </li>
-          <li className="text-slate-700 text-3xl font-medium list-disc">
-            Reports and Progress Tracking
-          </li>
-        </ul>
+        <div className="prose max-w-none [&_ul>li]:marker:text-slate-700">
+          <ul>
+            <li className="text-slate-700 text-3xl font-medium">
+              Daily Instructor-Led Sessions
+            </li>
+            <li className="text-slate-700 text-3xl font-medium">
+              Interactive Learning Materials
+            </li>
+            <li className="text-slate-700 text-3xl font-medium">
+              Comprehensive Testing and Topic Certification
+            </li>
+            <li className="text-slate-700 text-3xl font-medium">
+              Expert Guidance and Mentorship
+            </li>
+            <li className="text-slate-700 text-3xl font-medium">
+              Reports and Progress Tracking
+            </li>
+          </ul>
+        </div>
         <Button className="w-full lg:w-fit rounded-full" size="2xl">
           Learn More
           <ArrowUpRight className="ml-3 text-white" />
