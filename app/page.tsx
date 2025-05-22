@@ -2,6 +2,7 @@ import {
   AboutBasicTraning,
   Hero,
   HowWorks,
+  OurStory,
   UpcomingCourse,
   WhyChooseUs,
 } from "@/components/partials";
@@ -14,6 +15,7 @@ export default function Home() {
       <HowWorks />
       <UpcomingCourse />
       <WhyChooseUs />
+      <OurStory />
     </div>
   );
 }

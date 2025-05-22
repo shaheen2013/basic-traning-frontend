@@ -23,7 +23,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md gap-1.5 px-4 has-[>svg]:px-2.5 text-xs font-semibold",
         xl: "h-12 rounded-md px-6 has-[>svg]:px-4 text-base font-semibold",
         "2xl":
-          "h-14 rounded-md px-4 lg:px-8 has-[>svg]:px-8 text-sm lg:text-xl font-semibold",
+          "h-12 lg:h-14 rounded-md px-4 lg:px-8 has-[>svg]:px-8 text-base lg:text-xl font-semibold",
         icon: "size-9",
       },
     },

@@ -7,7 +7,7 @@ const Progress = ({ className }: { className?: string }) => (
     fill="none"
     className={className}
   >
-    <g clip-path="url(#clip0_1526_14389)">
+    <g clipPath="url(#clip0_1526_14389)">
       <path
         d="M15.364 48.9102H2.45673C1.42123 48.9102 0.581726 49.7497 0.581726 50.7852V62.1252C0.581726 63.1607 1.42123 64.0002 2.45673 64.0002H17.2391V50.7852C17.239 49.7497 16.3996 48.9102 15.364 48.9102Z"
         fill="currentColor"
