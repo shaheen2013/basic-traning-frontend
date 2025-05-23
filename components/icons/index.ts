@@ -14,3 +14,8 @@ export { default as ProductTraining } from "./ProductTraining";
 export { default as Progress } from "./Progress";
 export { default as DailyTesting } from "./DailyTesting";
 export { default as TrainingSession } from "./TrainingSession";
+export { default as Youtube } from "./Youtube";
+export { default as Instagram } from "./Instagram";
+export { default as Facebook } from "./Facebook";
+export { default as X } from "./X";
+export { default as Linkedin } from "./Linkedin";

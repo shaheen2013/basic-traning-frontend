@@ -1,5 +1,6 @@
 import {
   AboutBasicTraning,
+  Enroll,
   Faq,
   Hero,
   HowWorks,
@@ -14,8 +15,10 @@ export default function Home() {
     <div className="min-h-screen overflow-x-hidden font-neue-haas-display">
       <Hero />
       <AboutBasicTraning />
+      <Enroll isShow={true} />
       <HowWorks />
       <UpcomingCourse />
+      <Enroll />
       <Faq />
       <WhyChooseUs />
       <OurStory />
