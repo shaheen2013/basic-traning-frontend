@@ -7,3 +7,4 @@ export { default as WhyChooseUs } from "./why-choose-us";
 export { default as OurStory } from "./our-story";
 export { default as UpcomingEvents } from "./upcoming-events";
 export { default as Faq } from "./faq";
+export { default as RecommendUs } from "./recommend-us";

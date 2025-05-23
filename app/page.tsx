@@ -4,6 +4,7 @@ import {
   Hero,
   HowWorks,
   OurStory,
+  RecommendUs,
   UpcomingCourse,
   WhyChooseUs,
 } from "@/components/partials";
@@ -18,6 +19,7 @@ export default function Home() {
       <Faq />
       <WhyChooseUs />
       <OurStory />
+      <RecommendUs />
     </div>
   );
 }

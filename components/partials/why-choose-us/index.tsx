@@ -28,7 +28,7 @@ const WhyChooseUs = () => {
           {reasons.map((reason) => (
             <div
               key={reason.id}
-              className="p-0.5 hover:bg-gradient-to-r active:bg-gradient-to-r from-blue-600 via-blue-100 to-blue-600"
+              className="p-0.5 hover:bg-gradient-to-r active:bg-gradient-to-r from-blue-600 via-blue-100 to-blue-600 hover:shadow-sm transition-shadow rounded-sm duration-50"
             >
               <div className="flex flex-col gap-5 lg:gap-10 p-5 lg:p-10 bg-white h-full">
                 <div className="text-blue-600 size-12 lg:size-16">
