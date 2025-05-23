@@ -1,5 +1,4 @@
-import { AlertBadge } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import NotifyMe from "@/components/partials/modal/notify-me";
 
 const UpcomingEvents = () => {
   return (
@@ -9,10 +8,7 @@ const UpcomingEvents = () => {
           Upcoming{" "}
           <span className="font-vollkorn italic font-normal">Events</span>
         </h3>
-        <Button className="w-full lg:w-fit rounded-full" size="2xl">
-          Get Notified Upcoming Classes
-          <AlertBadge className="ml-2 size-6 text-white" />
-        </Button>
+        <NotifyMe />
       </div>
       <ul className="[&>*:nth-child(odd)]:bg-white [&>*:nth-child(even)]:bg-slate-50">
         <li className="px-6 py-3 lg:py-4 text-lg lg:text-2xl font-semibold text-primary border-b border-slate-100 cursor-pointer">
