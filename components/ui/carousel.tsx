@@ -185,7 +185,7 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        "absolute size-12 rounded-full",
+        "absolute size-12 rounded-full hidden lg:flex",
         orientation === "horizontal"
           ? "bottom-0 right-16 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -215,7 +215,7 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        "absolute size-12 rounded-full",
+        "absolute size-12 rounded-full hidden lg:flex",
         orientation === "horizontal"
           ? "bottom-0 right-0 -translate-y-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -231,6 +231,65 @@ function CarouselNext({
   );
 }
 
+interface CarouselDotsProps extends React.HTMLAttributes<HTMLDivElement> {
+  btnClass?: string;
+  activeClass?: string;
+}
+
+const CarouselDots = React.forwardRef<HTMLDivElement>(
+  (props: CarouselDotsProps, ref) => {
+    const { api } = useCarousel();
+    const [, setUpdateState] = React.useState(false);
+    const toggleUpdateState = React.useCallback(
+      () => setUpdateState((prevState) => !prevState),
+      []
+    );
+
+    React.useEffect(() => {
+      if (api) {
+        api.on("select", toggleUpdateState);
+        api.on("reInit", toggleUpdateState);
+
+        return () => {
+          api.off("select", toggleUpdateState);
+          api.off("reInit", toggleUpdateState);
+        };
+      }
+    }, [api, toggleUpdateState]);
+
+    const numberOfSlides = api?.scrollSnapList().length || 0;
+    const currentSlide = api?.selectedScrollSnap() || 0;
+
+    if (numberOfSlides > 1) {
+      return (
+        <div
+          ref={ref}
+          className={`flex lg:hidden justify-center mt-8  ${props.className}`}
+        >
+          {Array.from({ length: numberOfSlides }, (_, i) => (
+            <Button
+              key={i}
+              className={cn(
+                "mx-1 md:mx-2.5 w-6 md:w-8 h-2 md:h-3 rounded-full p-0 transition-all duration-300 ease-in-out",
+                props.btnClass,
+                i === currentSlide
+                  ? "bg-primary"
+                  : "w-2 md:w-3 transform rounded-3xl bg-slate-200 hover:bg-primary",
+                i === currentSlide && props.activeClass
+              )}
+              aria-label={`Go to slide ${i + 1}`}
+              onClick={() => api?.scrollTo(i)}
+            />
+          ))}
+        </div>
+      );
+    } else {
+      return <></>;
+    }
+  }
+);
+CarouselDots.displayName = "CarouselDots";
+
 export {
   type CarouselApi,
   Carousel,
@@ -238,4 +297,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselDots,
 };

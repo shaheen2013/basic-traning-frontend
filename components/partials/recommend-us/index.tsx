@@ -3,6 +3,7 @@
 import {
   Carousel,
   CarouselContent,
+  CarouselDots,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
@@ -37,6 +38,7 @@ const RecommendUs = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
+          <CarouselDots />
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
