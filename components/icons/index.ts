@@ -19,3 +19,5 @@ export { default as Instagram } from "./Instagram";
 export { default as Facebook } from "./Facebook";
 export { default as X } from "./X";
 export { default as Linkedin } from "./Linkedin";
+export { default as ChevronLeft } from "./ChevronLeft";
+export { default as ChevronRight } from "./ChevronRight";
