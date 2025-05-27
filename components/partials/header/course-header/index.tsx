@@ -1,0 +1,126 @@
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { courseMenus, menus } from "../constans";
+import { Analytics, Logout, Person, Settings, User } from "@/components/icons";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+const icons = [
+  {
+    id: 1,
+    label: "My Course",
+    icon: <User className="size-5 text-slate-700" />,
+  },
+  {
+    id: 2,
+    label: "Profile Overview",
+    icon: <User className="size-5 text-slate-700" />,
+  },
+  {
+    id: 3,
+    label: "Analytics",
+    icon: <Analytics className="size-5 text-slate-700" />,
+  },
+  {
+    id: 4,
+    label: "Messages",
+    icon: <User className="size-5 text-slate-700" />,
+  },
+  {
+    id: 5,
+    label: "Settings",
+    icon: <Settings className="size-5 text-slate-700" />,
+  },
+];
+
+const CoursMenusWithIcons = courseMenus.map((menu) => ({
+  ...menu,
+  icon: icons.find((icon) => icon.id === menu.id)?.icon,
+}));
+
+const Header = () => {
+  return (
+    <div className="bg-primary font-inter">
+      <div className="container flex justify-between items-center relative py-4 lg:py-8">
+        <div className="flex flex-col gap-1 cursor-pointer">
+          <div className="flex gap-1.6 lg:gap-2 items-center">
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={33}
+              height={32}
+              className="h-6 lg:h-8 object-center object-contain"
+            />
+            <h3 className="text-white text-lg lg:text-2xl font-bold">
+              Basic Training
+            </h3>
+          </div>
+          <p className="text-white text-[8px] lg:text-xs">
+            By Trophy Club Consulting
+          </p>
+        </div>
+        <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-12">
+          {menus.map((menu) => (
+            <Link
+              key={menu.href}
+              href={menu.href}
+              className="text-xl font-semibold text-white"
+            >
+              {menu.label}
+            </Link>
+          ))}
+        </div>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="2xl" className="text-white">
+              <div className="flex items-center justify-center size-12 border border-slate-200 rounded-full">
+                <Person className="size-6 text-white" />
+              </div>
+              My Account
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[324px] shadow-lg rounded-lg">
+            <div className="flex gap-3 items-center mb-4">
+              <div className="flex items-center justify-center size-12 border border-slate-400 rounded-full">
+                <Person className="size-6 text-slate-700" />
+              </div>
+              <div className="flex flex-col">
+                <h3 className="text-primary text-base font-semibold">
+                  Trainee Name
+                </h3>
+                <span className="text-slate-700 text-sm fotn-normal">
+                  example@mail.com
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-col mb-4">
+              {CoursMenusWithIcons.map((menu) => (
+                <Link
+                  key={menu.id}
+                  href={menu.href}
+                  className="text-sm font-medium text-slate-700 p-2.5 hover:bg-slate-100 rounded-md transition-colors duration-200"
+                >
+                  <div className="flex items-center gap-2">
+                    {menu.icon}
+                    {menu.label}
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="border-t border-slate-200 pt-4" />
+            <div className="inline-flex gap-2 text-sm font-medium text-slate-700 p-2.5 hover:text-red-500 hover:bg-red-100 w-full rounded-md transition-colors duration-200 cursor-pointer">
+              <Logout className="size-5" />
+              Logout
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
+    </div>
+  );
+};
+
+export default Header;

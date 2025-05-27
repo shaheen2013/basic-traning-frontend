@@ -5,7 +5,7 @@ import { Facebook, Instagram, Linkedin, X, Youtube } from "@/components/icons";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 py-6 lg:py-16">
+    <footer className="bg-gray-800 py-6 lg:py-16 font-neue-haas-display">
       <div className="container flex flex-col gap-8 lg:gap-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="flex flex-col gap-1 cursor-pointer">

@@ -12,7 +12,7 @@ import TrainingSlot from "../modal/training-slot";
 const Header = ({ className }: { className?: string }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className={cn(className, open && "bg-slate-900")}>
+    <div className={cn(className, open && "bg-primary")}>
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
         <div className="flex flex-col gap-1 cursor-pointer">
           <div className="flex gap-1.6 lg:gap-2 items-center">
@@ -54,10 +54,7 @@ const Header = ({ className }: { className?: string }) => {
             <div className="hidden lg:flex">
               <TrainingSlot>
                 <Button
-                  className={cn(
-                    "bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900 px-8",
-                    className
-                  )}
+                  className="bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900 px-8"
                   size="2xl"
                 >
                   Start Training Today
@@ -97,10 +94,7 @@ const Header = ({ className }: { className?: string }) => {
 
                 <TrainingSlot>
                   <Button
-                    className={cn(
-                      "bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900 my-3 mx-auto w-full max-w-[350px] rounded-full",
-                      className
-                    )}
+                    className="bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900 my-3 mx-auto w-full max-w-[350px] rounded-full"
                     size="xl"
                   >
                     Start Training Today

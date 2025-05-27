@@ -12,7 +12,7 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen overflow-x-hidden font-neue-haas-display">
+    <>
       <Hero />
       <AboutBasicTraning />
       <Enroll isShow={true} />
@@ -23,6 +23,6 @@ export default function Home() {
       <WhyChooseUs />
       <OurStory />
       <RecommendUs />
-    </div>
+    </>
   );
 }

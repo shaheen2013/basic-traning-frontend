@@ -14,3 +14,4 @@ export { default as Modal } from "./modal";
 export { default as NotifyMe } from "./modal/notify-me";
 export { default as TrainingSlot } from "./modal/training-slot";
 export { default as AuthRightSidebar } from "./auth-right-sidebar";
+export { default as CourseHeader } from "./header/course-header";

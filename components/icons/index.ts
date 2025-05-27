@@ -21,3 +21,8 @@ export { default as X } from "./X";
 export { default as Linkedin } from "./Linkedin";
 export { default as ChevronLeft } from "./ChevronLeft";
 export { default as ChevronRight } from "./ChevronRight";
+export { default as Person } from "./Person";
+export { default as User } from "./User";
+export { default as Analytics } from "./Analytics";
+export { default as Settings } from "./Settings";
+export { default as Logout } from "./Logout";
