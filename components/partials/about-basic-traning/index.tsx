@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import UpcomingEvents from "../upcoming-events";
+import Link from "next/link";
 
 const AboutBasicTraning = () => {
   return (
@@ -35,9 +36,11 @@ const AboutBasicTraning = () => {
             </li>
           </ul>
         </div>
-        <Button className="w-full lg:w-fit rounded-full" size="2xl">
-          Learn More
-          <ArrowUpRight className="ml-2 lg:ml-3 text-white" />
+        <Button className="w-full lg:w-fit rounded-full" size="2xl" asChild>
+          <Link href="/course-info">
+            Learn More
+            <ArrowUpRight className="ml-2 lg:ml-3 text-white" />
+          </Link>
         </Button>
       </div>
       <UpcomingEvents />

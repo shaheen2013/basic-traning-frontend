@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Modal from "..";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "@/components/icons";
 import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -11,11 +10,11 @@ import { trainingSlots } from "./constant";
 import { cn } from "@/lib/utils";
 
 const TrainingSlot = ({
+  children,
   className,
-  size,
 }: {
-  className: string;
-  size: "sm" | "default" | "xl" | "2xl";
+  children?: React.ReactNode;
+  className?: string;
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -42,14 +41,15 @@ const TrainingSlot = ({
   };
   return (
     <>
-      <Button
-        className={cn("bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900", className)}
+      <div
         onClick={() => setOpen(true)}
-        size={size}
+        className={cn(
+          "pointer-cursor flex items-center justify-center",
+          className
+        )}
       >
-        Start Training Today
-        <ArrowRight className="lg:ml-3 ml-2 size-6 text-900 shrink-0" />
-      </Button>
+        {children}
+      </div>
 
       <Modal open={open} onOpenChange={() => setOpen(false)}>
         <form

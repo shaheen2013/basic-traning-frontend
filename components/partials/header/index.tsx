@@ -5,7 +5,7 @@ import { menus } from "./constans";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Dismiss, Hamburger } from "@/components/icons";
+import { ArrowRight, Dismiss, Hamburger } from "@/components/icons";
 import { useState } from "react";
 import TrainingSlot from "../modal/training-slot";
 
@@ -51,7 +51,20 @@ const Header = ({ className }: { className?: string }) => {
             >
               My Account
             </Button>
-            <TrainingSlot className="px-8 hidden lg:flex" size="2xl" />
+            <div className="hidden lg:flex">
+              <TrainingSlot>
+                <Button
+                  className={cn(
+                    "bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900 px-8",
+                    className
+                  )}
+                  size="2xl"
+                >
+                  Start Training Today
+                  <ArrowRight className="lg:ml-3 ml-2 size-6 text-900 shrink-0" />
+                </Button>
+              </TrainingSlot>
+            </div>
 
             <div
               className="p-2.5 lg:hidden bg-slate-100 rounded-lg size-10 flex item-center justify-center"
@@ -82,7 +95,18 @@ const Header = ({ className }: { className?: string }) => {
                   </Link>
                 ))}
 
-                <TrainingSlot className="my-3 mx-5 rounded-full" size="xl" />
+                <TrainingSlot>
+                  <Button
+                    className={cn(
+                      "bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900 my-3 mx-auto w-full max-w-[350px] rounded-full",
+                      className
+                    )}
+                    size="xl"
+                  >
+                    Start Training Today
+                    <ArrowRight className="lg:ml-3 ml-2 size-6 text-900 shrink-0" />
+                  </Button>
+                </TrainingSlot>
               </div>
             </>
           )}

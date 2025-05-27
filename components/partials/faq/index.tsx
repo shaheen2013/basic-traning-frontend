@@ -1,11 +1,9 @@
-import { ArrowUpRight } from "@/components/icons";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
 
 const Faq = () => {
   return (
@@ -21,10 +19,6 @@ const Faq = () => {
           Find answers to some of the most common questions about the Basic
           Training.
         </p>
-        <Button className="w-full lg:w-fit rounded-full mt-4" size="2xl">
-          Contact Us
-          <ArrowUpRight className="ml-2 lg:ml-3 text-white" />
-        </Button>
       </div>
       <div>
         <Accordion
