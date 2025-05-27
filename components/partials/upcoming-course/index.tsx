@@ -1,6 +1,4 @@
-import { AlertBadge } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-
+import NotifyMe from "../modal/notify-me";
 const UpcomingCourse = () => {
   return (
     <div className="container p-6 lg:p-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-8 bg-blue-100 my-12 lg:my-36">
@@ -8,10 +6,7 @@ const UpcomingCourse = () => {
         Upcoming{" "}
         <span className="font-vollkorn italic font-normal">Courses</span>{" "}
       </h2>
-      <Button className="w-full lg:w-fit rounded-full" size="2xl">
-        Get Notified Upcoming Classes
-        <AlertBadge className="ml-2 size-6 text-white" />
-      </Button>
+      <NotifyMe />
     </div>
   );
 };

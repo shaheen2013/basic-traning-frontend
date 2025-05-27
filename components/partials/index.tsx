@@ -12,3 +12,4 @@ export { default as Footer } from "./footer";
 export { default as Enroll } from "./enroll";
 export { default as Modal } from "./modal";
 export { default as NotifyMe } from "./modal/notify-me";
+export { default as TrainingSlot } from "./modal/training-slot";
