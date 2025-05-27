@@ -9,7 +9,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function Login() {
-  const { handleSubmit, control, setError } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       email: "",
       password: "",
@@ -30,7 +30,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col justify-between items-center h-screen px-4 pt-12">
+    <div className="flex flex-col justify-between items-center h-screen px-4 pt-20">
       <div className="flex justify-center items-center">
         <div className="max-w-[600px] w-full">
           {/* title */}
@@ -94,6 +94,7 @@ export default function Login() {
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="email">Password *</Label>
                     <InputPassword
+                      id="password"
                       placeholder="Enter password"
                       onChange={onChange}
                       onBlur={onBlur}
@@ -126,7 +127,7 @@ export default function Login() {
               </div>
 
               <Link
-                href="/forgot-password"
+                href="/forget-password"
                 className="text-slate-800 font-semibold text-base lg:text-lg hover:underline underline-offset-4"
               >
                 Forgot password
@@ -156,7 +157,10 @@ export default function Login() {
           <div className="flex justify-center mt-6">
             <p className="lg:text-base text-sm text-slate-800 font-normal">
               Don&apos;t have an Organization account?{" "}
-              <Link href="/signup" className="font-semibold">
+              <Link
+                href="/signup"
+                className="font-semibold hover:underline underline-offset-4"
+              >
                 Sign up
               </Link>
             </p>
