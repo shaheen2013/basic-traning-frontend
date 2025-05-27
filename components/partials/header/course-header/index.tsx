@@ -13,27 +13,37 @@ const icons = [
   {
     id: 1,
     label: "My Course",
-    icon: <User className="size-5 text-slate-700" />,
+    icon: (
+      <User className="size-5 text-slate-700 group-hover:text-white transition-colors duration-200" />
+    ),
   },
   {
     id: 2,
     label: "Profile Overview",
-    icon: <User className="size-5 text-slate-700" />,
+    icon: (
+      <User className="size-5 text-slate-700 group-hover:text-white transition-colors duration-200" />
+    ),
   },
   {
     id: 3,
     label: "Analytics",
-    icon: <Analytics className="size-5 text-slate-700" />,
+    icon: (
+      <Analytics className="size-5 text-slate-700 group-hover:text-white transition-colors duration-200" />
+    ),
   },
   {
     id: 4,
     label: "Messages",
-    icon: <User className="size-5 text-slate-700" />,
+    icon: (
+      <User className="size-5 text-slate-700 group-hover:text-white transition-colors duration-200" />
+    ),
   },
   {
     id: 5,
     label: "Settings",
-    icon: <Settings className="size-5 text-slate-700" />,
+    icon: (
+      <Settings className="size-5 text-slate-700 group-hover:text-white transition-colors duration-200" />
+    ),
   },
 ];
 
@@ -102,7 +112,7 @@ const Header = () => {
                 <Link
                   key={menu.id}
                   href={menu.href}
-                  className="text-sm font-medium text-slate-700 p-2.5 hover:bg-slate-100 rounded-md transition-colors duration-200"
+                  className="text-sm font-medium text-slate-700 p-2.5 group hover:bg-blue-600 hover:text-white rounded-md transition-colors duration-200"
                 >
                   <div className="flex items-center gap-2">
                     {menu.icon}
