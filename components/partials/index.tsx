@@ -13,3 +13,4 @@ export { default as Enroll } from "./enroll";
 export { default as Modal } from "./modal";
 export { default as NotifyMe } from "./modal/notify-me";
 export { default as TrainingSlot } from "./modal/training-slot";
+export { default as AuthRightSidebar } from "./auth-right-sidebar";

@@ -61,7 +61,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             type={type}
             className={cn(
-              "flex h-12 w-full rounded-xl border bg-transparent px-4 py-3 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-gray-6 focus-visible:outline-none focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50",
+              "flex h-12 w-full rounded-xl border bg-transparent px-4 py-3 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50",
               hasError && "border-red-500",
 
               startIcon && "pl-12",
@@ -72,7 +72,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {endIcon && (
-            <span className="absolute right-4 text-gray-500">{endIcon}</span>
+            <span className="absolute right-4 text-slate-500">{endIcon}</span>
           )}
         </div>
 
@@ -81,7 +81,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <p className="text-red-500 text-sm mt-1 ml-1">{errorText}</p>
         ) : (
           helperText && (
-            <p className="text-gray-500 text-sm mt-1 ml-1">{helperText}</p>
+            <p className="text-slate-500 text-sm mt-1 ml-1">{helperText}</p>
           )
         )}
       </div>
@@ -108,7 +108,7 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             type={showPassword ? "text" : "password"}
             className={cn(
-              "flex h-12 w-full rounded-xl border bg-transparent px-4 py-3 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-gray-6 focus-visible:outline-none focus-visible:border-primary-4 disabled:cursor-not-allowed disabled:opacity-50",
+              "flex h-12 w-full rounded-xl border bg-transparent px-4 py-3 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50",
               hasError && "border-red-500 focus-visible:ring-red-500",
               startIcon && "pl-12",
               endIcon && "pr-12",
@@ -118,19 +118,16 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {endIcon && (
-            <span className="absolute right-4 text-gray-500">{endIcon}</span>
+            <span className="absolute right-4 text-slate-500">{endIcon}</span>
           )}
 
           <button
             type="button"
-            className="absolute right-4 text-gray-500"
+            className="absolute right-4 text-slate-500"
             onClick={handleTogglePassword}
           >
             {showPassword ? (
-              <EyeOffIcon
-                className="w-5 h-5 text-primary-6"
-                strokeWidth={1.5}
-              />
+              <EyeOffIcon className="w-5 h-5 text-primary" strokeWidth={1.5} />
             ) : (
               <svg
                 width="20"
@@ -141,7 +138,7 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputProps>(
               >
                 <path
                   d="M9.99841 7.00462C12.2075 7.00462 13.9984 8.79549 13.9984 11.0046C13.9984 13.2138 12.2075 15.0046 9.99841 15.0046C7.78927 15.0046 5.99841 13.2138 5.99841 11.0046C5.99841 8.79549 7.78927 7.00462 9.99841 7.00462ZM9.99841 8.50462C8.6177 8.50462 7.49841 9.62391 7.49841 11.0046C7.49841 12.3853 8.6177 13.5046 9.99841 13.5046C11.3791 13.5046 12.4984 12.3853 12.4984 11.0046C12.4984 9.62391 11.3791 8.50462 9.99841 8.50462ZM9.99841 3.5C14.6119 3.5 18.5945 6.65001 19.6995 11.0644C19.8001 11.4662 19.5559 11.8735 19.1541 11.9741C18.7523 12.0746 18.345 11.8305 18.2444 11.4286C17.3055 7.67796 13.9198 5 9.99841 5C6.07534 5 2.68851 7.68026 1.75127 11.4332C1.6509 11.835 1.24376 12.0794 0.841892 11.9791C0.440021 11.8787 0.195601 11.4716 0.295963 11.0697C1.39905 6.65272 5.38289 3.5 9.99841 3.5Z"
-                  fill="#527A75"
+                  fill="currentColor"
                 />
               </svg>
             )}
@@ -153,7 +150,7 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputProps>(
           <p className="text-red-500 text-sm mt-1">{errorText}</p>
         ) : (
           helperText && (
-            <p className="text-gray-500 text-sm mt-1">{helperText}</p>
+            <p className="text-slate-500 text-sm mt-1">{helperText}</p>
           )
         )}
       </div>

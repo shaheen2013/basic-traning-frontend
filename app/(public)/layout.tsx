@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Vollkorn, Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { neueHaasDisplay } from "@/public/fonts";
 import { Footer } from "@/components/partials";
 

@@ -12,7 +12,7 @@ const Hero = () => {
                  url(${"/assets/course-info/background.png"}) lightgray 50% / cover no-repeat`,
       }}
     >
-      <Header className="py-4 lg:py-8" />
+      <Header />
       <div className="container flex flex-col gap-12 items-start justify-end pb-10 lg:pb-40 h-[calc(100dvh-120px)]">
         <div className="flex flex-col gap-6 max-w-[1068px]">
           <h2 className="text-white font-semibold text-5xl lg:text-7xl">
