@@ -29,11 +29,11 @@ export const courseMenus = [
     label: "Analytics",
     href: "/dashboard/analytics",
   },
-  {
-    id: 4,
-    label: "Messages",
-    href: "/messages",
-  },
+  // {
+  //   id: 4,
+  //   label: "Messages",
+  //   href: "/messages",
+  // },
   {
     id: 5,
     label: "Settings",

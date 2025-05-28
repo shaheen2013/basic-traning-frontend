@@ -32,11 +32,8 @@ export default function AccountPassword() {
   };
 
   return (
-    <div className="bg-slate-50 border-slate-200 border rounded-2xl flex flex-col gap-4 lg:gap-6">
-      <div className="font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
-        Settings
-      </div>
-      <div className="flex flex-col gap-3 px-4 lg:px-6">
+    <div className="flex flex-col gap-4 lg:gap-6 p-4 lg:p-6">
+      <div className="flex flex-col gap-2">
         <h3 className="text-primary text-lg lg:text-2xl font-semibold">
           Change Password
         </h3>
@@ -44,7 +41,8 @@ export default function AccountPassword() {
           Update your account password to keep your profile secure.
         </p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="px-4 lg:px-6">
+
+      <form onSubmit={handleSubmit(onSubmit)}>
         {/* old password */}
         <div className="mb-4">
           <Controller
@@ -60,7 +58,7 @@ export default function AccountPassword() {
             }) => (
               <div className="flex flex-col gap-2">
                 <Label htmlFor="oldPassword">
-                  Old Password<span className="text-inherit">*</span>
+                  Current Password<span className="text-inherit">*</span>
                 </Label>
                 <InputPassword
                   id="oldPassword"

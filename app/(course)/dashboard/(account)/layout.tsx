@@ -33,7 +33,14 @@ export default function ProfileLayout({
           ))}
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto">{children}</div>
+      <div className="flex-1 overflow-y-auto">
+        <div className="bg-slate-50 border-slate-200 border rounded-2xl">
+          <div className="font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
+            {courseMenus.find((menu) => menu.href === pathname)?.label}
+          </div>
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
