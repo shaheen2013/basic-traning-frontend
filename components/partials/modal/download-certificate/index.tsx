@@ -12,7 +12,11 @@ const DownloadCertificate = () => {
 
   return (
     <>
-      <Button variant="secondary" onClick={() => setOpen(true)}>
+      <Button
+        variant="secondary"
+        onClick={() => setOpen(true)}
+        className="w-full lg:w-fit"
+      >
         <ArrowDownLoad className="size-5 text-white" />
         Download Certificate
       </Button>

@@ -13,8 +13,8 @@ export default function ProfileLayout({
   const pathname = usePathname();
 
   return (
-    <div className="container flex h-fit my-6">
-      <div className="max-w-[400px] w-full bg-slate-50 rounded-2xl border-slate-200 border">
+    <div className="container flex gap-6 h-fit my-6">
+      <div className="hidden xl:block max-w-[400px] w-full bg-slate-50 rounded-2xl border-slate-200 border">
         <div className="font-semibold text-2xl text-primary p-6 bg-slate-200 rounded-t-2xl">
           My Account
         </div>
@@ -33,7 +33,7 @@ export default function ProfileLayout({
           ))}
         </div>
       </div>
-      <div className="ml-6 flex-1 overflow-y-auto">{children}</div>
+      <div className="flex-1 overflow-y-auto">{children}</div>
     </div>
   );
 }

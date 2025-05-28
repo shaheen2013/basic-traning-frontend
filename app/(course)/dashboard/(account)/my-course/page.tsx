@@ -19,25 +19,25 @@ const MyCourse = () => {
       <div className="font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
         My Course
       </div>
-      <div className="flex flex-col gap-6 p-6">
-        <div className="flex gap-4 min-h-40">
+      <div className="flex flex-col gap-4 lg:gap-6 p-4 lg:p-6">
+        <div className="flex flex-col lg:flex-row gap-4 min-h-0 lg:min-h-40">
           <Image
             src="/assets/course/lesson.png"
             alt="lesson"
             width={100}
             height={700}
-            className="size-40 object-center object-cover"
+            className="size-full lg:size-40 object-center object-contain rounded-2xl"
           />
-          <div className="flex flex-col gap-2 justify-between w-full min-h-full">
-            <div className="flex justify-between items-center">
-              <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4 justify-between w-full min-h-full">
+            <div className="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center w-full">
+              <div className="flex flex-col gap-4 lg:gap-2">
                 <div className="flex gap-2.5 items-center">
                   <h3 className="text-primary text-xl font-semibold">
                     Basic Training
                   </h3>
                   <Badge>In Progress</Badge>
                 </div>
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-4 items-center flex-wrap">
                   <div className="inline-flex items-center gap-1">
                     <Calendar className="size-5 text-blue-600" />
                     <span className="text-slate-700 text-sm font-normal">
@@ -59,15 +59,15 @@ const MyCourse = () => {
                 </div>
               </div>
               {/* buttons */}
-              <div className="flex gap-4 items-center">
-                <Button variant="outline">
+              <div className="flex flex-col lg:flex-row gap-4 items-center w-full lg:w-fit">
+                <Button variant="outline" className="w-full lg:w-fit">
                   <DocumentArrowDown className="size-5 text-primary" /> Generate
                   Report
                 </Button>
                 {progress === 100 ? (
                   <DownloadCertificate />
                 ) : (
-                  <Button variant="secondary">
+                  <Button variant="secondary" className="w-full lg:w-fit">
                     Continue Course
                     <ChevronRight className="size-5 text-white" />
                   </Button>
