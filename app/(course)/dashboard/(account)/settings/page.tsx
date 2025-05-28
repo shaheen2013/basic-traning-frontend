@@ -32,17 +32,19 @@ export default function AccountPassword() {
   };
 
   return (
-    <div className="bg-slate-50 border-slate-200 border rounded-2xl flex flex-col gap-6">
+    <div className="bg-slate-50 border-slate-200 border rounded-2xl flex flex-col gap-4 lg:gap-6">
       <div className="font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
         Settings
       </div>
-      <div className="flex flex-col gap-3 px-6">
-        <h3 className="text-primary text-2xl font-semibold">Change Password</h3>
+      <div className="flex flex-col gap-3 px-4 lg:px-6">
+        <h3 className="text-primary text-lg lg:text-2xl font-semibold">
+          Change Password
+        </h3>
         <p className="text-slate-800 text-base">
           Update your account password to keep your profile secure.
         </p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="px-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-4 lg:px-6">
         {/* old password */}
         <div className="mb-4">
           <Controller
@@ -106,7 +108,7 @@ export default function AccountPassword() {
         </div>
 
         {/* confirm password */}
-        <div className="mb-6">
+        <div className="mb-4 lg:mb-6">
           <Controller
             control={control}
             name="confirmPassword"
@@ -142,7 +144,7 @@ export default function AccountPassword() {
           />
         </div>
 
-        <Button type="submit" variant="secondary" className="mb-6">
+        <Button type="submit" variant="secondary" className="mb-4 lg:mb-6">
           Update Password
         </Button>
       </form>

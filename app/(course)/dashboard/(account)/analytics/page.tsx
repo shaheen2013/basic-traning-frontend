@@ -12,9 +12,11 @@ export default function Analytics() {
       <div className="font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
         Analytics
       </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-        <div className="rounded-2xl bg-white border border-slate-200 flex flex-col gap-4 p-6">
-          <h3 className="text-primary text-2xl font-semibold">Mark</h3>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 p-4 lg:p-6">
+        <div className="rounded-2xl bg-white border border-slate-200 flex flex-col gap-3 lg:gap-4 p-4 lg:p-6">
+          <h3 className="text-primary text-lg lg:text-2xl font-semibold">
+            Mark
+          </h3>
           <div className="flex flex-col gap-2">
             <div className="px-4 py-3 bg-slate-50 border border-dashed border-slate-200 rounded-lg flex justify-between items-center">
               <h4 className="text-primary text-base font-normal">Quiz Marks</h4>
@@ -44,8 +46,10 @@ export default function Analytics() {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-white border border-slate-200 flex flex-col gap-4 p-6">
-          <h3 className="text-primary text-2xl font-semibold">Assignment</h3>
+        <div className="rounded-2xl bg-white border border-slate-200 flex flex-col gap-3 lg:gap-4 p-4 lg:p-6">
+          <h3 className="text-primary text-lg lg:text-2xl font-semibold">
+            Assignment
+          </h3>
           <div className="flex flex-col gap-2">
             <div className="px-4 py-3 bg-slate-50 border border-dashed border-slate-200 rounded-lg flex justify-between items-center">
               <h4 className="text-primary text-base font-normal">
@@ -77,8 +81,10 @@ export default function Analytics() {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-white border border-slate-200 flex flex-col gap-4 p-6">
-          <h3 className="text-primary text-2xl font-semibold">Quiz</h3>
+        <div className="rounded-2xl bg-white border border-slate-200 flex flex-col gap-3 lg:gap-4 p-4 lg:p-6">
+          <h3 className="text-primary text-lg lg:text-2xl font-semibold">
+            Quiz
+          </h3>
           <div className="flex flex-col gap-2">
             <div className="px-4 py-3 bg-slate-50 border border-dashed border-slate-200 rounded-lg flex justify-between items-center">
               <h4 className="text-primary text-base font-normal">

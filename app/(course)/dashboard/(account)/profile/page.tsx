@@ -109,7 +109,7 @@ export default function ProfileOverview() {
       </div>
 
       {/* profile/upload */}
-      <div className="lg:p-8 p-4">
+      <div className="lg:p-6 p-4">
         {/* Hidden file input */}
 
         <input
@@ -274,7 +274,11 @@ export default function ProfileOverview() {
             </div>
           </div>
 
-          <Button type="submit" className="min-w-32" variant="secondary">
+          <Button
+            type="submit"
+            className="min-w-32 w-full lg:w-fit"
+            variant="secondary"
+          >
             Save Changes
           </Button>
         </form>
