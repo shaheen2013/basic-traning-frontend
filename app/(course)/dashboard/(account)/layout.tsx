@@ -13,8 +13,8 @@ export default function ProfileLayout({
   const pathname = usePathname();
 
   return (
-    <div className="container flex min-h-screen h-full my-6">
-      <div className="max-w-[400px] w-full bg-slate-50 rounded-2xl">
+    <div className="container flex h-fit my-6">
+      <div className="max-w-[400px] w-full bg-slate-50 rounded-2xl border-slate-200 border">
         <div className="font-semibold text-2xl text-primary p-6 bg-slate-200 rounded-t-2xl">
           My Account
         </div>

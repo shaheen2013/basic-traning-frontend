@@ -32,7 +32,7 @@ export default function AccountPassword() {
   };
 
   return (
-    <div className="bg-slate-50 rounded-2xl flex flex-col gap-6">
+    <div className="bg-slate-50 border-slate-200 border rounded-2xl flex flex-col gap-6">
       <div className="font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
         Settings
       </div>

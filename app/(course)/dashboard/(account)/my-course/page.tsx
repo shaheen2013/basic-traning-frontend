@@ -15,7 +15,7 @@ import { DownloadCertificate } from "@/components/partials";
 
 const MyCourse = () => {
   return (
-    <div className="bg-slate-50 rounded-2xl flex flex-col">
+    <div className="bg-slate-50 border-slate-200 border rounded-2xl flex flex-col">
       <div className="font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
         My Course
       </div>
