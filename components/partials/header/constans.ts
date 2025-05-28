@@ -17,7 +17,7 @@ export const courseMenus = [
   {
     id: 1,
     label: "My Course",
-    href: "/course",
+    href: "/dashboard/my-course",
   },
   {
     id: 2,
