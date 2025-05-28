@@ -115,7 +115,6 @@ export default function Login() {
                   render={({ field: { onChange, value, onBlur } }) => (
                     <Checkbox
                       id="remember"
-                      variant="secondary"
                       checked={value}
                       onCheckedChange={onChange}
                       onBlur={onBlur}

@@ -22,12 +22,12 @@ export const courseMenus = [
   {
     id: 2,
     label: "Profile Overview",
-    href: "/profile-overview",
+    href: "/dashboard/profile",
   },
   {
     id: 3,
     label: "Analytics",
-    href: "/analytics",
+    href: "/dashboard/analytics",
   },
   {
     id: 4,
@@ -37,6 +37,6 @@ export const courseMenus = [
   {
     id: 5,
     label: "Settings",
-    href: "/settings",
+    href: "/dashboard/settings",
   },
 ];

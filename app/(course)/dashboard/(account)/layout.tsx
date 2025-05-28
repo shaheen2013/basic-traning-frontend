@@ -24,7 +24,7 @@ export default function ProfileLayout({
           ))}
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto">{children}</div>
+      <div className="ml-6 flex-1 overflow-y-auto">{children}</div>
     </div>
   );
 }

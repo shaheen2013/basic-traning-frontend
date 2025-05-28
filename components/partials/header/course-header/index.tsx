@@ -2,12 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { courseMenus, menus } from "../constans";
-import { Analytics, Logout, Person, Settings, User } from "@/components/icons";
+import { Analytics, Person, Settings, User } from "@/components/icons";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import LogOutConfirmation from "@/components/partials/modal/log-out-confirmation";
 
 const icons = [
   {
@@ -122,10 +123,7 @@ const Header = () => {
               ))}
             </div>
             <div className="border-t border-slate-200 pt-4" />
-            <div className="inline-flex gap-2 text-sm font-medium text-slate-700 p-2.5 hover:text-red-500 hover:bg-red-100 w-full rounded-md transition-colors duration-200 cursor-pointer">
-              <Logout className="size-5" />
-              Logout
-            </div>
+            <LogOutConfirmation />
           </PopoverContent>
         </Popover>
       </div>

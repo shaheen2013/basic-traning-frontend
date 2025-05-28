@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { faqs } from "./constant";
 
 const Faq = () => {
   return (
@@ -20,41 +21,23 @@ const Faq = () => {
           Training.
         </p>
       </div>
-      <div>
+      <div className="prose">
         <Accordion
           type="single"
           collapsible
           className="w-full"
-          defaultValue="item-1"
+          defaultValue="1"
         >
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="data-[state=open]:font-semibold">
-              Who is this training program for?
-            </AccordionTrigger>
-            <AccordionContent>
-              Basic training is for new employees who need system, product,
-              underwriting, service, and application training.
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-2">
-            <AccordionTrigger className="data-[state=open]:font-semibold">
-              What lines of business will be covered?
-            </AccordionTrigger>
-            <AccordionContent>
-              Basic training is for new employees who need system, product,
-              underwriting, service, and application training.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger className="data-[state=open]:font-semibold">
-              How long is the training program?
-            </AccordionTrigger>
-            <AccordionContent>
-              Basic training is for new employees who need system, product,
-              underwriting, service, and application training.
-            </AccordionContent>
-          </AccordionItem>
+          {faqs.map((faq) => (
+            <AccordionItem key={faq.id} value={String(faq.id)}>
+              <AccordionTrigger className="data-[state=open]:font-semibold py-0 cursor-pointer">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div dangerouslySetInnerHTML={{ __html: faq.ans }}></div>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
         </Accordion>
       </div>
     </section>
