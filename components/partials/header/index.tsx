@@ -48,8 +48,9 @@ const Header = ({ className }: { className?: string }) => {
               variant="ghost"
               size="2xl"
               className="text-white hover:bg-transparent"
+              asChild
             >
-              My Account
+              <Link href="/dashboard">My Account</Link>
             </Button>
             <div className="hidden lg:flex">
               <TrainingSlot>
