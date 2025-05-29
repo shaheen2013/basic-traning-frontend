@@ -24,11 +24,15 @@ interface Comment extends User {
 interface Reply extends User {
   content: string;
   replies?: Reply[];
+  type: "public" | "private";
 }
 
 export default function Conversations() {
-  const [activeReplyId, setActiveReplyId] = useState<number | null>(null);
-  console.log("activeReplyId", activeReplyId);
+  const [activeReply, setActiveReply] = useState<{
+    id: number;
+    type: "public" | "private";
+  } | null>(null);
+  console.log("activeReply", activeReply);
   const [replyContent, setReplyContent] = useState("");
   const [comments, setComments] = useState<Comment[]>([
     {
@@ -40,6 +44,7 @@ export default function Conversations() {
       title: "Issue with Final Quiz Access",
       content:
         "I attempted the final quiz but it says I'm not eligible. Can you please check if I missed any modules?",
+
       replies: [
         {
           id: 101,
@@ -49,6 +54,7 @@ export default function Conversations() {
           time: "21 hours ago",
           content:
             "Thank you for reaching out. Please check your pending modules. You need to complete modules 3, 5, and 7 before attempting the final quiz.",
+          type: "public",
           replies: [
             {
               id: 1011,
@@ -58,6 +64,7 @@ export default function Conversations() {
               time: "20 hours ago",
               content:
                 "I can help you identify which modules are incomplete. Would you like me to send you a detailed progress report?",
+              type: "public",
             },
           ],
         },
@@ -81,6 +88,7 @@ export default function Conversations() {
           time: "4 hours ago",
           content:
             "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
+          type: "public",
           replies: [
             {
               id: 2001,
@@ -90,6 +98,7 @@ export default function Conversations() {
               time: "4 hours ago",
               content:
                 "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
+              type: "public",
               replies: [
                 {
                   id: 20001,
@@ -99,6 +108,7 @@ export default function Conversations() {
                   time: "4 hours ago",
                   content:
                     "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
+                  type: "public",
                 },
               ],
             },
@@ -108,7 +118,11 @@ export default function Conversations() {
     },
   ]);
 
-  const handleReplySubmit = (commentId: number, parentId?: number) => {
+  const handleReplySubmit = (
+    commentId: number,
+    parentId?: number | null,
+    type: "public" | "private" = "public"
+  ) => {
     if (!replyContent.trim()) return;
 
     const newReply: Reply = {
@@ -118,6 +132,7 @@ export default function Conversations() {
       avatar: "/assets/course/Avatar.png",
       time: "Just now",
       content: replyContent,
+      type,
     };
 
     setComments((prevComments) =>
@@ -159,7 +174,7 @@ export default function Conversations() {
     );
 
     setReplyContent("");
-    setActiveReplyId(null);
+    setActiveReply(null);
   };
 
   const renderReplies = (replies: Reply[], commentId: number, depth = 0) => {
@@ -198,7 +213,11 @@ export default function Conversations() {
                 size="sm"
                 className="h-8 px-2 text-xs"
                 onClick={() =>
-                  setActiveReplyId(activeReplyId === reply.id ? null : reply.id)
+                  setActiveReply(
+                    activeReply?.id === reply.id
+                      ? null
+                      : { id: reply.id, type: "public" }
+                  )
                 }
               >
                 <ReplyIcon className="size-4" />
@@ -209,7 +228,11 @@ export default function Conversations() {
                 size="sm"
                 className="h-8 px-2 text-xs"
                 onClick={() =>
-                  setActiveReplyId(activeReplyId === reply.id ? null : reply.id)
+                  setActiveReply(
+                    activeReply?.id === reply.id
+                      ? null
+                      : { id: reply.id, type: "private" }
+                  )
                 }
               >
                 <ReplyIcon className="size-4" />
@@ -223,7 +246,7 @@ export default function Conversations() {
               )}
             </div>
 
-            {activeReplyId === reply.id && (
+            {activeReply?.id === reply.id && (
               <div className="mt-3">
                 <Input
                   type="text"
@@ -237,15 +260,17 @@ export default function Conversations() {
                     variant="secondary"
                     size="sm"
                     className="h-8 px-3 text-xs"
-                    onClick={() => handleReplySubmit(commentId, reply.id)}
+                    onClick={() =>
+                      handleReplySubmit(commentId, reply.id, activeReply.type)
+                    }
                   >
-                    Post Reply
+                    Post {activeReply.type === "private" && "Private"} Reply
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     className="h-8 px-3 text-xs"
-                    onClick={() => setActiveReplyId(null)}
+                    onClick={() => setActiveReply(null)}
                   >
                     Cancel
                   </Button>
@@ -307,8 +332,10 @@ export default function Conversations() {
                 size="sm"
                 className="h-9 gap-1.5 px-3 text-sm"
                 onClick={() =>
-                  setActiveReplyId(
-                    activeReplyId === comment.id ? null : comment.id
+                  setActiveReply(
+                    activeReply?.id === comment.id
+                      ? null
+                      : { id: comment.id, type: "public" }
                   )
                 }
               >
@@ -319,6 +346,13 @@ export default function Conversations() {
                 variant="outline"
                 size="sm"
                 className="h-9 gap-1.5 px-3 text-sm"
+                onClick={() =>
+                  setActiveReply(
+                    activeReply?.id === comment.id
+                      ? null
+                      : { id: comment.id, type: "private" }
+                  )
+                }
               >
                 <ReplyIcon className="size-4" />
                 Reply Privately
@@ -335,7 +369,7 @@ export default function Conversations() {
               )}
             </div>
 
-            {activeReplyId === comment.id && (
+            {activeReply?.id === comment.id && (
               <div className="mt-4">
                 <Input
                   type="text"
@@ -347,13 +381,15 @@ export default function Conversations() {
                   <Button
                     variant="secondary"
                     className="px-4"
-                    onClick={() => handleReplySubmit(comment.id)}
+                    onClick={() =>
+                      handleReplySubmit(comment.id, null, activeReply.type)
+                    }
                   >
-                    Post Reply
+                    Post {activeReply.type === "private" && "Private"} Reply
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => setActiveReplyId(null)}
+                    onClick={() => setActiveReply(null)}
                   >
                     Cancel
                   </Button>
