@@ -20,10 +20,8 @@ export default function ProfileLayout({
   const pathname = usePathname();
   const router = useRouter();
 
-  console.log("pathname", pathname);
-
   return (
-    <div className="container flex gap-6 h-fit my-6">
+    <div className="container flex gap-6 min-h-[calc(100vh-144px] lg:min-h-[calc(100vh-184px)] my-6">
       <div className="hidden xl:block max-w-[400px] w-full bg-slate-50 rounded-2xl border-slate-200 border">
         <div className="font-semibold text-2xl text-primary p-6 bg-slate-200 rounded-t-2xl">
           My Account
@@ -43,11 +41,12 @@ export default function ProfileLayout({
           ))}
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto">
-        <div className="bg-slate-50 border-slate-200 border rounded-2xl overflow-hidden">
+      <div className="flex-1 min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)]">
+        <div className="bg-slate-50 border-slate-200 h-full border rounded-2xl overflow-hidden">
           <div className="hidden lg:block font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
             {courseMenus.find((menu) => menu.href === pathname)?.label}
           </div>
+
           {/* mobile menu */}
           <div className="block lg:hidden w-full bg-slate-200 p-4 rounded-t-2xl">
             <Select onValueChange={(value) => router.push(value)}>

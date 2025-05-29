@@ -38,3 +38,7 @@ export { default as Clock } from "./Clock";
 export { default as Calendar } from "./Calendar";
 export { default as DocumentArrowDown } from "./DocumentArrowDown";
 export { default as ArrowDownLoad } from "./ArrowDownLoad";
+export { default as Reply } from "./Reply";
+export { default as Comment } from "./Comment";
+export { default as MoreVertical } from "./MoreVertical";
+export { default as Delete } from "./Delete";

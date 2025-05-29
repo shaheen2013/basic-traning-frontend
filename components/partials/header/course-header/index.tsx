@@ -94,7 +94,10 @@ const Header = () => {
               My Account
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[324px] shadow-lg rounded-lg">
+          <PopoverContent
+            className="w-[324px] shadow-lg rounded-lg"
+            align="end"
+          >
             <div className="flex gap-3 items-center mb-4">
               <div className="flex items-center justify-center size-12 border border-slate-400 rounded-full">
                 <Person className="size-6 text-slate-700" />

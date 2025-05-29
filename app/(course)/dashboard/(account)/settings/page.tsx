@@ -142,7 +142,11 @@ export default function AccountPassword() {
           />
         </div>
 
-        <Button type="submit" variant="secondary" className="mb-4 lg:mb-6">
+        <Button
+          type="submit"
+          variant="secondary"
+          className="w-full lg:w-fit mt-4 mb-4 lg:mb-6"
+        >
           Update Password
         </Button>
       </form>
