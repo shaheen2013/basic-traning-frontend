@@ -1,15 +1,36 @@
 "use client";
 
-import { Comment, Reply } from "@/components/icons";
+import { Comment as CommentIcon, Reply as ReplyIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { MorePopOver } from "./components";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
+interface User {
+  id: number;
+  author: string;
+  role: string;
+  avatar: string;
+  time: string;
+}
+
+interface Comment extends User {
+  title: string;
+  content: string;
+  replies: Reply[];
+}
+
+interface Reply extends User {
+  content: string;
+  replies?: Reply[];
+}
+
 export default function Conversations() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [comments] = useState([
+  const [activeReplyId, setActiveReplyId] = useState<number | null>(null);
+  console.log("activeReplyId", activeReplyId);
+  const [replyContent, setReplyContent] = useState("");
+  const [comments, setComments] = useState<Comment[]>([
     {
       id: 1,
       author: "Joseph McFall",
@@ -27,8 +48,7 @@ export default function Conversations() {
           avatar: "/assets/course/Avatar.png",
           time: "21 hours ago",
           content:
-            "Thank you for reaching out. Please check your pending modules...",
-
+            "Thank you for reaching out. Please check your pending modules. You need to complete modules 3, 5, and 7 before attempting the final quiz.",
           replies: [
             {
               id: 1011,
@@ -37,265 +57,315 @@ export default function Conversations() {
               avatar: "/assets/course/Avatar.png",
               time: "20 hours ago",
               content:
-                "I can help you identify which modules are incomplete...",
+                "I can help you identify which modules are incomplete. Would you like me to send you a detailed progress report?",
             },
           ],
-        },
-        {
-          id: 102,
-          author: "Jenny Wilson",
-          role: "Organizer",
-          avatar: "/assets/course/Avatar.png",
-          time: "20 hours ago",
-          content: "I can help you identify which modules are incomplete...",
-        },
-        {
-          id: 103,
-          author: "Jenny Wilson",
-          role: "Organizer",
-          avatar: "/assets/course/Avatar.png",
-          time: "20 hours ago",
-          content: "I can help you identify which modules are incomplete...",
         },
       ],
     },
     {
       id: 2,
-      author: "Joseph McFall",
-      role: "CEO & Founder XXX LLC",
+      author: "Sarah Johnson",
+      role: "Course Participant",
       avatar: "/assets/course/Avatar.png",
-      time: "Mon, Jul 31, 3:20 PM (22 hours ago)",
-      title: "Issue with Final Quiz Access",
+      time: "Tue, Aug 1, 10:15 AM (5 hours ago)",
+      title: "Certificate Not Generated",
       content:
-        "I attempted the final quiz but it says I'm not eligible. Can you please check if I missed any modules?",
+        "I completed all modules but haven't received my certificate. Can you check what might be causing the delay?",
       replies: [
         {
           id: 201,
           author: "Esther Howard",
           role: "Instructor",
           avatar: "/assets/course/Avatar.png",
-          time: "21 hours ago",
+          time: "4 hours ago",
           content:
-            "Thank you for reaching out. Please check your pending modules...",
-
+            "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
           replies: [
             {
-              id: 2011,
-              author: "Jenny Wilson",
-              role: "Organizer",
+              id: 2001,
+              author: "Esther Howard",
+              role: "Instructor",
               avatar: "/assets/course/Avatar.png",
-              time: "20 hours ago",
+              time: "4 hours ago",
               content:
-                "I can help you identify which modules are incomplete...",
+                "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
+              replies: [
+                {
+                  id: 20001,
+                  author: "Esther Howard",
+                  role: "Instructor",
+                  avatar: "/assets/course/Avatar.png",
+                  time: "4 hours ago",
+                  content:
+                    "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
+                },
+              ],
             },
           ],
-        },
-        {
-          id: 202,
-          author: "Jenny Wilson",
-          role: "Organizer",
-          avatar: "/assets/course/Avatar.png",
-          time: "20 hours ago",
-          content: "I can help you identify which modules are incomplete...",
-        },
-        {
-          id: 203,
-          author: "Jenny Wilson",
-          role: "Organizer",
-          avatar: "/assets/course/Avatar.png",
-          time: "20 hours ago",
-          content: "I can help you identify which modules are incomplete...",
         },
       ],
     },
   ]);
+
+  const handleReplySubmit = (commentId: number, parentId?: number) => {
+    if (!replyContent.trim()) return;
+
+    const newReply: Reply = {
+      id: Date.now(),
+      author: "You",
+      role: "Current User",
+      avatar: "/assets/course/Avatar.png",
+      time: "Just now",
+      content: replyContent,
+    };
+
+    setComments((prevComments) =>
+      prevComments.map((comment) => {
+        if (comment.id === commentId) {
+          if (parentId) {
+            // Find and update nested reply
+            const updateNestedReplies = (replies: Reply[]): Reply[] => {
+              return replies.map((reply) => {
+                if (reply.id === parentId) {
+                  return {
+                    ...reply,
+                    replies: [...(reply.replies || []), newReply],
+                  };
+                }
+                if (reply.replies) {
+                  return {
+                    ...reply,
+                    replies: updateNestedReplies(reply.replies),
+                  };
+                }
+                return reply;
+              });
+            };
+            return {
+              ...comment,
+              replies: updateNestedReplies(comment.replies),
+            };
+          } else {
+            // Add to top level replies
+            return {
+              ...comment,
+              replies: [...comment.replies, newReply],
+            };
+          }
+        }
+        return comment;
+      })
+    );
+
+    setReplyContent("");
+    setActiveReplyId(null);
+  };
+
+  const renderReplies = (replies: Reply[], commentId: number, depth = 0) => {
+    return replies.map((reply) => (
+      <div
+        key={reply.id}
+        className={`mt-4 pl-${depth === 0 ? 4 : 8} border-l-2 border-slate-100`}
+      >
+        <div className="flex gap-3">
+          <div className="flex-shrink-0">
+            <Image
+              src={reply.avatar}
+              alt={reply.author}
+              width={40}
+              height={40}
+              className="size-8 lg:size-10 rounded-full"
+            />
+          </div>
+          <div className="flex-1">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span className="text-sm font-semibold text-primary">
+                  {reply.author}
+                </span>
+                <span className="ml-2 text-xs text-slate-500">
+                  {reply.role}
+                </span>
+              </div>
+              <span className="text-xs text-slate-400">{reply.time}</span>
+            </div>
+            <p className="mt-1 text-sm text-slate-600">{reply.content}</p>
+
+            <div className="mt-2 flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 text-xs"
+                onClick={() =>
+                  setActiveReplyId(activeReplyId === reply.id ? null : reply.id)
+                }
+              >
+                <ReplyIcon className="size-4" />
+                Reply Publicly
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 text-xs"
+                onClick={() =>
+                  setActiveReplyId(activeReplyId === reply.id ? null : reply.id)
+                }
+              >
+                <ReplyIcon className="size-4" />
+                Reply Privately
+              </Button>
+              {reply.replies && reply.replies.length > 0 && (
+                <Button variant="ghost" size="sm" className="h-8 px-2 text-xs">
+                  <CommentIcon className="size-4" />
+                  {reply.replies.length} Replies
+                </Button>
+              )}
+            </div>
+
+            {activeReplyId === reply.id && (
+              <div className="mt-3">
+                <Input
+                  type="text"
+                  placeholder="Type your reply here..."
+                  value={replyContent}
+                  onChange={(e) => setReplyContent(e.target.value)}
+                  className="text-sm"
+                />
+                <div className="mt-2 flex gap-2">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="h-8 px-3 text-xs"
+                    onClick={() => handleReplySubmit(commentId, reply.id)}
+                  >
+                    Post Reply
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 px-3 text-xs"
+                    onClick={() => setActiveReplyId(null)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {reply.replies &&
+              renderReplies(reply.replies, commentId, depth + 1)}
+          </div>
+        </div>
+      </div>
+    ));
+  };
+
   return (
-    <div className="flex bg-slate-50 p-4 lg:p-6 overflow-y-auto h-screen">
-      <div className="rounded-xl bg-white border border-slate-200 p-4 h-fit w-full">
+    <div className="bg-slate-50 p-4 lg:p-6">
+      <div className="space-y-6">
         {comments.map((comment) => (
-          <div key={comment.id}>
-            <div className="flex flex-col lg:flex-row justify-between gap-2 lg:items-center">
-              <div className="flex gap-2.5 items-center">
+          <div
+            key={comment.id}
+            className="rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200"
+          >
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="flex gap-3">
                 <Image
                   src={comment.avatar}
                   alt={comment.author}
                   width={40}
                   height={40}
-                  className="size-8 lg:size-10 rounded-full"
+                  className="size-10 rounded-full"
                 />
-                <div className="flex flex-col justify-between">
-                  <h3 className="text-primary text-sm font-semibold">
-                    {comment.author}
-                  </h3>
-                  <span className="text-slate-600 text-sm">{comment.role}</span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-primary">
+                      {comment.author}
+                    </h3>
+                    <span className="text-xs text-slate-500">
+                      {comment.role}
+                    </span>
+                  </div>
+                  <span className="text-xs text-slate-400">{comment.time}</span>
                 </div>
               </div>
-              <div className="flex gap-3 items-center justify-between">
-                <span className="text-slate-600 text-sm">{comment.time}</span>
-                <MorePopOver />
-              </div>
+              <MorePopOver />
             </div>
-            <hr className="border-slate-200 my-4" />
-            <h3 className="text-primary text-xl font-semibold mb-4">
-              {comment.title}
-            </h3>
-            <p className="text-slate-600 text-base mb-4">{comment.content}</p>
-            <div className="flex flex-wrap gap-4 items-start mt-4">
+
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold text-slate-800">
+                {comment.title}
+              </h3>
+
+              <p className="mt-1 text-slate-600">{comment.content}</p>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
               <Button
                 variant="outline"
-                className="w-full lg:w-fit"
-                onClick={() => setIsOpen(true)}
+                size="sm"
+                className="h-9 gap-1.5 px-3 text-sm"
+                onClick={() =>
+                  setActiveReplyId(
+                    activeReplyId === comment.id ? null : comment.id
+                  )
+                }
               >
-                <Reply className="size-5 text-primary" />
+                <ReplyIcon className="size-4" />
                 Reply Publicly
               </Button>
-              <Button variant="outline" className="w-full lg:w-fit">
-                <Reply className="size-5 text-primary" /> Reply Privately
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 gap-1.5 px-3 text-sm"
+              >
+                <ReplyIcon className="size-4" />
+                Reply Privately
               </Button>
-              <Button variant="outline" className="w-full lg:w-fit">
-                <Comment className="size-5 text-primary" />
-                {comment.replies.length} Replies
-              </Button>
+              {comment.replies.length > 0 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 gap-1.5 px-3 text-sm"
+                >
+                  <CommentIcon className="size-4" />
+                  {comment.replies.length} Replies
+                </Button>
+              )}
             </div>
-            {isOpen && (
-              <form>
+
+            {activeReplyId === comment.id && (
+              <div className="mt-4">
                 <Input
                   type="text"
                   placeholder="Type your reply here..."
-                  className="mt-4"
+                  value={replyContent}
+                  onChange={(e) => setReplyContent(e.target.value)}
                 />
-                <Button className="mt-4" type="submit">
-                  Reply
-                </Button>
-              </form>
-            )}
-            {/* replies of replies */}
-            <div className="my-4">
-              {comment.replies.map((reply) => (
-                <div key={reply.id} className="pl-4">
-                  <div className="">
-                    <div className="flex gap-2.5 items-center mb-4">
-                      <Image
-                        src={reply.avatar}
-                        alt={reply.author}
-                        width={40}
-                        height={40}
-                        className="size-8 lg:size-10 rounded-full"
-                      />
-                      <div className="flex flex-col justify-between">
-                        <h3 className="text-primary text-sm font-semibold">
-                          {reply.author}
-                          <span className="text-slate-600 ml-1 font-normal">
-                            {reply.time}
-                          </span>
-                        </h3>
-                        <span className="text-slate-600 text-sm">
-                          {reply.role}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="text-slate-600 text-sm mb-4 pl-12.5">
-                      {comment.content}
-                    </p>
-                    <div className="flex flex-wrap gap-4 items-center mb-4 pl-12.5">
-                      <Button
-                        variant="ghost"
-                        className="px-0 has-[>svg]:px-0 h-fit hover:bg-transparent hover:text-primary "
-                      >
-                        <Reply className="size-5 text-primary" />
-                        Reply Publicly
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="px-0 has-[>svg]:px-0 h-fit hover:bg-transparent hover:text-primary"
-                      >
-                        <Reply className="size-5 text-primary" /> Reply
-                        Privately
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="px-0 has-[>svg]:px-0 h-fit hover:bg-transparent hover:text-primary"
-                      >
-                        <Comment className="size-5 text-primary" />
-                        {comment.replies.length} Replies
-                      </Button>
-                    </div>
-                    {isOpen && (
-                      <form>
-                        <Input
-                          type="text"
-                          placeholder="Type your reply here..."
-                          className="mt-4"
-                        />
-                        <Button className="mt-4" type="submit">
-                          Reply
-                        </Button>
-                      </form>
-                    )}
-                  </div>
-                  <div className="pl-4">
-                    <div className="flex gap-2.5 items-center mb-4">
-                      <Image
-                        src={reply.avatar}
-                        alt={reply.author}
-                        width={40}
-                        height={40}
-                        className="size-8 lg:size-10 rounded-full"
-                      />
-                      <div className="flex flex-col justify-between">
-                        <h3 className="text-primary text-sm font-semibold">
-                          {reply.author}
-                          <span className="text-slate-600 ml-1 font-normal">
-                            {reply.time}
-                          </span>
-                        </h3>
-                        <span className="text-slate-600 text-sm">
-                          {reply.role}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="text-slate-600 text-sm mb-4 pl-12.5">
-                      {comment.content}
-                    </p>
-                    <div className="flex flex-wrap gap-4 items-center mb-4 pl-12.5">
-                      <Button
-                        variant="ghost"
-                        className="px-0 has-[>svg]:px-0 h-fit hover:bg-transparent hover:text-primary "
-                      >
-                        <Reply className="size-5 text-primary" />
-                        Reply Publicly
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="px-0 has-[>svg]:px-0 h-fit hover:bg-transparent hover:text-primary"
-                      >
-                        <Reply className="size-5 text-primary" /> Reply
-                        Privately
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="px-0 has-[>svg]:px-0 h-fit hover:bg-transparent hover:text-primary"
-                      >
-                        <Comment className="size-5 text-primary" />
-                        {comment.replies.length} Replies
-                      </Button>
-                    </div>
-                    {isOpen && (
-                      <form>
-                        <Input
-                          type="text"
-                          placeholder="Type your reply here..."
-                          className="mt-4"
-                        />
-                        <Button className="mt-4" type="submit">
-                          Reply
-                        </Button>
-                      </form>
-                    )}
-                  </div>
+                <div className="mt-2 flex gap-2">
+                  <Button
+                    variant="secondary"
+                    className="px-4"
+                    onClick={() => handleReplySubmit(comment.id)}
+                  >
+                    Post Reply
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setActiveReplyId(null)}
+                  >
+                    Cancel
+                  </Button>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
+            {comment.replies.length > 0 && (
+              <div className="mt-4">
+                {renderReplies(comment.replies, comment.id)}
+              </div>
+            )}
           </div>
         ))}
       </div>
