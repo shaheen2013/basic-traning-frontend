@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { progress } from "../(account)/my-course/constant";
+import Link from "next/link";
 
 const Dashboard = () => {
   return (
@@ -76,15 +77,23 @@ const Dashboard = () => {
           <h3 className="text-primary text-2xl lg:text-3xl font-semibold">
             Systems
           </h3>
-          <Button variant="secondary">
-            Continue Course
-            <ChevronRight className="size-5 text-white" />
+          <Button variant="secondary" asChild>
+            <Link href="/course">
+              Continue Course
+              <ChevronRight className="size-5 text-white" />
+            </Link>
           </Button>
         </div>
       ) : (
-        <Button variant="secondary" className="w-full lg:w-fit self-end">
-          Start Course
-          <ChevronRight className="size-5 text-white" />
+        <Button
+          variant="secondary"
+          className="w-full lg:w-fit self-end"
+          asChild
+        >
+          <Link href="/course">
+            Start Course
+            <ChevronRight className="size-5 text-white" />
+          </Link>
         </Button>
       )}
     </div>

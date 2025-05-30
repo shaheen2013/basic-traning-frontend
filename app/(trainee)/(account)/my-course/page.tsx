@@ -79,9 +79,15 @@ const MyCourse = () => {
                 {progress === 100 ? (
                   <DownloadCertificate />
                 ) : (
-                  <Button variant="secondary" className="w-full lg:w-fit">
-                    Continue Course
-                    <ChevronRight className="size-5 text-white" />
+                  <Button
+                    variant="secondary"
+                    className="w-full lg:w-fit"
+                    asChild
+                  >
+                    <Link href="/dashboard">
+                      Continue Course
+                      <ChevronRight className="size-5 text-white" />
+                    </Link>
                   </Button>
                 )}
               </div>
