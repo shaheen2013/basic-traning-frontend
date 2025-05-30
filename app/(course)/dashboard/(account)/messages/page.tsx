@@ -7,6 +7,8 @@ import { MorePopOver } from "./components";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { courseMenus } from "@/components/partials/header/constans";
+import { usePathname } from "next/navigation";
 
 interface User {
   id: number;
@@ -29,6 +31,7 @@ interface Comment extends User {
 }
 
 export default function Conversations() {
+  const pathname = usePathname();
   // State for active reply form
   const [activeReply, setActiveReply] = useState<{
     id: number;
@@ -311,130 +314,137 @@ export default function Conversations() {
   };
 
   return (
-    <div className="bg-slate-50 p-4 lg:p-6">
-      <div className="space-y-6">
-        {comments.map((comment) => (
-          <div
-            key={comment.id}
-            className="rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200"
-          >
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div className="flex gap-3">
-                <Image
-                  src={comment.avatar}
-                  alt={comment.author}
-                  width={40}
-                  height={40}
-                  className="size-10 rounded-full"
-                />
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-primary">
-                      {comment.author}
-                    </h3>
-                    <span className="text-xs text-slate-500">
-                      {comment.role}
+    <>
+      <div className="hidden lg:block font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl capitalize">
+        {courseMenus.find((menu) => menu.href === pathname)?.label}
+      </div>
+      <div className="bg-slate-50 p-4 lg:p-6">
+        <div className="space-y-6">
+          {comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="flex gap-3">
+                  <Image
+                    src={comment.avatar}
+                    alt={comment.author}
+                    width={40}
+                    height={40}
+                    className="size-10 rounded-full"
+                  />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-primary">
+                        {comment.author}
+                      </h3>
+                      <span className="text-xs text-slate-500">
+                        {comment.role}
+                      </span>
+                    </div>
+                    <span className="text-xs text-slate-400">
+                      {comment.time}
                     </span>
                   </div>
-                  <span className="text-xs text-slate-400">{comment.time}</span>
                 </div>
+                <MorePopOver />
               </div>
-              <MorePopOver />
-            </div>
 
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold text-slate-800">
-                {comment.title}
-              </h3>
-              <p className="mt-1 text-slate-600">{comment.content}</p>
-            </div>
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold text-slate-800">
+                  {comment.title}
+                </h3>
+                <p className="mt-1 text-slate-600">{comment.content}</p>
+              </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-9 gap-1.5 px-3 text-sm"
-                onClick={() =>
-                  setActiveReply({
-                    id: comment.id,
-                    type: "public",
-                    commentId: comment.id,
-                  })
-                }
-              >
-                <ReplyIcon className="size-4" />
-                Reply Publicly
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-9 gap-1.5 px-3 text-sm"
-                onClick={() =>
-                  setActiveReply({
-                    id: comment.id,
-                    type: "private",
-                    commentId: comment.id,
-                  })
-                }
-              >
-                <ReplyIcon className="size-4" />
-                Reply Privately
-              </Button>
-              {comment.replies.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   className="h-9 gap-1.5 px-3 text-sm"
-                  onClick={() => toggleReplies(comment.id)}
+                  onClick={() =>
+                    setActiveReply({
+                      id: comment.id,
+                      type: "public",
+                      commentId: comment.id,
+                    })
+                  }
                 >
-                  <CommentIcon className="size-4" />
-                  {comment.replies.length} Replies
-                  <span className="ml-1">
-                    {expandedReplies[comment.id] ? (
-                      <ChevronDown />
-                    ) : (
-                      <ChevronUp />
-                    )}
-                  </span>
+                  <ReplyIcon className="size-4" />
+                  Reply Publicly
                 </Button>
-              )}
-            </div>
-
-            {/* Reply form for main comment */}
-            {activeReply?.id === comment.id && (
-              <form onSubmit={handleReplySubmit} className="mt-4">
-                <Input
-                  type="text"
-                  placeholder="Type your reply here..."
-                  value={replyContent}
-                  onChange={(e) => setReplyContent(e.target.value)}
-                  required
-                />
-                <div className="mt-2 flex gap-2">
-                  <Button variant="secondary" className="px-4" type="submit">
-                    Post {activeReply.type === "private" ? "Private " : ""}
-                    Reply
-                  </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 gap-1.5 px-3 text-sm"
+                  onClick={() =>
+                    setActiveReply({
+                      id: comment.id,
+                      type: "private",
+                      commentId: comment.id,
+                    })
+                  }
+                >
+                  <ReplyIcon className="size-4" />
+                  Reply Privately
+                </Button>
+                {comment.replies.length > 0 && (
                   <Button
                     variant="outline"
-                    type="button"
-                    onClick={() => setActiveReply(null)}
+                    size="sm"
+                    className="h-9 gap-1.5 px-3 text-sm"
+                    onClick={() => toggleReplies(comment.id)}
                   >
-                    Cancel
+                    <CommentIcon className="size-4" />
+                    {comment.replies.length} Replies
+                    <span className="ml-1">
+                      {expandedReplies[comment.id] ? (
+                        <ChevronDown />
+                      ) : (
+                        <ChevronUp />
+                      )}
+                    </span>
                   </Button>
-                </div>
-              </form>
-            )}
-
-            {/* Replies section */}
-            {comment.replies.length > 0 && expandedReplies[comment.id] && (
-              <div className="mt-4">
-                {renderReplies(comment.replies, comment.id)}
+                )}
               </div>
-            )}
-          </div>
-        ))}
+
+              {/* Reply form for main comment */}
+              {activeReply?.id === comment.id && (
+                <form onSubmit={handleReplySubmit} className="mt-4">
+                  <Input
+                    type="text"
+                    placeholder="Type your reply here..."
+                    value={replyContent}
+                    onChange={(e) => setReplyContent(e.target.value)}
+                    required
+                  />
+                  <div className="mt-2 flex gap-2">
+                    <Button variant="secondary" className="px-4" type="submit">
+                      Post {activeReply.type === "private" ? "Private " : ""}
+                      Reply
+                    </Button>
+                    <Button
+                      variant="outline"
+                      type="button"
+                      onClick={() => setActiveReply(null)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              )}
+
+              {/* Replies section */}
+              {comment.replies.length > 0 && expandedReplies[comment.id] && (
+                <div className="mt-4">
+                  {renderReplies(comment.replies, comment.id)}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
