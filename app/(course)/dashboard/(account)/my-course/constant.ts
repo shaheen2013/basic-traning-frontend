@@ -1,1 +1,1 @@
-export const progress: number = 90;
+export const progress: number = 10;

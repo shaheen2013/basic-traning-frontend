@@ -1,12 +1,18 @@
-import { Calendar, HourGlass, TextDescription } from "@/components/icons";
+import {
+  Calendar,
+  ChevronRight,
+  HourGlass,
+  TextDescription,
+} from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { progress } from "./(account)/my-course/constant";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   return (
-    <div className="container my-4 lg:my-6">
+    <div className="container my-4 lg:my-6 flex flex-col gap-6 lg:gap-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-6 lg:gap-6 border border-slate-200 rounded-2xl bg-slate-50 shadow-sm">
         <Image
           src="/assets/dashboard/dashboard.png"
@@ -65,6 +71,22 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {progress > 0 ? (
+        <div className="rounded-2xl bg-blue-50 border border-blue-200 p-4 lg:p-6 shadow-sm flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
+          <h3 className="text-primary text-2xl lg:text-3xl font-semibold">
+            Systems
+          </h3>
+          <Button variant="secondary">
+            Continue Course
+            <ChevronRight className="size-5 text-white" />
+          </Button>
+        </div>
+      ) : (
+        <Button variant="secondary" className="w-full lg:w-fit self-end">
+          Start Course
+          <ChevronRight className="size-5 text-white" />
+        </Button>
+      )}
     </div>
   );
 };
