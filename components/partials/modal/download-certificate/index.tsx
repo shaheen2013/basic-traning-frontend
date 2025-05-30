@@ -47,7 +47,7 @@ const DownloadCertificate = () => {
               className="rounded-full w-1/2"
               asChild
             >
-              <Link href="/dashboard/profile">Edit Profile</Link>
+              <Link href="/profile">Edit Profile</Link>
             </Button>
             <Button
               type="submit"

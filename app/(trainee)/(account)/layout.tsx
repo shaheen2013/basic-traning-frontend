@@ -19,7 +19,7 @@ export default function ProfileLayout({
         className={cn(
           "hidden xl:block max-w-[400px] w-full bg-slate-50 rounded-2xl border-slate-200 border",
           {
-            "xl:hidden": pathname === "/dashboard/syllabus",
+            "xl:hidden": pathname === "/syllabus",
           }
         )}
       >
@@ -43,7 +43,7 @@ export default function ProfileLayout({
       </div>
       <div className="flex-1 min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)]">
         <div className="bg-slate-50 border-slate-200 h-full border rounded-2xl overflow-hidden">
-          {pathname !== "/dashboard/syllabus" && <MobileMenu />}
+          {pathname !== "/syllabus" && <MobileMenu />}
           {children}
         </div>
       </div>

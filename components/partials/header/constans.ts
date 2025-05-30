@@ -17,33 +17,33 @@ export const courseMenus = [
   {
     id: 1,
     label: "My Course",
-    href: "/dashboard/my-course",
+    href: "/my-course",
   },
   {
     id: 2,
     label: "Profile Overview",
-    href: "/dashboard/profile",
+    href: "/profile",
   },
   {
     id: 3,
     label: "Analytics",
-    href: "/dashboard/analytics",
+    href: "/analytics",
   },
   {
     id: 4,
     label: "Messages",
-    href: "/dashboard/messages",
+    href: "/messages",
     items: [
       {
         id: 1,
         label: "Create Message",
-        href: "/dashboard/messages/create",
+        href: "/messages/create",
       },
     ],
   },
   {
     id: 5,
     label: "Settings",
-    href: "/dashboard/settings",
+    href: "/settings",
   },
 ];

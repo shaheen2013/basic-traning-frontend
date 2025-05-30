@@ -5,7 +5,7 @@ const Syllabus = () => {
   return (
     <>
       <div className="flex items-center gap-2 font-semibold lg:text-2xl text-lg lg:py-6 lg:px-6 p-4 bg-slate-200 rounded-t-2xl capitalize">
-        <Link href="/dashboard/my-course">
+        <Link href="/my-course">
           <ChevronLeftIcon className="size-6 lg:size-8 text-primary cursor-pointer" />
         </Link>
         Syllabus

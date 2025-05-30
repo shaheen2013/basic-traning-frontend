@@ -68,7 +68,7 @@ const MyCourse = () => {
               {/* buttons */}
               <div className="flex flex-col lg:flex-row gap-4 items-center w-full lg:w-fit">
                 <Button variant="outline" className="w-full lg:w-fit" asChild>
-                  <Link href="/dashboard/syllabus">
+                  <Link href="/syllabus">
                     <Eye className="size-5 text-primary" /> View Syllabus
                   </Link>
                 </Button>

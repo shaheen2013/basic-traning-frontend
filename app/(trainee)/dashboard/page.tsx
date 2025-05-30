@@ -7,8 +7,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
-import { progress } from "./(account)/my-course/constant";
 import { Button } from "@/components/ui/button";
+import { progress } from "../(account)/my-course/constant";
 
 const Dashboard = () => {
   return (
