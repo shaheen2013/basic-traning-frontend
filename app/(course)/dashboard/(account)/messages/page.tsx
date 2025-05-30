@@ -6,6 +6,7 @@ import Image from "next/image";
 import { MorePopOver } from "./components";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface User {
   id: number;
@@ -15,25 +16,34 @@ interface User {
   time: string;
 }
 
-interface Comment extends User {
-  title: string;
-  content: string;
-  replies: Reply[];
-}
-
 interface Reply extends User {
   content: string;
   replies?: Reply[];
   type: "public" | "private";
 }
 
+interface Comment extends User {
+  title: string;
+  content: string;
+  replies: Reply[];
+}
+
 export default function Conversations() {
+  // State for active reply form
   const [activeReply, setActiveReply] = useState<{
     id: number;
     type: "public" | "private";
+    parentId?: number | null;
+    commentId: number;
   } | null>(null);
-  console.log("activeReply", activeReply);
+
+  // State for expanded replies (track which replies are visible)
+  const [expandedReplies, setExpandedReplies] = useState<
+    Record<number, boolean>
+  >({});
+
   const [replyContent, setReplyContent] = useState("");
+
   const [comments, setComments] = useState<Comment[]>([
     {
       id: 1,
@@ -44,7 +54,6 @@ export default function Conversations() {
       title: "Issue with Final Quiz Access",
       content:
         "I attempted the final quiz but it says I'm not eligible. Can you please check if I missed any modules?",
-
       replies: [
         {
           id: 101,
@@ -53,7 +62,7 @@ export default function Conversations() {
           avatar: "/assets/course/Avatar.png",
           time: "21 hours ago",
           content:
-            "Thank you for reaching out. Please check your pending modules. You need to complete modules 3, 5, and 7 before attempting the final quiz.",
+            "Thank you for reaching out. You need to complete modules 3, 5, and 7 before attempting the final quiz.",
           type: "public",
           replies: [
             {
@@ -63,7 +72,7 @@ export default function Conversations() {
               avatar: "/assets/course/Avatar.png",
               time: "20 hours ago",
               content:
-                "I can help you identify which modules are incomplete. Would you like me to send you a detailed progress report?",
+                "I can send you a detailed progress report if you'd like.",
               type: "public",
             },
           ],
@@ -89,41 +98,23 @@ export default function Conversations() {
           content:
             "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
           type: "public",
-          replies: [
-            {
-              id: 2001,
-              author: "Esther Howard",
-              role: "Instructor",
-              avatar: "/assets/course/Avatar.png",
-              time: "4 hours ago",
-              content:
-                "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
-              type: "public",
-              replies: [
-                {
-                  id: 20001,
-                  author: "Esther Howard",
-                  role: "Instructor",
-                  avatar: "/assets/course/Avatar.png",
-                  time: "4 hours ago",
-                  content:
-                    "Certificates are usually generated within 24 hours of completion. I'll check the system and get back to you.",
-                  type: "public",
-                },
-              ],
-            },
-          ],
         },
       ],
     },
   ]);
 
-  const handleReplySubmit = (
-    commentId: number,
-    parentId?: number | null,
-    type: "public" | "private" = "public"
-  ) => {
-    if (!replyContent.trim()) return;
+  // Toggle visibility of replies
+  const toggleReplies = (id: number) => {
+    setExpandedReplies((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  // Handle reply submission
+  const handleReplySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!replyContent.trim() || !activeReply) return;
 
     const newReply: Reply = {
       id: Date.now(),
@@ -132,56 +123,72 @@ export default function Conversations() {
       avatar: "/assets/course/Avatar.png",
       time: "Just now",
       content: replyContent,
-      type,
+      type: activeReply.type,
     };
 
     setComments((prevComments) =>
       prevComments.map((comment) => {
-        if (comment.id === commentId) {
-          if (parentId) {
-            // Find and update nested reply
-            const updateNestedReplies = (replies: Reply[]): Reply[] => {
-              return replies.map((reply) => {
-                if (reply.id === parentId) {
-                  return {
-                    ...reply,
-                    replies: [...(reply.replies || []), newReply],
-                  };
-                }
-                if (reply.replies) {
-                  return {
-                    ...reply,
-                    replies: updateNestedReplies(reply.replies),
-                  };
-                }
-                return reply;
-              });
-            };
-            return {
-              ...comment,
-              replies: updateNestedReplies(comment.replies),
-            };
-          } else {
-            // Add to top level replies
+        if (comment.id === activeReply.commentId) {
+          // Add to top level if no parentId
+          if (!activeReply.parentId) {
             return {
               ...comment,
               replies: [...comment.replies, newReply],
             };
           }
+
+          // Find and update nested replies
+          const updateNestedReplies = (replies: Reply[]): Reply[] => {
+            return replies.map((reply) => {
+              if (reply.id === activeReply.parentId) {
+                return {
+                  ...reply,
+                  replies: [...(reply.replies || []), newReply],
+                };
+              }
+              if (reply.replies) {
+                return {
+                  ...reply,
+                  replies: updateNestedReplies(reply.replies),
+                };
+              }
+              return reply;
+            });
+          };
+
+          return {
+            ...comment,
+            replies: updateNestedReplies(comment.replies),
+          };
         }
         return comment;
       })
     );
 
+    // Reset form and auto-expand the replies
     setReplyContent("");
     setActiveReply(null);
+    if (activeReply.parentId) {
+      setExpandedReplies((prev) => ({
+        ...prev,
+        [activeReply.parentId!]: true,
+      }));
+    } else {
+      setExpandedReplies((prev) => ({
+        ...prev,
+        [activeReply.commentId]: true,
+      }));
+    }
   };
 
+  // Render nested replies recursively
   const renderReplies = (replies: Reply[], commentId: number, depth = 0) => {
     return replies.map((reply) => (
       <div
         key={reply.id}
-        className={`mt-4 pl-${depth === 0 ? 4 : 8} border-l-2 border-slate-100`}
+        className={`mt-4 ${
+          depth > 0 ? "pl-8" : "pl-4"
+        } border-l-2 border-slate-100`}
       >
         <div className="flex gap-3">
           <div className="flex-shrink-0">
@@ -207,17 +214,18 @@ export default function Conversations() {
             </div>
             <p className="mt-1 text-sm text-slate-600">{reply.content}</p>
 
-            <div className="mt-2 flex gap-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-8 px-2 text-xs"
                 onClick={() =>
-                  setActiveReply(
-                    activeReply?.id === reply.id
-                      ? null
-                      : { id: reply.id, type: "public" }
-                  )
+                  setActiveReply({
+                    id: reply.id,
+                    type: "public",
+                    parentId: reply.id,
+                    commentId,
+                  })
                 }
               >
                 <ReplyIcon className="size-4" />
@@ -228,57 +236,73 @@ export default function Conversations() {
                 size="sm"
                 className="h-8 px-2 text-xs"
                 onClick={() =>
-                  setActiveReply(
-                    activeReply?.id === reply.id
-                      ? null
-                      : { id: reply.id, type: "private" }
-                  )
+                  setActiveReply({
+                    id: reply.id,
+                    type: "private",
+                    parentId: reply.id,
+                    commentId,
+                  })
                 }
               >
                 <ReplyIcon className="size-4" />
                 Reply Privately
               </Button>
               {reply.replies && reply.replies.length > 0 && (
-                <Button variant="ghost" size="sm" className="h-8 px-2 text-xs">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2 text-xs"
+                  onClick={() => toggleReplies(reply.id)}
+                >
                   <CommentIcon className="size-4" />
                   {reply.replies.length} Replies
+                  <span className="ml-1">
+                    {expandedReplies[reply.id] ? (
+                      <ChevronDown />
+                    ) : (
+                      <ChevronUp />
+                    )}
+                  </span>
                 </Button>
               )}
             </div>
 
+            {/* Reply form for this specific reply */}
             {activeReply?.id === reply.id && (
-              <div className="mt-3">
+              <form onSubmit={handleReplySubmit} className="mt-3">
                 <Input
                   type="text"
                   placeholder="Type your reply here..."
                   value={replyContent}
                   onChange={(e) => setReplyContent(e.target.value)}
                   className="text-sm"
+                  required
                 />
                 <div className="mt-2 flex gap-2">
                   <Button
                     variant="secondary"
                     size="sm"
                     className="h-8 px-3 text-xs"
-                    onClick={() =>
-                      handleReplySubmit(commentId, reply.id, activeReply.type)
-                    }
+                    type="submit"
                   >
-                    Post {activeReply.type === "private" && "Private"} Reply
+                    Post {activeReply.type === "private" ? "Private " : ""}Reply
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     className="h-8 px-3 text-xs"
+                    type="button"
                     onClick={() => setActiveReply(null)}
                   >
                     Cancel
                   </Button>
                 </div>
-              </div>
+              </form>
             )}
 
+            {/* Nested replies */}
             {reply.replies &&
+              expandedReplies[reply.id] &&
               renderReplies(reply.replies, commentId, depth + 1)}
           </div>
         </div>
@@ -322,7 +346,6 @@ export default function Conversations() {
               <h3 className="text-lg font-semibold text-slate-800">
                 {comment.title}
               </h3>
-
               <p className="mt-1 text-slate-600">{comment.content}</p>
             </div>
 
@@ -332,11 +355,11 @@ export default function Conversations() {
                 size="sm"
                 className="h-9 gap-1.5 px-3 text-sm"
                 onClick={() =>
-                  setActiveReply(
-                    activeReply?.id === comment.id
-                      ? null
-                      : { id: comment.id, type: "public" }
-                  )
+                  setActiveReply({
+                    id: comment.id,
+                    type: "public",
+                    commentId: comment.id,
+                  })
                 }
               >
                 <ReplyIcon className="size-4" />
@@ -347,11 +370,11 @@ export default function Conversations() {
                 size="sm"
                 className="h-9 gap-1.5 px-3 text-sm"
                 onClick={() =>
-                  setActiveReply(
-                    activeReply?.id === comment.id
-                      ? null
-                      : { id: comment.id, type: "private" }
-                  )
+                  setActiveReply({
+                    id: comment.id,
+                    type: "private",
+                    commentId: comment.id,
+                  })
                 }
               >
                 <ReplyIcon className="size-4" />
@@ -362,42 +385,49 @@ export default function Conversations() {
                   variant="outline"
                   size="sm"
                   className="h-9 gap-1.5 px-3 text-sm"
+                  onClick={() => toggleReplies(comment.id)}
                 >
                   <CommentIcon className="size-4" />
                   {comment.replies.length} Replies
+                  <span className="ml-1">
+                    {expandedReplies[comment.id] ? (
+                      <ChevronDown />
+                    ) : (
+                      <ChevronUp />
+                    )}
+                  </span>
                 </Button>
               )}
             </div>
 
+            {/* Reply form for main comment */}
             {activeReply?.id === comment.id && (
-              <div className="mt-4">
+              <form onSubmit={handleReplySubmit} className="mt-4">
                 <Input
                   type="text"
                   placeholder="Type your reply here..."
                   value={replyContent}
                   onChange={(e) => setReplyContent(e.target.value)}
+                  required
                 />
                 <div className="mt-2 flex gap-2">
-                  <Button
-                    variant="secondary"
-                    className="px-4"
-                    onClick={() =>
-                      handleReplySubmit(comment.id, null, activeReply.type)
-                    }
-                  >
-                    Post {activeReply.type === "private" && "Private"} Reply
+                  <Button variant="secondary" className="px-4" type="submit">
+                    Post {activeReply.type === "private" ? "Private " : ""}
+                    Reply
                   </Button>
                   <Button
                     variant="outline"
+                    type="button"
                     onClick={() => setActiveReply(null)}
                   >
                     Cancel
                   </Button>
                 </div>
-              </div>
+              </form>
             )}
 
-            {comment.replies.length > 0 && (
+            {/* Replies section */}
+            {comment.replies.length > 0 && expandedReplies[comment.id] && (
               <div className="mt-4">
                 {renderReplies(comment.replies, comment.id)}
               </div>

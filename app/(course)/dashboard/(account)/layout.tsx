@@ -20,6 +20,8 @@ export default function ProfileLayout({
   const pathname = usePathname();
   const router = useRouter();
 
+  console.log("pathname", pathname);
+
   return (
     <div className="container flex gap-6 min-h-[calc(100vh-144px] lg:min-h-[calc(100vh-184px)] my-6">
       <div className="hidden xl:block max-w-[400px] w-full bg-slate-50 rounded-2xl border-slate-200 border">

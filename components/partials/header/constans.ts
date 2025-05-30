@@ -33,6 +33,13 @@ export const courseMenus = [
     id: 4,
     label: "Messages",
     href: "/dashboard/messages",
+    items: [
+      {
+        id: 1,
+        label: "Create Message",
+        href: "/dashboard/messages/create",
+      },
+    ],
   },
   {
     id: 5,
