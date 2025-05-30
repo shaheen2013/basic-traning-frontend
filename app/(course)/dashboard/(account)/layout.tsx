@@ -45,8 +45,9 @@ export default function ProfileLayout({
       </div>
       <div className="flex-1 min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)]">
         <div className="bg-slate-50 border-slate-200 h-full border rounded-2xl overflow-hidden">
-          <div className="hidden lg:block font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl">
-            {courseMenus.find((menu) => menu.href === pathname)?.label}
+          <div className="hidden lg:block font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl capitalize">
+            {courseMenus.find((menu) => menu.href === pathname)?.label ||
+              pathname.split("/")[2]}
           </div>
 
           {/* mobile menu */}

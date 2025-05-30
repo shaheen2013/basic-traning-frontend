@@ -3,6 +3,7 @@ import {
   ChevronRight,
   Clock,
   DocumentArrowDown,
+  Eye,
   HourGlass,
   TextDescription,
 } from "@/components/icons";
@@ -12,6 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { progress } from "./constant";
 import { DownloadCertificate } from "@/components/partials";
+import Link from "next/link";
 
 const MyCourse = () => {
   return (
@@ -56,6 +58,11 @@ const MyCourse = () => {
             </div>
             {/* buttons */}
             <div className="flex flex-col lg:flex-row gap-4 items-center w-full lg:w-fit">
+              <Button variant="outline" className="w-full lg:w-fit" asChild>
+                <Link href="/dashboard/syllabus">
+                  <Eye className="size-5 text-primary" /> View Syllabus
+                </Link>
+              </Button>
               <Button variant="outline" className="w-full lg:w-fit">
                 <DocumentArrowDown className="size-5 text-primary" /> Generate
                 Report

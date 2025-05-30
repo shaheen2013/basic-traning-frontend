@@ -42,3 +42,4 @@ export { default as Reply } from "./Reply";
 export { default as Comment } from "./Comment";
 export { default as MoreVertical } from "./MoreVertical";
 export { default as Delete } from "./Delete";
+export { default as Eye } from "./Eye";
