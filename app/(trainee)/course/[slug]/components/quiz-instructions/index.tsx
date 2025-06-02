@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-const Test = () => {
+const QuizInstructions = () => {
   const params = useParams();
   return (
     <section className="flex flex-col gap-4 lg:gap-6">
@@ -85,4 +85,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default QuizInstructions;

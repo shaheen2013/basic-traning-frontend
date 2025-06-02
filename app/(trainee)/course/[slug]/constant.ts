@@ -71,7 +71,7 @@ export const courseData = {
   ],
 };
 
-export const type = "test";
+export const type = "quiz";
 
 export const testData = {
   quizId: "lesson-101-quiz",

@@ -1,3 +1,3 @@
-export { default as Vedio } from "./Vedio";
+export { default as Vedio } from "./vedio";
 export { default as LiveClass } from "./live-class";
-export { default as Test } from "./test";
+export { default as QuizInstructions } from "./quiz-instructions";

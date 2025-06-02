@@ -39,7 +39,7 @@ const quizQuestions = [
   },
 ];
 
-export default function QuizPage() {
+export default function StartQuiz() {
   const handleQuizComplete = (results: {
     score: number;
     total: number;

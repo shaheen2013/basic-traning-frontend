@@ -107,7 +107,7 @@ export default function CourseLayout({
                                     return (
                                       <Link
                                         key={topic.title}
-                                        href={topic.href}
+                                        href={`/course/${topic.href}`}
                                         className="px-4"
                                       >
                                         <div className="flex gap-2">
