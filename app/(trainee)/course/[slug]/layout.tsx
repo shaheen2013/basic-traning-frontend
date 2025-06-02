@@ -1,7 +1,11 @@
+"use client";
+
 import { Progress } from "@/components/ui/progress";
-import { progress } from "../(account)/my-course/constant";
+import { progress } from "../../(account)/my-course/constant";
 import { Input } from "@/components/ui/input";
+
 import {
+  CheckCircleMark,
   CheckCircleMarkOutline,
   Plus,
   Search,
@@ -15,12 +19,23 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function CourseLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const params = useParams();
+
+  // const currentTopic = courseData.weeks.find((module) =>
+  //   module.days.find((day) =>
+  //     day.topics.find((topic) => topic.href === params.slug)
+  //   )
+  // );
+
   return (
     <div className="container flex gap-6 min-h-[calc(100vh-144px] lg:min-h-[calc(100vh-184px)] my-4 lg:my-6">
       <div className="hidden xl:block max-w-[400px] w-full bg-slate-50 rounded-2xl border-slate-200 border">
@@ -84,26 +99,54 @@ export default function CourseLayout({
                               <AccordionContent className="bg-slate-100 px-4">
                                 <hr className="border-slate-200" />
                                 <div className="mt-2.5 flex flex-col gap-2.5">
-                                  {day.topics.map((topic) => (
-                                    <div key={topic.title} className="px-4">
-                                      <div className="flex gap-2">
-                                        <CheckCircleMarkOutline className="size-6 text-primary" />
-                                        <div className="flex flex-col gap-0.5">
-                                          <h3 className="text-primary text-base font-medium">
-                                            {topic.title}
-                                          </h3>
-                                          <div className="flex items-center gap-1">
-                                            {topic.type === "video" && (
-                                              <Video className="size-4 text-slate-500" />
-                                            )}
-                                            <span className="text-slate-500 text-xs">
-                                              {topic.duration}
-                                            </span>
+                                  {day.topics.map((topic) => {
+                                    const isCompleted = topic.isCompleted;
+                                    const isActive = topic.href === params.slug;
+                                    return (
+                                      <Link
+                                        key={topic.title}
+                                        href={topic.href}
+                                        className="px-4"
+                                      >
+                                        <div className="flex gap-2">
+                                          {isCompleted && (
+                                            <CheckCircleMark className="size-6 text-blue-500" />
+                                          )}
+                                          {!isCompleted && (
+                                            <CheckCircleMarkOutline
+                                              className={cn(
+                                                "size-6 text-primary",
+                                                {
+                                                  "text-blue-500": isActive,
+                                                }
+                                              )}
+                                            />
+                                          )}
+                                          <div className="flex flex-col gap-0.5">
+                                            <h3
+                                              className={cn(
+                                                "text-primary text-base font-medium",
+                                                {
+                                                  "text-blue-500":
+                                                    topic.href === params.slug,
+                                                }
+                                              )}
+                                            >
+                                              {topic.title}
+                                            </h3>
+                                            <div className="flex items-center gap-1">
+                                              {topic.type === "video" && (
+                                                <Video className="size-4 text-slate-500" />
+                                              )}
+                                              <span className="text-slate-500 text-xs">
+                                                {topic.duration}
+                                              </span>
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    </div>
-                                  ))}
+                                      </Link>
+                                    );
+                                  })}
                                 </div>
                               </AccordionContent>
                             </AccordionItem>
