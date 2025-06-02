@@ -30,11 +30,10 @@ export default function CourseLayout({
 }) {
   const params = useParams();
 
-  // const currentTopic = courseData.weeks.find((module) =>
-  //   module.days.find((day) =>
-  //     day.topics.find((topic) => topic.href === params.slug)
-  //   )
-  // );
+  const currentWeek =
+    typeof params.slug === "string" ? params.slug.split("-")[0] : undefined;
+  const currentDay =
+    typeof params.slug === "string" ? params.slug.split("-")[1] : undefined;
 
   return (
     <div className="container flex gap-6 min-h-[calc(100vh-144px] lg:min-h-[calc(100vh-184px)] my-4 lg:my-6">
@@ -59,11 +58,7 @@ export default function CourseLayout({
           </div>
 
           <div className="overflow-y-auto lg:max-h-[calc(100vh-350px)]">
-            <Accordion
-              type="single"
-              collapsible
-              defaultValue={String(courseData.weeks[0].weekNumber)}
-            >
+            <Accordion type="single" collapsible defaultValue={currentWeek}>
               <div className="px-4 lg:px-6 flex flex-col gap-2">
                 {courseData.weeks.map((week) => (
                   <AccordionItem
@@ -83,7 +78,11 @@ export default function CourseLayout({
                     </AccordionTrigger>
 
                     <AccordionContent>
-                      <Accordion type="single" collapsible>
+                      <Accordion
+                        type="single"
+                        collapsible
+                        defaultValue={currentDay}
+                      >
                         <div className="flex flex-col gap-2">
                           {week.days.map((day) => (
                             <AccordionItem
