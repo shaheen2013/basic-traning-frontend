@@ -1,7 +1,13 @@
 import { Progress } from "@/components/ui/progress";
 import { progress } from "../(account)/my-course/constant";
 import { Input } from "@/components/ui/input";
-import { CheckCircleMark, Search } from "@/components/icons";
+import {
+  CheckCircleMarkOutline,
+  Plus,
+  Search,
+  Subtract,
+  Video,
+} from "@/components/icons";
 import { courseData } from "./constant";
 import {
   Accordion,
@@ -48,8 +54,19 @@ export default function CourseLayout({
                   <AccordionItem
                     value={String(week.weekNumber)}
                     key={week.weekNumber}
+                    className="my-0"
                   >
-                    <AccordionTrigger>{week.title}</AccordionTrigger>
+                    <AccordionTrigger
+                      icon={
+                        <>
+                          <Plus className="hidden group-data-[state=closed]:block transition-transform size-4 mt-1" />
+                          <Subtract className="hidden group-data-[state=open]:block transition-transform size-4 mt-1" />
+                        </>
+                      }
+                    >
+                      {week.title}
+                    </AccordionTrigger>
+
                     <AccordionContent>
                       <Accordion type="single" collapsible>
                         <div className="flex flex-col gap-2">
@@ -57,27 +74,32 @@ export default function CourseLayout({
                             <AccordionItem
                               value={String(day.dayNumber)}
                               key={day.dayNumber}
-                              className="px-0 border-none"
+                              className="px-0 border-none my-0 overflow-hidden"
                             >
-                              <AccordionTrigger className="px-4 py-3 bg-slate-100 rouded-none">
+                              <AccordionTrigger className="px-4 py-3 bg-slate-100 rounded-none">
                                 <h3 className="text-primary text-base font-medium">
                                   Day {day.dayNumber}: {day.title}
                                 </h3>
                               </AccordionTrigger>
-                              <AccordionContent className="bg-slate-100 px-4 rounded-none">
+                              <AccordionContent className="bg-slate-100 px-4">
                                 <hr className="border-slate-200" />
                                 <div className="mt-2.5 flex flex-col gap-2.5">
                                   {day.topics.map((topic) => (
                                     <div key={topic.title} className="px-4">
                                       <div className="flex gap-2">
-                                        <CheckCircleMark className=" size-6" />
+                                        <CheckCircleMarkOutline className="size-6 text-primary" />
                                         <div className="flex flex-col gap-0.5">
                                           <h3 className="text-primary text-base font-medium">
                                             {topic.title}
                                           </h3>
-                                          <span className="text-slate-500 text-xs">
-                                            {topic.duration}
-                                          </span>
+                                          <div className="flex items-center gap-1">
+                                            {topic.type === "video" && (
+                                              <Video className="size-4 text-slate-500" />
+                                            )}
+                                            <span className="text-slate-500 text-xs">
+                                              {topic.duration}
+                                            </span>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>

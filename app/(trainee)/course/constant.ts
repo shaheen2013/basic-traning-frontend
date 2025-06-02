@@ -12,14 +12,17 @@ export const courseData = {
             {
               title: "Welcome and Introduction",
               duration: "2m 48s",
+              type: "video",
             },
             {
               title: "Review of Resources",
               duration: "2m 48s",
+              type: "video",
             },
             {
               title: "Mindset",
               duration: "2m 48s",
+              type: "video",
             },
           ],
         },

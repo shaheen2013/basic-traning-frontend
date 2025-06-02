@@ -21,20 +21,18 @@ const Faq = () => {
           Training.
         </p>
       </div>
-      <div className="prose">
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full"
-          defaultValue="1"
-        >
+      <div className="">
+        <Accordion type="single" collapsible defaultValue="1">
           {faqs.map((faq) => (
             <AccordionItem key={faq.id} value={String(faq.id)}>
-              <AccordionTrigger className="data-[state=open]:font-semibold py-0 cursor-pointer">
+              <AccordionTrigger className="data-[state=open]:font-semibold font-medium text-xl lg:text-3xl py-4 cursor-pointer">
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent>
-                <div dangerouslySetInnerHTML={{ __html: faq.ans }}></div>
+                <div
+                  dangerouslySetInnerHTML={{ __html: faq.ans }}
+                  className="text-base lg:text-3xl font-medium text-slate-800"
+                ></div>
               </AccordionContent>
             </AccordionItem>
           ))}

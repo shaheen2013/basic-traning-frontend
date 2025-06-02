@@ -20,7 +20,7 @@ function AccordionItem({
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
-        "px-4 rounded-xl bg-white border border-slate-200 shadow-sm cursor-pointer hover:bg-slate-50",
+        "px-4 my-4 rounded-xl bg-white border border-slate-200 shadow-sm cursor-pointer hover:bg-slate-50",
         className
       )}
       {...props}
@@ -28,23 +28,33 @@ function AccordionItem({
   );
 }
 
+interface AccordionTriggerProps
+  extends React.ComponentProps<typeof AccordionPrimitive.Trigger> {
+  icon?: React.ReactNode;
+}
+
 function AccordionTrigger({
   className,
   children,
+  icon,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+}: AccordionTriggerProps) {
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "flex flex-1 items-start cursor-pointer justify-between gap-4 rounded-xl py-4 text-left text-base font-semibold transition-all outline-none disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+          "group flex flex-1 items-start cursor-pointer justify-between gap-4 rounded-xl py-4 text-left text-base font-semibold transition-all outline-none disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
           className
         )}
         {...props}
       >
         {children}
-        <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+        {icon ? (
+          icon
+        ) : (
+          <ChevronDownIcon className="text-primary pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+        )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
