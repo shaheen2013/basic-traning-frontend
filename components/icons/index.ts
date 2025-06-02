@@ -48,3 +48,4 @@ export { default as Search } from "./Search";
 export { default as Plus } from "./Plus";
 export { default as Subtract } from "./Subtract";
 export { default as Video } from "./Video";
+export { default as Timer } from "./Timer";

@@ -70,3 +70,38 @@ export const courseData = {
     },
   ],
 };
+
+export const type = "test";
+
+export const testData = {
+  quizId: "lesson-101-quiz",
+  lessonId: "lesson-101",
+  title: "JavaScript Basics Quiz",
+  questions: [
+    {
+      id: "q1",
+      type: "single",
+      question: "Which one is a JavaScript framework?",
+      options: [
+        { id: "a", text: "React" },
+        { id: "b", text: "Laravel" },
+        { id: "c", text: "Django" },
+        { id: "d", text: "Spring Boot" },
+      ],
+      durationInSeconds: 30,
+    },
+    {
+      id: "q2",
+      type: "multiple",
+      question: "Which of the following are JavaScript data types?",
+      options: [
+        { id: "a", text: "String" },
+        { id: "b", text: "Boolean" },
+        { id: "c", text: "Float" },
+        { id: "d", text: "Object" },
+      ],
+      correctAnswers: ["a", "b", "d"],
+      durationInSeconds: 45,
+    },
+  ],
+};

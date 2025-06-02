@@ -1,27 +1,29 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
-import { progress } from "../../(account)/my-course/constant";
-import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
-import {
-  CheckCircleMark,
-  CheckCircleMarkOutline,
-  Plus,
-  Search,
-  Subtract,
-  Video,
-} from "@/components/icons";
-import { courseData } from "./constant";
+import { cn } from "@/lib/utils";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import { cn } from "@/lib/utils";
+
+import {
+  CheckCircleMark,
+  CheckCircleMarkOutline,
+  Plus,
+  Subtract,
+  Search,
+  Video,
+} from "@/components/icons";
+
+import { progress } from "../../(account)/my-course/constant";
+import { courseData } from "./constant";
 
 export default function CourseLayout({
   children,
@@ -29,17 +31,15 @@ export default function CourseLayout({
   children: React.ReactNode;
 }) {
   const params = useParams();
-
-  const currentWeek =
-    typeof params.slug === "string" ? params.slug.split("-")[0] : undefined;
-  const currentDay =
-    typeof params.slug === "string" ? params.slug.split("-")[1] : undefined;
+  const slug = typeof params.slug === "string" ? params.slug : "";
+  const [currentWeek, currentDay] = slug.split("-");
 
   return (
-    <div className="container flex gap-6 min-h-[calc(100vh-144px] lg:min-h-[calc(100vh-184px)] my-4 lg:my-6">
-      <div className="hidden xl:block max-w-[400px] w-full bg-slate-50 rounded-2xl border-slate-200 border">
+    <div className="container flex gap-6 min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)] my-4 lg:my-6">
+      {/* Sidebar */}
+      <aside className="hidden xl:block w-full max-w-[400px] bg-slate-50 border border-slate-200 rounded-2xl">
         <div className="flex flex-col gap-4 lg:gap-6">
-          <div className="p-4 lg:p-6 bg-slate-200 rounded-t-2xl flex justify-between items-center">
+          <header className="p-4 lg:p-6 bg-slate-200 rounded-t-2xl flex justify-between items-center">
             <h3 className="font-semibold text-2xl text-primary">
               Running Day: 01
             </h3>
@@ -47,30 +47,31 @@ export default function CourseLayout({
               <Progress value={progress} className="w-24 bg-white" />
               <span className="text-sm font-semibold text-blue-500">1/4</span>
             </div>
-          </div>
+          </header>
+
           <div className="px-4 lg:px-6">
             <Input
               type="text"
               placeholder="Search"
-              className=""
               startIcon={<Search className="text-slate-600 size-6" />}
             />
           </div>
 
+          {/* Weeks and Days Accordion */}
           <div className="overflow-y-auto lg:max-h-[calc(100vh-350px)]">
             <Accordion type="single" collapsible defaultValue={currentWeek}>
               <div className="px-4 lg:px-6 flex flex-col gap-2">
                 {courseData.weeks.map((week) => (
                   <AccordionItem
-                    value={String(week.weekNumber)}
                     key={week.weekNumber}
+                    value={String(week.weekNumber)}
                     className="my-0"
                   >
                     <AccordionTrigger
                       icon={
                         <>
-                          <Plus className="hidden group-data-[state=closed]:block transition-transform size-4 mt-1" />
-                          <Subtract className="hidden group-data-[state=open]:block transition-transform size-4 mt-1" />
+                          <Plus className="hidden group-data-[state=closed]:block size-4 mt-1 transition-transform" />
+                          <Subtract className="hidden group-data-[state=open]:block size-4 mt-1 transition-transform" />
                         </>
                       }
                     >
@@ -86,8 +87,8 @@ export default function CourseLayout({
                         <div className="flex flex-col gap-2">
                           {week.days.map((day) => (
                             <AccordionItem
-                              value={String(day.dayNumber)}
                               key={day.dayNumber}
+                              value={String(day.dayNumber)}
                               className="px-0 border-none my-0 overflow-hidden"
                             >
                               <AccordionTrigger className="px-4 py-3 bg-slate-100 rounded-none">
@@ -95,12 +96,14 @@ export default function CourseLayout({
                                   Day {day.dayNumber}: {day.title}
                                 </h3>
                               </AccordionTrigger>
+
                               <AccordionContent className="bg-slate-100 px-4">
                                 <hr className="border-slate-200" />
                                 <div className="mt-2.5 flex flex-col gap-2.5">
                                   {day.topics.map((topic) => {
                                     const isCompleted = topic.isCompleted;
                                     const isActive = topic.href === params.slug;
+
                                     return (
                                       <Link
                                         key={topic.title}
@@ -108,10 +111,9 @@ export default function CourseLayout({
                                         className="px-4"
                                       >
                                         <div className="flex gap-2">
-                                          {isCompleted && (
+                                          {isCompleted ? (
                                             <CheckCircleMark className="size-6 text-blue-500" />
-                                          )}
-                                          {!isCompleted && (
+                                          ) : (
                                             <CheckCircleMarkOutline
                                               className={cn(
                                                 "size-6 text-primary",
@@ -121,14 +123,12 @@ export default function CourseLayout({
                                               )}
                                             />
                                           )}
+
                                           <div className="flex flex-col gap-0.5">
                                             <h3
                                               className={cn(
                                                 "text-primary text-base font-medium",
-                                                {
-                                                  "text-blue-500":
-                                                    topic.href === params.slug,
-                                                }
+                                                { "text-blue-500": isActive }
                                               )}
                                             >
                                               {topic.title}
@@ -159,14 +159,15 @@ export default function CourseLayout({
             </Accordion>
           </div>
         </div>
-      </div>
+      </aside>
 
-      <div className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow">
-        <h3 className="p-4 lg:p-6  bg-slate-200 font-semibold lg:text-2xl text-lg capitalize">
+      {/* Main Content */}
+      <main className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow h-fit">
+        <header className="p-4 lg:p-6 bg-slate-200 font-semibold text-lg lg:text-2xl capitalize">
           My Course
-        </h3>
-        <div className="bg-slate-50 p-4 lg:p-6">{children}</div>
-      </div>
+        </header>
+        <section className="bg-slate-50 p-4 lg:p-6">{children}</section>
+      </main>
     </div>
   );
 }

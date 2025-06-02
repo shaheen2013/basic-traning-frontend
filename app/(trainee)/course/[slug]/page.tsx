@@ -1,14 +1,13 @@
-import Image from "next/image";
+import { LiveClass, Test, Vedio } from "./components";
+import { type } from "./constant";
 
 const Course = () => {
   return (
-    <Image
-      src={`/assets/course-info/course-cover.png`}
-      alt="course-cover"
-      width={1000}
-      height={700}
-      className="w-full h-full object-cover object-center rounded-xl"
-    />
+    <>
+      {type === "video" && <Vedio />}
+      {type === "live-class" && <LiveClass />}
+      {type === "test" && <Test />}
+    </>
   );
 };
 
