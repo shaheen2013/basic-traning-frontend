@@ -5,8 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatSecondsToMinutesTime(seconds: number) {
-  const mins = Math.floor(seconds / 60);
+export function formatSecondsToReadableTime(seconds: number): string {
+  const days = Math.floor(seconds / (3600 * 24));
+  const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+
+  if (days > 0) return `${days}d`;
+  if (hours > 0) return `${hours}h`;
+  if (minutes > 0) return `${minutes}m`;
+  return `${secs}s`;
 }

@@ -1,4 +1,4 @@
-import { LiveClass, Quiz, Vedio } from "./components";
+import { Assignment, LiveClass, Quiz, Vedio } from "./components";
 import { type } from "./constant";
 
 const Course = () => {
@@ -7,6 +7,7 @@ const Course = () => {
       {type === "video" && <Vedio />}
       {type === "live-class" && <LiveClass />}
       {type === "quiz" && <Quiz />}
+      {type === "assignment" && <Assignment />}
     </>
   );
 };

@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formatSecondsToMinutesTime } from "@/lib/utils";
+import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 
@@ -138,7 +138,7 @@ export default function StartQuiz() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex justify-between items-center mb-3">
           <div className="flex gap-2 text-slate-600 items-center">
             <QuestionCircle className="size-5" />
@@ -149,7 +149,7 @@ export default function StartQuiz() {
           {questionTimer !== null && (
             <div className="flex gap-2 text-blue-500">
               <Timer className="size-5" />
-              Time left {formatSecondsToMinutesTime(questionTimer)}
+              Time left {formatSecondsToReadableTime(questionTimer)}
             </div>
           )}
         </div>
