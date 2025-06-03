@@ -17,3 +17,4 @@ export { default as AuthRightSidebar } from "./auth-right-sidebar";
 export { default as CourseHeader } from "./header/course-header";
 export { default as LogOutConfirmation } from "./modal/log-out-confirmation";
 export { default as DownloadCertificate } from "./modal/download-certificate";
+export { default as QuizResult } from "./modal/quiz-result";

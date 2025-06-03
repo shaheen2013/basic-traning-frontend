@@ -6,6 +6,7 @@ import {
   QuestionCircle,
   Timer,
 } from "@/components/icons";
+import { QuizResult } from "@/components/partials";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -84,6 +85,7 @@ const quizResponse = {
 };
 
 export default function StartQuiz() {
+  const [showResult, setShowResult] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [questionTimer, setQuestionTimer] = useState<number | null>(null);
 
@@ -103,6 +105,7 @@ export default function StartQuiz() {
 
   const onSubmit = (data) => {
     console.log("Submitted Answers:", data.answers);
+    setShowResult(true);
   };
 
   const handleNext = async () => {
@@ -134,174 +137,180 @@ export default function StartQuiz() {
   }, [handleSubmit]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="flex justify-between items-center mb-3">
-        <div className="flex gap-2 text-slate-600 items-center">
-          <QuestionCircle className="size-5" />
-          <h3 className="text-lg font-semibold">
-            Question {currentIndex + 1}/{quizResponse.questions.length}
-          </h3>
-        </div>
-        {questionTimer !== null && (
-          <div className="flex gap-2 text-blue-500">
-            <Timer className="size-5" />
-            Time left {formatSecondsToMinutesTime(questionTimer)}
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex gap-2 text-slate-600 items-center">
+            <QuestionCircle className="size-5" />
+            <h3 className="text-lg font-semibold">
+              Question {currentIndex + 1}/{quizResponse.questions.length}
+            </h3>
           </div>
-        )}
-      </div>
+          {questionTimer !== null && (
+            <div className="flex gap-2 text-blue-500">
+              <Timer className="size-5" />
+              Time left {formatSecondsToMinutesTime(questionTimer)}
+            </div>
+          )}
+        </div>
 
-      <p className="text-lg text-primary font-semibold mb-4">
-        {currentQuestion.text}
-      </p>
+        <p className="text-lg text-primary font-semibold mb-4">
+          {currentQuestion.text}
+        </p>
 
-      <div className="mb-6">
-        {/* Single or True/False */}
-        {(currentQuestion.type === "single" ||
-          currentQuestion.type === "truefalse") && (
-          <Controller
-            name={`answers.${currentQuestion.id}`}
-            control={control}
-            rules={{ required: "Please select an option" }}
-            render={({ field, fieldState: { error } }) => (
-              <>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  className="gap-0"
-                >
-                  {currentQuestion.options.map((option) => (
-                    <div
-                      key={option.id}
-                      className="flex items-center gap-2 py-4 border-t border-slate-200 last:border-b"
-                    >
-                      <RadioGroupItem value={option.value} id={option.id} />
-                      <Label htmlFor={option.id}>{option.text}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-                {error && (
-                  <span className="text-sm text-red-500 block m-2">
-                    {error.message}
-                  </span>
-                )}
-              </>
-            )}
-          />
-        )}
-
-        {/* Multiple Select */}
-        {currentQuestion.type === "multiple" && (
-          <Controller
-            name={`answers.${currentQuestion.id}`}
-            control={control}
-            rules={{
-              validate: (value) =>
-                value?.length > 0 || "Please select at least one option",
-            }}
-            render={({ field, fieldState: { error } }) => {
-              const handleCheckboxChange = (checked, value) => {
-                const current = field.value || [];
-                if (checked === true) {
-                  field.onChange([...current, value]);
-                } else if (checked === false) {
-                  field.onChange(current.filter((v) => v !== value));
-                }
-              };
-
-              return (
+        <div className="mb-6">
+          {/* Single or True/False */}
+          {(currentQuestion.type === "single" ||
+            currentQuestion.type === "truefalse") && (
+            <Controller
+              name={`answers.${currentQuestion.id}`}
+              control={control}
+              rules={{ required: "Please select an option" }}
+              render={({ field, fieldState: { error } }) => (
                 <>
-                  {currentQuestion.options.map((option) => (
-                    <div
-                      key={option.id}
-                      className="flex items-center gap-2 py-4 border-t border-slate-200 last:border-b"
-                    >
-                      <Checkbox
-                        id={option.id}
-                        checked={field.value?.includes(option.value)}
-                        onCheckedChange={(checked) =>
-                          handleCheckboxChange(checked, option.value)
-                        }
-                      />
-                      <Label htmlFor={option.id}>{option.text}</Label>
-                    </div>
-                  ))}
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    className="gap-0"
+                  >
+                    {currentQuestion.options.map((option) => (
+                      <div
+                        key={option.id}
+                        className="flex items-center gap-2 py-4 border-t border-slate-200 last:border-b"
+                      >
+                        <RadioGroupItem value={option.value} id={option.id} />
+                        <Label htmlFor={option.id}>{option.text}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
                   {error && (
                     <span className="text-sm text-red-500 block m-2">
                       {error.message}
                     </span>
                   )}
                 </>
-              );
-            }}
-          />
-        )}
-
-        {/* Match Type */}
-        {currentQuestion.type === "match" &&
-          currentQuestion.options.map((option) => (
-            <Controller
-              key={option.id}
-              name={`answers.${currentQuestion.id}.${option.id}`}
-              control={control}
-              rules={{ required: "Please select a match" }}
-              render={({ field, fieldState: { error } }) => (
-                <div className="py-4 border-t border-slate-200 flex flex-col last:border-b">
-                  <div className="flex justify-between items-center">
-                    <p className="text-slate-700 text-base font-medium">
-                      {option.text}
-                    </p>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select matching" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {option.ansOptions.map((ansOption) => (
-                            <SelectItem
-                              key={ansOption.id}
-                              value={ansOption.value}
-                            >
-                              {ansOption.text}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  {error && (
-                    <span className="text-sm text-red-500 block mt-2">
-                      {error.message}
-                    </span>
-                  )}
-                </div>
               )}
             />
-          ))}
-      </div>
+          )}
 
-      {/* Navigation buttons */}
-      <div className="flex justify-between">
-        <Button
-          type="button"
-          onClick={handlePrevious}
-          disabled={currentIndex === 0}
-          variant="outline"
-        >
-          <ChevronLeft className="size-5 mr-2" />
-          Previous
-        </Button>
+          {/* Multiple Select */}
+          {currentQuestion.type === "multiple" && (
+            <Controller
+              name={`answers.${currentQuestion.id}`}
+              control={control}
+              rules={{
+                validate: (value) =>
+                  value?.length > 0 || "Please select at least one option",
+              }}
+              render={({ field, fieldState: { error } }) => {
+                const handleCheckboxChange = (checked, value) => {
+                  const current = field.value || [];
+                  if (checked === true) {
+                    field.onChange([...current, value]);
+                  } else if (checked === false) {
+                    field.onChange(current.filter((v) => v !== value));
+                  }
+                };
 
-        {currentIndex < quizResponse.questions.length - 1 ? (
-          <Button type="button" variant="secondary" onClick={handleNext}>
-            Next
-            <ChevronRight className="size-5 ml-2" />
+                return (
+                  <>
+                    {currentQuestion.options.map((option) => (
+                      <div
+                        key={option.id}
+                        className="flex items-center gap-2 py-4 border-t border-slate-200 last:border-b"
+                      >
+                        <Checkbox
+                          id={option.id}
+                          checked={field.value?.includes(option.value)}
+                          onCheckedChange={(checked) =>
+                            handleCheckboxChange(checked, option.value)
+                          }
+                        />
+                        <Label htmlFor={option.id}>{option.text}</Label>
+                      </div>
+                    ))}
+                    {error && (
+                      <span className="text-sm text-red-500 block m-2">
+                        {error.message}
+                      </span>
+                    )}
+                  </>
+                );
+              }}
+            />
+          )}
+
+          {/* Match Type */}
+          {currentQuestion.type === "match" &&
+            currentQuestion.options.map((option) => (
+              <Controller
+                key={option.id}
+                name={`answers.${currentQuestion.id}.${option.id}`}
+                control={control}
+                rules={{ required: "Please select a match" }}
+                render={({ field, fieldState: { error } }) => (
+                  <div className="py-4 border-t border-slate-200 flex flex-col last:border-b">
+                    <div className="flex justify-between items-center">
+                      <p className="text-slate-700 text-base font-medium">
+                        {option.text}
+                      </p>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select matching" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {option.ansOptions.map((ansOption) => (
+                              <SelectItem
+                                key={ansOption.id}
+                                value={ansOption.value}
+                              >
+                                {ansOption.text}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {error && (
+                      <span className="text-sm text-red-500 block mt-2">
+                        {error.message}
+                      </span>
+                    )}
+                  </div>
+                )}
+              />
+            ))}
+        </div>
+
+        {/* Navigation buttons */}
+        <div className="flex justify-between">
+          <Button
+            type="button"
+            onClick={handlePrevious}
+            disabled={currentIndex === 0}
+            variant="outline"
+          >
+            <ChevronLeft className="size-5 mr-2" />
+            Previous
           </Button>
-        ) : (
-          <Button type="submit" variant="secondary">
-            Submit Quiz
-          </Button>
-        )}
-      </div>
-    </form>
+
+          {currentIndex < quizResponse.questions.length - 1 ? (
+            <Button type="button" variant="secondary" onClick={handleNext}>
+              Next
+              <ChevronRight className="size-5 ml-2" />
+            </Button>
+          ) : (
+            <Button type="submit" variant="secondary">
+              Submit Quiz
+            </Button>
+          )}
+        </div>
+      </form>
+      <QuizResult open={showResult} setOpen={setShowResult} />
+    </>
   );
 }
