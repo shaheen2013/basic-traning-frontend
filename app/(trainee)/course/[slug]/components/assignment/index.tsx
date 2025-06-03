@@ -1,5 +1,13 @@
 "use client";
 
+// Import FilePond styles
+import "filepond/dist/filepond.min.css";
+
+// Import React FilePond
+import { FilePond, registerPlugin } from "react-filepond";
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { ChevronRight, QuestionCircle, Timer } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +29,13 @@ const assignMentResponse = {
     "Mount Everest is considered one of the most challenging natural wonders on Earth. Describe what makes it so significant and what challenges climbers face when attempting to summit it.",
 };
 
+// Register the plugins
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+
 export default function Assignment() {
+  const [files, setFiles] = useState([]);
+
+  console.log({ files });
   const [assignmentTimer, setAssignmentTimer] = useState<number | null>(null);
 
   const { handleSubmit, control } = useForm({
@@ -85,6 +99,19 @@ export default function Assignment() {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-4 py-4 border-t border-slate-200">
+        <div className="flex flex-col gap-2">
+          <Label>Upload file</Label>
+          <FilePond
+            files={files}
+            onupdatefiles={setFiles}
+            name="files"
+            allowMultiple={false}
+            maxFiles={1}
+            acceptedFileTypes={["application/pdf"]}
+            labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+          />
+        </div>
+
         <div className="flex flex-col gap-2">
           <Label>Link(Optional)</Label>
           <Controller
