@@ -1,8 +1,10 @@
 "use client";
 
-import { QuestionCircle, Timer } from "@/components/icons";
+import { ChevronRight, QuestionCircle, Timer } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -110,10 +112,23 @@ export default function Assignment() {
             )}
           />
         </div>
+        <div className="flex flex-col gap-2 col-span-full">
+          <Label htmlFor="note">Note</Label>
+          <Textarea
+            id="note"
+            placeholder="Enter note"
+            className="col-span-full min-h-40"
+          />
+        </div>
       </div>
 
       {/* Navigation buttons */}
-      <div className="flex justify-between"></div>
+      <div className="flex justify-end mt-10">
+        <Button type="submit" variant="secondary">
+          Submit
+          <ChevronRight className="size-5" />
+        </Button>
+      </div>
     </form>
   );
 }
