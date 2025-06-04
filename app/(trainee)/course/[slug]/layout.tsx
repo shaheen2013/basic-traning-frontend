@@ -40,7 +40,7 @@ export default function CourseLayout({
   return (
     <div className="container flex gap-6 min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)] my-4 lg:my-6">
       {/* Sidebar */}
-      <aside className="hidden xl:block w-full max-w-[400px] bg-slate-50 border border-slate-200 rounded-2xl">
+      <aside className="hidden xl:block w-full max-w-[400px] bg-slate-50 border border-slate-200 rounded-2xl h-fit">
         <div className="flex flex-col gap-4 lg:gap-6">
           <header className="p-4 lg:p-6 bg-slate-200 rounded-t-2xl flex justify-between items-center">
             <h3 className="font-semibold text-2xl text-primary">
@@ -61,7 +61,7 @@ export default function CourseLayout({
           </div>
 
           {/* Weeks and Days Accordion */}
-          <div className="overflow-y-auto lg:max-h-[calc(100vh-350px)]">
+          <div className="overflow-y-auto lg:max-h-[calc(100vh-350px)] lg-4 lg:pb-6">
             <Accordion type="single" collapsible defaultValue={currentWeek}>
               <div className="px-4 lg:px-6 flex flex-col gap-2">
                 {courseData.weeks.map((week) => (
