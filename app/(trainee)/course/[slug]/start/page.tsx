@@ -294,14 +294,14 @@ export default function StartQuiz() {
             disabled={currentIndex === 0}
             variant="outline"
           >
-            <ChevronLeft className="size-5 mr-2" />
+            <ChevronLeft className="size-5" />
             Previous
           </Button>
 
           {currentIndex < quizResponse.questions.length - 1 ? (
             <Button type="button" variant="secondary" onClick={handleNext}>
               Next
-              <ChevronRight className="size-5 ml-2" />
+              <ChevronRight className="size-5" />
             </Button>
           ) : (
             <Button type="submit" variant="secondary">
