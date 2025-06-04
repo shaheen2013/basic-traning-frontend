@@ -71,7 +71,7 @@ export const courseData = {
   ],
 };
 
-export const type = "assignment";
+export const type = "preview";
 
 export const testData = {
   quizId: "lesson-101-quiz",
@@ -102,6 +102,53 @@ export const testData = {
       ],
       correctAnswers: ["a", "b", "d"],
       durationInSeconds: 45,
+    },
+  ],
+};
+
+export const previewData = {
+  title: "Your are almost Done!",
+  description:
+    "Before starting your final test, we noticed that you haven't completed or passed some required modules. To ensure the best outcome, we recommend reviewing them first.",
+  modules: [
+    {
+      week: "Week1 - Systems",
+      day: "Day 1",
+      duration: "2 h 8m",
+      completion: "1/3",
+      quizzes: [
+        {
+          name: "Quiz 1",
+          score: "2.5/11",
+          action: "/module-link",
+        },
+      ],
+    },
+    {
+      week: "Week 3 - Health Insurance",
+      day: "Day 6",
+      duration: "2 h 8m",
+      completion: "1/3",
+      quizzes: [
+        {
+          name: "Quiz 1",
+          score: "2.5/11",
+          action: "/module-link",
+        },
+      ],
+    },
+    {
+      week: "Week 6 - Auto Insurance",
+      day: "Day 1",
+      duration: "2 h 8m",
+      completion: "1/3",
+      quizzes: [
+        {
+          name: "Quiz 1",
+          score: "2.5/11",
+          action: "/module-link",
+        },
+      ],
     },
   ],
 };
