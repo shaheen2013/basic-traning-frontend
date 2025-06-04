@@ -5,7 +5,12 @@ import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { ChevronRight, QuestionCircle, Timer } from "@/components/icons";
+import {
+  ChevronRight,
+  Download,
+  QuestionCircle,
+  Timer,
+} from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import Image from "next/image";
 
 interface FormValues {
   answers: {
@@ -115,8 +121,23 @@ export default function Assignment() {
 
         <div className="flex flex-col gap-2">
           <Label>File</Label>
-          <div className="bg-white rounded-lg p-4 border border-slate-200">
-            {assignMentResponse.media.url}
+          <div className="bg-white rounded-lg p-4 border border-slate-200 flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <Image
+                src="/assets/icons/pdf.svg"
+                alt="pdf file"
+                width={40}
+                height={40}
+                className="size-10 object-cover object-center"
+              />
+              <div className="flex flex-col justify-between">
+                <h3 className="text-slate-700 text-sm font-semibold">
+                  Email.CSV
+                </h3>
+                <span className="text-slate-700 text-sm ">200 kB</span>
+              </div>
+            </div>
+            <Download className="size-5 text-slate-500" />
           </div>
         </div>
       </div>
@@ -173,7 +194,7 @@ export default function Assignment() {
               <Textarea
                 id="note"
                 placeholder="Enter note"
-                className="col-span-full min-h-40"
+                className="col-span-full min-h-40 rounded-lg"
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value || ""}
