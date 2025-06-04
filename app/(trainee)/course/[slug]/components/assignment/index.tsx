@@ -98,7 +98,7 @@ export default function Assignment() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-center mb-3 px-4 lg:px-6">
         <div className="flex gap-2 text-slate-600 items-center">
           <QuestionCircle className="size-5" />
           <h3 className="text-lg font-semibold">Assignment</h3>
@@ -111,10 +111,10 @@ export default function Assignment() {
         )}
       </div>
 
-      <p className="text-lg text-primary font-semibold mb-4">
+      <p className="text-lg text-primary font-semibold mb-4 px-4 lg:px-6">
         {assignMentResponse.title}
       </p>
-      <div className="py-4 border-t border-slate-200 flex flex-col gap-3">
+      <div className="py-4 border-t border-slate-200 flex flex-col gap-3 px-4 lg:px-6">
         <p className="text-slate-700 text-base font-medium">
           {assignMentResponse.description}
         </p>
@@ -142,7 +142,7 @@ export default function Assignment() {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-4 py-4 border-t border-slate-200">
+      <div className="grid lg:grid-cols-2 gap-4 py-4 border-t border-slate-200 px-4 lg:px-6">
         <div className="flex flex-col gap-2">
           <Label>Upload file</Label>
           <FilePond
@@ -204,7 +204,7 @@ export default function Assignment() {
         </div>
       </div>
 
-      <div className="flex justify-end mt-10">
+      <div className="flex justify-end mt-10 px-4 lg:px-6">
         <Button type="submit" variant="secondary">
           Submit
           <ChevronRight className="size-5" />

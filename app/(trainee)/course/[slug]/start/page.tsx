@@ -139,7 +139,7 @@ export default function StartQuiz() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex justify-between items-center mb-3 px-4 lg:px-6">
           <div className="flex gap-2 text-slate-600 items-center">
             <QuestionCircle className="size-5" />
             <h3 className="text-lg font-semibold">
@@ -154,7 +154,7 @@ export default function StartQuiz() {
           )}
         </div>
 
-        <p className="text-lg text-primary font-semibold mb-4">
+        <p className="text-lg text-primary font-semibold mb-4 px-4 lg:px-6">
           {currentQuestion.text}
         </p>
 
@@ -176,7 +176,7 @@ export default function StartQuiz() {
                     {currentQuestion.options.map((option) => (
                       <div
                         key={option.id}
-                        className="flex items-center gap-2 py-4 border-t border-slate-200 last:border-b"
+                        className="flex items-center gap-2 py-4 px-4 lg:px-6 border-t border-slate-200 last:border-b"
                       >
                         <RadioGroupItem value={option.value} id={option.id} />
                         <Label htmlFor={option.id}>{option.text}</Label>
@@ -217,7 +217,7 @@ export default function StartQuiz() {
                     {currentQuestion.options.map((option) => (
                       <div
                         key={option.id}
-                        className="flex items-center gap-2 py-4 border-t border-slate-200 last:border-b"
+                        className="flex items-center gap-2 py-4 px-4 lg:px-6 border-t border-slate-200 last:border-b"
                       >
                         <Checkbox
                           id={option.id}
@@ -249,7 +249,7 @@ export default function StartQuiz() {
                 control={control}
                 rules={{ required: "Please select a match" }}
                 render={({ field, fieldState: { error } }) => (
-                  <div className="py-4 border-t border-slate-200 flex flex-col last:border-b">
+                  <div className="py-4 px-4 lg:px-6 border-t border-slate-200 flex flex-col last:border-b">
                     <div className="flex justify-between items-center">
                       <p className="text-slate-700 text-base font-medium">
                         {option.text}
@@ -287,7 +287,7 @@ export default function StartQuiz() {
         </div>
 
         {/* Navigation buttons */}
-        <div className="flex justify-between">
+        <div className="flex justify-between px-4 lg:px-6">
           <Button
             type="button"
             onClick={handlePrevious}

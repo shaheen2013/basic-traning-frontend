@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Vedio = () => {
   return (
-    <div className="flex flex-col gap-4 lg:gap-6">
+    <div className="flex flex-col gap-4 lg:gap-6 px-4 lg:px-6">
       <Image
         src={`/assets/course-info/course-cover.png`}
         alt="course-cover"

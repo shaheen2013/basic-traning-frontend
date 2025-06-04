@@ -170,7 +170,7 @@ export default function CourseLayout({
           <h2 className="font-semibold text-lg lg:text-2xl capitalize text-primary">
             My Course
           </h2>
-          {/* Navigation buttons */}
+
           <div className="flex items-center justify-between gap-4 ">
             <Button
               type="button"
@@ -192,7 +192,7 @@ export default function CourseLayout({
             </Button>
           </div>
         </div>
-        <section className="bg-slate-50 p-4 lg:p-6">{children}</section>
+        <section className="bg-slate-50 py-4 lg:py-6">{children}</section>
       </main>
     </div>
   );
