@@ -25,7 +25,7 @@ import { useForm, Controller } from "react-hook-form";
 
 const quizResponse = {
   id: "1",
-  timeLimit: 6000,
+  timeLimit: 60,
   questions: [
     {
       id: "1",

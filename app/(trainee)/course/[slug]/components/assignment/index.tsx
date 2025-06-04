@@ -1,9 +1,6 @@
 "use client";
 
-// Import FilePond styles
 import "filepond/dist/filepond.min.css";
-
-// Import React FilePond
 import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
@@ -13,10 +10,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-
 import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+
+interface FormValues {
+  answers: {
+    files?: File[];
+    link?: string;
+    note?: string;
+  };
+}
 
 const assignMentResponse = {
   title: "Assignment 1",
@@ -29,25 +33,44 @@ const assignMentResponse = {
     "Mount Everest is considered one of the most challenging natural wonders on Earth. Describe what makes it so significant and what challenges climbers face when attempting to summit it.",
 };
 
-// Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 export default function Assignment() {
-  const [files, setFiles] = useState([]);
-
-  console.log({ files });
+  const [files, setFiles] = useState<File[]>([]);
   const [assignmentTimer, setAssignmentTimer] = useState<number | null>(null);
 
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, setValue } = useForm<FormValues>({
     defaultValues: {
-      answers: {},
+      answers: {
+        files: [],
+        link: "",
+        note: "",
+      },
     },
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    console.log("Submitted Answers:", data.answers);
+  const onSubmit = (data: FormValues) => {
+    const formData = new FormData();
+
+    // Append files if they exist
+    if (data.answers.files && data.answers.files.length > 0) {
+      data.answers.files.forEach((file) => {
+        formData.append("files", file);
+      });
+    }
+
+    // Append other fields
+    formData.append("link", data.answers.link || "");
+    formData.append("note", data.answers.note || "");
+
+    console.log("Form Data:", formData);
   };
+
+  useEffect(() => {
+    // Update form value when files change
+    setValue("answers.files", files);
+  }, [files, setValue]);
 
   useEffect(() => {
     if (assignMentResponse.duration) {
@@ -105,7 +128,6 @@ export default function Assignment() {
             files={files}
             onupdatefiles={setFiles}
             name="files"
-            allowMultiple={false}
             maxFiles={1}
             acceptedFileTypes={["application/pdf"]}
             labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
@@ -113,10 +135,10 @@ export default function Assignment() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label>Link(Optional)</Label>
+          <Label>Link (Optional)</Label>
           <Controller
             control={control}
-            name="link"
+            name="answers.link"
             rules={{
               pattern: {
                 value:
@@ -133,7 +155,7 @@ export default function Assignment() {
                 placeholder="Enter Assignment Link"
                 onChange={onChange}
                 onBlur={onBlur}
-                value={value}
+                value={value || ""}
                 errorText={error?.message}
               />
             )}
@@ -141,15 +163,26 @@ export default function Assignment() {
         </div>
         <div className="flex flex-col gap-2 col-span-full">
           <Label htmlFor="note">Note</Label>
-          <Textarea
-            id="note"
-            placeholder="Enter note"
-            className="col-span-full min-h-40"
+          <Controller
+            control={control}
+            name="answers.note"
+            render={({
+              field: { onChange, value, onBlur },
+              fieldState: { error },
+            }) => (
+              <Textarea
+                id="note"
+                placeholder="Enter note"
+                className="col-span-full min-h-40"
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value || ""}
+              />
+            )}
           />
         </div>
       </div>
 
-      {/* Navigation buttons */}
       <div className="flex justify-end mt-10">
         <Button type="submit" variant="secondary">
           Submit
