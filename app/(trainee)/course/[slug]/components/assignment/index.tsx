@@ -6,6 +6,7 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import {
+  ChevronLeft,
   ChevronRight,
   Download,
   QuestionCircle,
@@ -19,6 +20,7 @@ import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
+import Link from "next/link";
 
 interface FormValues {
   answers: {
@@ -97,119 +99,147 @@ export default function Assignment() {
   }, [handleSubmit]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex justify-between items-center mb-3 px-4 lg:px-6">
-        <div className="flex gap-2 text-slate-600 items-center">
-          <QuestionCircle className="size-5" />
-          <h3 className="text-lg font-semibold">Assignment</h3>
+    <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
+      <div className="p-4 lg:p-6 bg-slate-200 flex justify-between items-center">
+        <h2 className="font-semibold text-lg lg:text-2xl capitalize text-primary">
+          My Course
+        </h2>
+
+        <div className="flex items-center justify-between gap-4 ">
+          <Button
+            type="button"
+            variant="outline"
+            className="bg-transparent shadow-none hover:shadow-sm hover:bg-transparent"
+            asChild
+          >
+            <Link href="/course">
+              <ChevronLeft className="size-5" />
+              Previous
+            </Link>
+          </Button>
+
+          <Button type="button" variant="secondary" asChild>
+            <Link href="/course">
+              Next
+              <ChevronRight className="size-5" />
+            </Link>
+          </Button>
         </div>
-        {assignmentTimer !== null && (
-          <div className="flex gap-2 text-blue-500">
-            <Timer className="size-5" />
-            Time left {formatSecondsToReadableTime(assignmentTimer)}
-          </div>
-        )}
       </div>
-
-      <p className="text-lg text-primary font-semibold mb-4 px-4 lg:px-6">
-        {assignMentResponse.title}
-      </p>
-      <div className="py-4 border-t border-slate-200 flex flex-col gap-3 px-4 lg:px-6">
-        <p className="text-slate-700 text-base font-medium">
-          {assignMentResponse.description}
-        </p>
-
-        <div className="flex flex-col gap-2">
-          <Label>File</Label>
-          <div className="bg-white rounded-lg p-4 border border-slate-200 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <Image
-                src="/assets/icons/pdf.svg"
-                alt="pdf file"
-                width={40}
-                height={40}
-                className="size-10 object-cover object-center"
-              />
-              <div className="flex flex-col justify-between">
-                <h3 className="text-slate-700 text-sm font-semibold">
-                  Email.CSV
-                </h3>
-                <span className="text-slate-700 text-sm ">200 kB</span>
-              </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex justify-between items-center mb-3 px-4 lg:px-6">
+          <div className="flex gap-2 text-slate-600 items-center">
+            <QuestionCircle className="size-5" />
+            <h3 className="text-lg font-semibold">Assignment</h3>
+          </div>
+          {assignmentTimer !== null && (
+            <div className="flex gap-2 text-blue-500">
+              <Timer className="size-5" />
+              Time left {formatSecondsToReadableTime(assignmentTimer)}
             </div>
-            <Download className="size-5 text-slate-500" />
+          )}
+        </div>
+
+        <p className="text-lg text-primary font-semibold mb-4 px-4 lg:px-6">
+          {assignMentResponse.title}
+        </p>
+        <div className="py-4 border-t border-slate-200 flex flex-col gap-3 px-4 lg:px-6">
+          <p className="text-slate-700 text-base font-medium">
+            {assignMentResponse.description}
+          </p>
+
+          <div className="flex flex-col gap-2">
+            <Label>File</Label>
+            <div className="bg-white rounded-lg p-4 border border-slate-200 flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <Image
+                  src="/assets/icons/pdf.svg"
+                  alt="pdf file"
+                  width={40}
+                  height={40}
+                  className="size-10 object-cover object-center"
+                />
+                <div className="flex flex-col justify-between">
+                  <h3 className="text-slate-700 text-sm font-semibold">
+                    Email.CSV
+                  </h3>
+                  <span className="text-slate-700 text-sm ">200 kB</span>
+                </div>
+              </div>
+              <Download className="size-5 text-slate-500" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="grid lg:grid-cols-2 gap-4 py-4 border-t border-slate-200 px-4 lg:px-6">
-        <div className="flex flex-col gap-2">
-          <Label>Upload file</Label>
-          <FilePond
-            files={files}
-            onupdatefiles={setFiles}
-            name="files"
-            maxFiles={1}
-            acceptedFileTypes={["application/pdf"]}
-            labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-          />
+        <div className="grid lg:grid-cols-2 gap-4 py-4 border-t border-slate-200 px-4 lg:px-6">
+          <div className="flex flex-col gap-2">
+            <Label>Upload file</Label>
+            <FilePond
+              files={files}
+              onupdatefiles={setFiles}
+              name="files"
+              maxFiles={1}
+              acceptedFileTypes={["application/pdf"]}
+              labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label>Link (Optional)</Label>
+            <Controller
+              control={control}
+              name="answers.link"
+              rules={{
+                pattern: {
+                  value:
+                    /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/,
+                  message: "Invalid Link",
+                },
+              }}
+              render={({
+                field: { onChange, value, onBlur },
+                fieldState: { error },
+              }) => (
+                <Input
+                  classes={{ input: "bg-white" }}
+                  placeholder="Enter Assignment Link"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value || ""}
+                  errorText={error?.message}
+                />
+              )}
+            />
+          </div>
+          <div className="flex flex-col gap-2 col-span-full">
+            <Label htmlFor="note">Note</Label>
+            <Controller
+              control={control}
+              name="answers.note"
+              render={({
+                field: { onChange, value, onBlur },
+                fieldState: { error },
+              }) => (
+                <Textarea
+                  id="note"
+                  placeholder="Enter note"
+                  className="col-span-full min-h-40 rounded-lg"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value || ""}
+                />
+              )}
+            />
+          </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Label>Link (Optional)</Label>
-          <Controller
-            control={control}
-            name="answers.link"
-            rules={{
-              pattern: {
-                value:
-                  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/,
-                message: "Invalid Link",
-              },
-            }}
-            render={({
-              field: { onChange, value, onBlur },
-              fieldState: { error },
-            }) => (
-              <Input
-                classes={{ input: "bg-white" }}
-                placeholder="Enter Assignment Link"
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value || ""}
-                errorText={error?.message}
-              />
-            )}
-          />
+        <div className="flex justify-end mt-10 px-4 lg:px-6">
+          <Button type="submit" variant="secondary">
+            Submit
+            <ChevronRight className="size-5" />
+          </Button>
         </div>
-        <div className="flex flex-col gap-2 col-span-full">
-          <Label htmlFor="note">Note</Label>
-          <Controller
-            control={control}
-            name="answers.note"
-            render={({
-              field: { onChange, value, onBlur },
-              fieldState: { error },
-            }) => (
-              <Textarea
-                id="note"
-                placeholder="Enter note"
-                className="col-span-full min-h-40 rounded-lg"
-                onChange={onChange}
-                onBlur={onBlur}
-                value={value || ""}
-              />
-            )}
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-end mt-10 px-4 lg:px-6">
-        <Button type="submit" variant="secondary">
-          Submit
-          <ChevronRight className="size-5" />
-        </Button>
-      </div>
-    </form>
+      </form>
+    </section>
   );
 }

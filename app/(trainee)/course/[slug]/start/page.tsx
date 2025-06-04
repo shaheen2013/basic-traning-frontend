@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatSecondsToReadableTime } from "@/lib/utils";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 
@@ -137,7 +138,12 @@ export default function StartQuiz() {
   }, [handleSubmit]);
 
   return (
-    <>
+    <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
+      <div className="p-4 lg:p-6 bg-slate-200 flex justify-between items-center">
+        <h2 className="font-semibold text-lg lg:text-2xl capitalize text-primary">
+          My Course
+        </h2>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex justify-between items-center mb-3 px-4 lg:px-6">
           <div className="flex gap-2 text-slate-600 items-center">
@@ -311,6 +317,6 @@ export default function StartQuiz() {
         </div>
       </form>
       <QuizResult open={showResult} setOpen={setShowResult} />
-    </>
+    </section>
   );
 }

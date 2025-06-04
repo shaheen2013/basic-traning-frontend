@@ -166,33 +166,7 @@ export default function CourseLayout({
 
       {/* Main Content */}
       <main className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow h-fit">
-        <div className="p-4 lg:p-6 bg-slate-200 flex justify-between items-center">
-          <h2 className="font-semibold text-lg lg:text-2xl capitalize text-primary">
-            My Course
-          </h2>
-
-          <div className="flex items-center justify-between gap-4 ">
-            <Button
-              type="button"
-              variant="outline"
-              className="bg-transparent shadow-none hover:shadow-sm hover:bg-transparent"
-              asChild
-            >
-              <Link href="/course">
-                <ChevronLeft className="size-5" />
-                Previous
-              </Link>
-            </Button>
-
-            <Button type="button" variant="secondary" asChild>
-              <Link href="/course">
-                Next
-                <ChevronRight className="size-5" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-        <section className="bg-slate-50 py-4 lg:py-6">{children}</section>
+        {children}
       </main>
     </div>
   );
