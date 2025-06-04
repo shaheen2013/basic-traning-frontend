@@ -11,7 +11,7 @@ const Vedio = () => {
           My Course
         </h2>
 
-        <div className="flex items-center justify-between gap-4 ">
+        <div className="flex items-center justify-between gap-2 lg:gap-4">
           <Button
             type="button"
             variant="outline"

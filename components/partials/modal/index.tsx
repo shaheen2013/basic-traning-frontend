@@ -9,10 +9,16 @@ interface ModalProps {
   children?: React.ReactNode;
   classes?: {
     dialogContent?: string;
+    drawerContent?: string;
   };
 }
 
-export default function Modal({ open, children, onOpenChange, classes }: ModalProps) {
+export default function Modal({
+  open,
+  children,
+  onOpenChange,
+  classes,
+}: ModalProps) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
@@ -31,7 +37,10 @@ export default function Modal({ open, children, onOpenChange, classes }: ModalPr
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="p-6 md:p-10" aria-describedby={undefined}>
+      <DrawerContent
+        className={cn("p-6 md:p-10", classes?.drawerContent)}
+        aria-describedby={undefined}
+      >
         <DialogTitle className="sr-only"></DialogTitle>
         {children}
       </DrawerContent>
