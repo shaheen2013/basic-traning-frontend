@@ -5,14 +5,14 @@ import { ArrowUpRight } from "@/components/icons";
 const Hero = () => {
   return (
     <div
-      className="w-full h-dvh"
+      className="w-full min-h-dvh"
       style={{
         background: `linear-gradient(0deg, rgba(5, 6, 33, 0.50) 0%, rgba(5, 6, 33, 0.50) 100%), url(${"/assets/landing-page/background-image.png"}) lightgray 50% / cover no-repeat`,
       }}
     >
       <Header />
-      <div className="container flex flex-col gap-12 items-start justify-end pb-10 lg:pb-40 h-[calc(100dvh-120px)]">
-        <div className="flex flex-col gap-6 max-w-[1098px]">
+      <div className="container flex flex-col gap-12 items-start justify-end pb-10 lg:pb-40 min-h-[calc(100dvh-120px)]">
+        <div className="flex flex-col gap-4 lg:gap-6 max-w-[1098px]">
           <p className="text-3xl font-medium text-slate-50">
             Start training for <span className="font-bold">$549</span>
           </p>
