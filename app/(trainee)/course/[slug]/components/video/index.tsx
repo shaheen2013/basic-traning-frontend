@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-const Vedio = () => {
+const Video = () => {
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
       <div className="p-4 lg:p-6 bg-slate-200 flex justify-between items-center">
@@ -57,4 +57,4 @@ const Vedio = () => {
   );
 };
 
-export default Vedio;
+export default Video;

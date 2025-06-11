@@ -1,10 +1,10 @@
-import { Assignment, LiveClass, Preview, Quiz, Vedio } from "./components";
+import { Assignment, LiveClass, Preview, Quiz, Video } from "./components";
 import { type } from "./constant";
 
 const Course = () => {
   return (
     <>
-      {type === "video" && <Vedio />}
+      {type === "video" && <Video />}
       {type === "live-class" && <LiveClass />}
       {type === "quiz" && <Quiz />}
       {type === "assignment" && <Assignment />}
