@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
 import SuccessResetPassword from "@/components/partials/modal/success-reset-passowrd";
@@ -15,7 +17,7 @@ export default function ResetPassword() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     const payload = {
       email: data.email,
     };

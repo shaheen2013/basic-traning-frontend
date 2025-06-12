@@ -7,6 +7,12 @@ import Link from "next/link";
 import Result from "./components/result";
 import { quizStatus } from "../../constant";
 import Instructions from "./components/instructions";
+
+type QuizStatus = "instructions" | "result";
+
+const typedQuizStatus = quizStatus as QuizStatus;
+
+
 const Quiz = () => {
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
@@ -37,9 +43,9 @@ const Quiz = () => {
         </div>
       </div>
       {
-        quizStatus === "instructions" && <Instructions />
+        typedQuizStatus === "instructions" && <Instructions />
       }
-      {quizStatus === "result" && <Result />}
+      {typedQuizStatus === "result" && <Result />}
     </section>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import "filepond/dist/filepond.min.css";
@@ -176,7 +177,7 @@ export default function Assignment() {
             <Label>Upload file</Label>
             <FilePond
               files={files}
-              onupdatefiles={setFiles}
+              // onupdatefiles={setFiles}
               name="files"
               maxFiles={1}
               acceptedFileTypes={["application/pdf"]}

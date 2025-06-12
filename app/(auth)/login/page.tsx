@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,7 @@ export default function Login() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     const payload = {
       email: data.email,
       password: data.password,

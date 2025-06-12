@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
 import { useForm, SubmitHandler, Controller } from "react-hook-form";

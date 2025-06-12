@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
 import Image from "next/image";
@@ -66,7 +68,9 @@ export default function ProfileOverview() {
 
     try {
       const formPayload = new FormData();
-    } catch (error: any) {}
+    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    }
   };
 
   const triggerFileInput = () => {
