@@ -78,7 +78,7 @@ const Dashboard = () => {
             Systems
           </h3>
           <Button variant="secondary" asChild>
-            <Link href="/course">
+            <Link href="/course/1-1-1-welcome-and-introduction">
               Continue Course
               <ChevronRight className="size-5 text-white" />
             </Link>
