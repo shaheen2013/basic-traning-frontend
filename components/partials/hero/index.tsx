@@ -11,7 +11,7 @@ const Hero = () => {
       }}
     >
       <Header />
-      <div className="container flex flex-col gap-12 items-start justify-end pb-10 lg:pb-40 min-h-[calc(100dvh-120px)]">
+      <div className="container flex flex-col gap-12 items-start justify-end py-10 lg:py-20 min-h-[calc(100dvh-120px)]">
         <div className="flex flex-col gap-4 lg:gap-6 max-w-[1098px]">
           <p className="text-3xl font-medium text-slate-50">
             Start training for <span className="font-bold">$549</span>
