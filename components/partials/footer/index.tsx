@@ -48,7 +48,7 @@ const Footer = () => {
                 smooth={true}
                 duration={500}
                 spy
-                className="text-xl font-semibold text-white cursor-pointer"
+                className="text-base lg:text-xl font-normal lg:font-semibold text-white cursor-pointer"
               >
                 Faq
               </LinkScroll>
@@ -56,7 +56,7 @@ const Footer = () => {
               <Link
                 key="faq"
                 href="/#faq"
-                className="text-xl font-semibold text-white"
+                className="text-base lg:text-xl font-normal lg:font-semibold text-white cursor-pointer"
               >
                 Faq
               </Link>
@@ -66,7 +66,7 @@ const Footer = () => {
               smooth={true}
               duration={500}
               spy
-              className="text-xl font-semibold text-white cursor-pointer"
+              className="text-base lg:text-xl font-normal lg:font-semibold text-white cursor-pointer"
             >
               Reviews
             </LinkScroll>

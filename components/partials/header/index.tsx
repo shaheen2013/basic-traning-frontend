@@ -116,6 +116,26 @@ const Header = ({ className }: { className?: string }) => {
                     {menu.label}
                   </Link>
                 ))}
+                {isHomePage ? (
+                  <LinkScroll
+                    onClick={() => setOpen(!open)}
+                    to="faq"
+                    smooth={true}
+                    duration={500}
+                    spy
+                    className="text-base font-medium text-slate-900 py-3 px-5 w-full border-b border-slate-200"
+                  >
+                    Faq
+                  </LinkScroll>
+                ) : (
+                  <Link
+                    key="faq"
+                    href="/#faq"
+                    className="text-base font-medium text-slate-900 py-3 px-5 w-full border-b border-slate-200"
+                  >
+                    Faq
+                  </Link>
+                )}
 
                 <TrainingSlot>
                   <Button
