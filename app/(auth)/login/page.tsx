@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input, InputPassword } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLoginMutation } from "@/features/auth/authApi";
 import Link from "next/link";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function Login() {
+  const [login] = useLoginMutation();
   const { handleSubmit, control } = useForm({
     defaultValues: {
       email: "",
@@ -20,7 +22,8 @@ export default function Login() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
+    // eslint-disable-line @typescript-eslint/no-explicit-any
     const payload = {
       email: data.email,
       password: data.password,
@@ -28,6 +31,7 @@ export default function Login() {
     };
 
     try {
+      const response: any = await login(payload).unwrap();
     } catch (error) {}
   };
 
