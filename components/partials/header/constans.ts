@@ -5,12 +5,8 @@ export const menus = [
   },
   {
     label: "Upcoming Classes",
-    href: "/upcoming-classes",
-  },
-  {
-    label: "FAQ",
-    href: "/faq",
-  },
+    href: "/course-info",
+  }
 ];
 
 export const courseMenus = [

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Link as LinkScroll } from 'react-scroll';
 import { menus } from "./constans";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -33,6 +34,7 @@ const Header = ({ className }: { className?: string }) => {
         </div>
         <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-12">
           {menus.map((menu) => (
+
             <Link
               key={menu.href}
               href={menu.href}
@@ -41,6 +43,15 @@ const Header = ({ className }: { className?: string }) => {
               {menu.label}
             </Link>
           ))}
+          <LinkScroll
+            to='faq'
+            smooth={true}
+            duration={500}
+            offset={-150}
+            spy
+          >
+            faq
+          </LinkScroll>
         </div>
         <>
           <div className="flex gap-3 items-center">
