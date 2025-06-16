@@ -1,5 +1,6 @@
 import { ArrowUpRight, Four, One, Three, Two } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import TrainingSlot from "../modal/training-slot";
 
 const HowWorks = () => {
   return (
@@ -25,10 +26,12 @@ const HowWorks = () => {
             </p>
           </div>
 
-          <Button className="w-fit has-[>svg]:px-0" variant="link" size="2xl">
-            Get Started
-            <ArrowUpRight className="ml-3 size-6" />
-          </Button>
+          <TrainingSlot className="justify-start">
+            <Button className="w-fit has-[>svg]:px-0" variant="link" size="2xl">
+              Get Started
+              <ArrowUpRight className="ml-3 size-6" />
+            </Button>
+          </TrainingSlot>
         </div>
         <div className="flex flex-col gap-8 lg:gap-12 border-t lg:border-none border-slate-500 group py-8 lg:py-16 hover:shadow-sm transition-shadow rounded-sm duration-50 px-4">
           <Two className="w-9 lg:w-[60px] h-16 lg:h-[104px] text-slate-700 group-active:text-blue-600 group-hover:text-blue-600 fill-white group-active:fill-current group-hover:fill-current transition-colors duration-50" />

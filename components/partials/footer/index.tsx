@@ -1,9 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { menus } from "../header/constans";
 import { Facebook, Instagram, Linkedin, X, Youtube } from "@/components/icons";
+import { usePathname } from "next/navigation";
+import { Link as LinkScroll } from "react-scroll";
 
 const Footer = () => {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   return (
     <footer className="bg-gray-800 py-6 lg:py-16 font-neue-haas-display">
       <div className="container flex flex-col gap-8 lg:gap-12">
@@ -35,6 +41,35 @@ const Footer = () => {
                 {menu.label}
               </Link>
             ))}
+
+            {isHomePage ? (
+              <LinkScroll
+                to="faq"
+                smooth={true}
+                duration={500}
+                spy
+                className="text-xl font-semibold text-white cursor-pointer"
+              >
+                Faq
+              </LinkScroll>
+            ) : (
+              <Link
+                key="faq"
+                href="/#faq"
+                className="text-xl font-semibold text-white"
+              >
+                Faq
+              </Link>
+            )}
+            <LinkScroll
+              to="reviews"
+              smooth={true}
+              duration={500}
+              spy
+              className="text-xl font-semibold text-white cursor-pointer"
+            >
+              Reviews
+            </LinkScroll>
           </div>
           <div className="flex gap-4 items-center lg:justify-end">
             <Youtube className="text-white size-6" />

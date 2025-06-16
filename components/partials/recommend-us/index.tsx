@@ -13,7 +13,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 const RecommendUs = () => {
   return (
-    <section className="py-12 lg:py-32 bg-slate-50 ">
+    <section id="reviews" className="py-12 lg:py-32 bg-slate-50 ">
       <div className="container flex justify-center flex-col gap-y-8 lg:gap-y-24">
         <h3 className="text-3xl lg:text-7xl font-semibold text-primary text-center">
           Our user{" "}
