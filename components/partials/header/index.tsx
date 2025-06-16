@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Link as LinkScroll } from 'react-scroll';
+import { Link as LinkScroll } from "react-scroll";
 import { menus } from "./constans";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -9,9 +9,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Dismiss, Hamburger } from "@/components/icons";
 import { useState } from "react";
 import TrainingSlot from "../modal/training-slot";
+import { usePathname } from "next/navigation";
 
 const Header = ({ className }: { className?: string }) => {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const isHomePage = pathname === "/";
+
   return (
     <div className={cn(className, open && "bg-primary")}>
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
@@ -34,7 +38,6 @@ const Header = ({ className }: { className?: string }) => {
         </div>
         <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-12">
           {menus.map((menu) => (
-
             <Link
               key={menu.href}
               href={menu.href}
@@ -43,15 +46,25 @@ const Header = ({ className }: { className?: string }) => {
               {menu.label}
             </Link>
           ))}
-          <LinkScroll
-            to='faq'
-            smooth={true}
-            duration={500}
-            offset={-150}
-            spy
-          >
-            faq
-          </LinkScroll>
+          {isHomePage ? (
+            <LinkScroll
+              to="faq"
+              smooth={true}
+              duration={500}
+              spy
+              className="text-xl font-semibold text-white cursor-pointer"
+            >
+              Faq
+            </LinkScroll>
+          ) : (
+            <Link
+              key="faq"
+              href="/#faq"
+              className="text-xl font-semibold text-white"
+            >
+              Faq
+            </Link>
+          )}
         </div>
         <>
           <div className="flex gap-3 items-center">

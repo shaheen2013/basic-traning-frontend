@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Header from "../header";
 import { ArrowUpRight } from "@/components/icons";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -11,7 +12,7 @@ const Hero = () => {
       }}
     >
       <Header />
-      
+
       <div className="container flex flex-col gap-12 items-start justify-end py-10 lg:py-20 min-h-[calc(100dvh-120px)]">
         <div className="flex flex-col gap-4 lg:gap-6 max-w-[1098px]">
           <p className="text-3xl font-medium text-slate-50">
@@ -32,9 +33,12 @@ const Hero = () => {
           variant="outline"
           className="border border-slate-200 text-white rounded-full w-full lg:w-fit"
           size="2xl"
+          asChild
         >
-          Upcoming Sessions
-          <ArrowUpRight className="ml-3 text-white" />
+          <Link href="/course-info">
+            Upcoming Sessions
+            <ArrowUpRight className="ml-3 text-white" />
+          </Link>
         </Button>
       </div>
     </div>
