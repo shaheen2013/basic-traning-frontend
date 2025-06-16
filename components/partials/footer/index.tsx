@@ -14,7 +14,7 @@ const Footer = () => {
     <footer className="bg-gray-800 py-6 lg:py-16 font-neue-haas-display">
       <div className="container flex flex-col gap-8 lg:gap-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="flex flex-col gap-1 cursor-pointer">
+          <div className="order-1 flex flex-col gap-1 cursor-pointer">
             <div className="flex gap-1.6 lg:gap-2 items-center">
               <Image
                 src="/logo.png"
@@ -31,7 +31,7 @@ const Footer = () => {
               By Trophy Club Consulting
             </p>
           </div>
-          <div className="flex items-center lg:justify-center gap-8">
+          <div className="order-3 lg:order-2 flex items-center lg:justify-center gap-8">
             {menus.map((menu) => (
               <Link
                 key={menu.href}
@@ -71,7 +71,7 @@ const Footer = () => {
               Reviews
             </LinkScroll>
           </div>
-          <div className="flex gap-4 items-center lg:justify-end">
+          <div className="order-2 lg:order-3 flex gap-4 items-center lg:justify-end">
             <Youtube className="text-white size-6" />
             <Facebook className="text-white size-6" />
             <X className="text-white size-6" />
