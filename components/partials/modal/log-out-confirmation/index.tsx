@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -5,9 +6,25 @@ import Modal from "..";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Logout } from "@/components/icons";
+import { useLogoutMutation } from "@/features/auth/authApi";
+import { removeToken } from "@/services/storage/authStorage";
+import { useRouter } from "next/navigation";
 
 const LogOutConfirmation = () => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const [logout, { isLoading }] = useLogoutMutation();
+
+  const handleLogOut = async () => {
+    try {
+      await logout({}).unwrap();
+      removeToken();
+      router.push("/login");
+      setOpen(false);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -47,7 +64,8 @@ const LogOutConfirmation = () => {
               Cancel
             </Button>
             <Button
-              type="submit"
+              onClick={handleLogOut}
+              disabled={isLoading}
               className="rounded-full w-1/2"
               variant="secondary"
             >

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -7,32 +6,55 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input, InputPassword } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLoginMutation } from "@/features/auth/authApi";
+import { setToken } from "@/services/storage/authStorage";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function Login() {
-  const [login] = useLoginMutation();
-  const { handleSubmit, control } = useForm({
+  const router = useRouter();
+  const [login, { isLoading }] = useLoginMutation();
+  const { handleSubmit, control, setError } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "test@example.com",
+      password: "password",
       remember: false,
     },
     mode: "onChange",
   });
 
   const onSubmit = async (data: any) => {
-    // eslint-disable-line @typescript-eslint/no-explicit-any
     const payload = {
       email: data.email,
       password: data.password,
       remember: data.remember,
     };
-
     try {
       const response: any = await login(payload).unwrap();
-    } catch (error) {}
+      if (response.success) {
+        setToken(response.data.access_token);
+        router.push("/dashboard");
+      }
+    } catch (error: any) {
+      const errors = error?.data?.errors;
+
+      if (!errors) return;
+
+      if (errors.email?.length) {
+        setError("email", {
+          type: "manual",
+          message: errors.email.join(", "),
+        });
+      }
+
+      if (errors.password?.length) {
+        setError("password", {
+          type: "manual",
+          message: errors.password.join(", "),
+        });
+      }
+    }
   };
 
   return (
@@ -140,7 +162,12 @@ export default function Login() {
             </div>
 
             {/* submit */}
-            <Button className="w-full rounded-full" size="2xl" type="submit">
+            <Button
+              className="w-full rounded-full"
+              size="2xl"
+              type="submit"
+              disabled={isLoading}
+            >
               Login
             </Button>
           </form>
