@@ -4,6 +4,7 @@ export const meApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getMe: builder.query({
       query: () => "user",
+      providesTags: ["Me"],
     }),
     updateProfile: builder.mutation({
       query: (body) => ({
@@ -11,6 +12,7 @@ export const meApi = baseApi.injectEndpoints({
         method: "PATCH",
         body,
       }),
+      invalidatesTags: ["Me"],
     }),
     uploadAvatar: builder.mutation({
       query: (formData) => ({
@@ -18,6 +20,7 @@ export const meApi = baseApi.injectEndpoints({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["Me"],
     }),
   }),
 });
