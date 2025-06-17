@@ -93,13 +93,15 @@ const Header = () => {
           <PopoverTrigger asChild>
             <Button variant="ghost" size="2xl" className="text-white">
               <div className="flex items-center justify-center size-12 rounded-full">
-                <Image
-                  src={userData?.avatar}
-                  alt={userData?.name}
-                  width={48}
-                  height={48}
-                  className="size-full object-center object-contain rounded-full"
-                />
+                {userData?.avatar && (
+                  <Image
+                    src={userData?.avatar}
+                    alt={userData?.name}
+                    width={48}
+                    height={48}
+                    className="size-full object-center object-contain rounded-full"
+                  />
+                )}
               </div>
               My Account
             </Button>
@@ -110,13 +112,15 @@ const Header = () => {
           >
             <div className="flex gap-3 items-center mb-4">
               <div className="flex items-center justify-center size-12 rounded-full">
-                <Image
-                  src={userData?.avatar}
-                  alt={userData?.name}
-                  width={48}
-                  height={48}
-                  className="size-full object-center object-contain rounded-full"
-                />
+                {userData?.avatar && (
+                  <Image
+                    src={userData?.avatar}
+                    alt={userData?.name}
+                    width={48}
+                    height={48}
+                    className="size-full object-center object-contain rounded-full"
+                  />
+                )}
               </div>
               <div className="flex flex-col">
                 <h3 className="text-primary text-base font-semibold">

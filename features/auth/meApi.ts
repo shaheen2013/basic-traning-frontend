@@ -8,7 +8,7 @@ export const meApi = baseApi.injectEndpoints({
     updateProfile: builder.mutation({
       query: (body) => ({
         url: "user",
-        method: "POST",
+        method: "PATCH",
         body,
       }),
     }),
