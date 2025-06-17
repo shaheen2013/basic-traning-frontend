@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -9,6 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import LogOutConfirmation from "@/components/partials/modal/log-out-confirmation";
+import { useMe } from "@/services/hook";
 
 const icons = [
   {
@@ -54,6 +57,7 @@ const CoursMenusWithIcons = courseMenus.map((menu) => ({
 }));
 
 const Header = () => {
+  const { data: userData } = useMe({});
   return (
     <div className="bg-primary font-inter">
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
@@ -104,10 +108,10 @@ const Header = () => {
               </div>
               <div className="flex flex-col">
                 <h3 className="text-primary text-base font-semibold">
-                  Trainee Name
+                  {userData?.name}
                 </h3>
                 <span className="text-slate-700 text-sm fotn-normal">
-                  example@mail.com
+                  {userData?.email}
                 </span>
               </div>
             </div>

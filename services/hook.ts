@@ -1,1 +1,1 @@
-export { useGetSessionQuery as useAuthSession } from "@/features/auth/authApi";
+export { useGetMeQuery as useMe } from "@/features/auth/meApi";

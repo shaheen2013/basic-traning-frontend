@@ -4,10 +4,6 @@ import { baseApi } from "@/services/api/baseApi";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getSession: builder.query({
-      query: () => "auth/session",
-      providesTags: ["Me"],
-    }),
     login: builder.mutation({
       query: (credentials) => ({
         url: "/login",
@@ -26,5 +22,4 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useGetSessionQuery, useLogoutMutation } =
-  authApi;
+export const { useLoginMutation, useLogoutMutation } = authApi;

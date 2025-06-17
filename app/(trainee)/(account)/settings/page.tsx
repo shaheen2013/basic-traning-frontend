@@ -8,19 +8,21 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { courseMenus } from "@/components/partials/header/constans";
 import { usePathname } from "next/navigation";
+import { useChangePasswordMutation } from "@/features/auth/passwordApi";
 
 type FormValues = {
-  oldPassword: string;
+  current_password: string;
   newPassword: string;
   confirmPassword: string;
 };
 
 export default function AccountPassword() {
   const pathname = usePathname();
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
 
   const { handleSubmit, control, getValues } = useForm<FormValues>({
     defaultValues: {
-      oldPassword: "",
+      current_password: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -29,11 +31,16 @@ export default function AccountPassword() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const payload = {
-      current_password: data.oldPassword,
+      current_password: data.current_password,
       password: data.newPassword,
       password_confirmation: data.confirmPassword,
     };
     try {
+      const resposne = await changePassword(payload).unwrap();
+      if (resposne?.success) {
+        alert("Password changed successfully");
+      }
+      console.log("resposne", resposne);
     } catch (error) {}
   };
 
@@ -57,7 +64,7 @@ export default function AccountPassword() {
           <div className="mb-4">
             <Controller
               control={control}
-              name="oldPassword"
+              name="current_password"
               rules={{
                 required: "Old password is required",
                 minLength: { value: 8, message: "Minimum length is 8" },
@@ -67,13 +74,13 @@ export default function AccountPassword() {
                 fieldState: { error },
               }) => (
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="oldPassword">
+                  <Label htmlFor="current_password">
                     Current Password<span className="text-inherit">*</span>
                   </Label>
                   <InputPassword
-                    id="oldPassword"
+                    id="current_password"
                     className="bg-white"
-                    placeholder="Enter your old password"
+                    placeholder="Enter your current password"
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
@@ -153,6 +160,7 @@ export default function AccountPassword() {
           </div>
 
           <Button
+            disabled={isLoading}
             type="submit"
             variant="secondary"
             className="w-full lg:w-fit mt-4 mb-4 lg:mb-6"
