@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 "use client";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useForgotPasswordMutation } from "@/features/auth/passwordApi";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 
 export default function ForgetPassword() {
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   const { handleSubmit, control } = useForm({
     defaultValues: {
       email: "",
@@ -16,13 +16,18 @@ export default function ForgetPassword() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data: any ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-    const payload = {
-      email: data.email,
-    };
-
+  const onSubmit = async (data: { email: string }) => {
     try {
-    } catch (error) {}
+      const response = await forgotPassword({ email: data.email }).unwrap();
+      if (response?.success) {
+        // Handle success, e.g., show a success message or redirect
+        alert(response.message);
+      }
+    } catch (error) {
+      // Handle error, e.g., show an error message
+      const errorMessage = error?.data?.message || "An error occurred";
+      alert(errorMessage);
+    }
   };
 
   return (
@@ -76,7 +81,12 @@ export default function ForgetPassword() {
             </div>
 
             {/* submit */}
-            <Button className="w-full rounded-full" size="2xl" type="submit">
+            <Button
+              className="w-full rounded-full"
+              size="2xl"
+              disabled={isLoading}
+              type="submit"
+            >
               Send Verification Link
             </Button>
           </form>

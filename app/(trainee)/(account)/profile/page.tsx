@@ -4,10 +4,9 @@
 import Image from "next/image";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
-import { DeleteIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Upload } from "@/components/icons";
+import { Delete, Upload } from "@/components/icons";
 import { courseMenus } from "@/components/partials/header/constans";
 import { usePathname } from "next/navigation";
 import { useMe } from "@/services/hook";
@@ -20,6 +19,7 @@ import { toast } from "sonner";
 export default function ProfileOverview() {
   const pathname = usePathname();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  console.log("previewImage", previewImage);
   const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -87,9 +87,13 @@ export default function ProfileOverview() {
       fileInputRef.current.value = "";
     }
     try {
-      await uploadAvatar({
+      const response = await uploadAvatar({
         should_delete_avatar: true,
       }).unwrap();
+
+      if (response?.success) {
+        setPreviewImage(response?.data?.null_avatar_url || null);
+      }
     } catch (error: any) {
       const errors = error?.data?.errors;
 
@@ -180,16 +184,18 @@ export default function ProfileOverview() {
         <div className="lg:mb-12 mb-6">
           <div className="flex gap-6 items-end">
             {/* Image with subtle overlay on hover */}
-            <div className="relative group w-36 h-36 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200">
+            <div className="relative group w-36 h-36 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200">
               {previewImage &&
-                !previewImage.endsWith("avatars/default.png") && (
+                previewImage.includes(
+                  process.env.NEXT_PUBLIC_API_BASE_URL ?? ""
+                ) && (
                   <button
                     onClick={handleDeletePreviewImage}
                     type="button"
                     title="Delete image"
-                    className="absolute top-2 right-2 z-10 p-1.5 bg-red-500 rounded-full shadow-md hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100"
+                    className="cursor-pointer absolute top-2 right-2 z-10 p-1.5 bg-red-500 rounded-full shadow-md hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100"
                   >
-                    <DeleteIcon className="text-white w-4 h-4" />
+                    <Delete className="text-white w-4 h-4" />
                   </button>
                 )}
 

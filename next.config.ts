@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
       {
         hostname: "10.0.0.193",
       },
+      {
+        hostname: "ui-avatars.com",
+      },
+      {
+        hostname: "localhost",
+      },
     ],
   },
 };
