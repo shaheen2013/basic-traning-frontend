@@ -3,6 +3,7 @@ import React from "react";
 import "../globals.css";
 import { CourseHeader } from "@/components/partials";
 import ReduxProvider from "@/components/partials/provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const vollkorn = Vollkorn({
   variable: "--font-vollkorn",
@@ -39,6 +40,8 @@ export default function CourseLayout({ children }: React.PropsWithChildren) {
             </div>
           </footer>
         </ReduxProvider>
+        {/* Sonner Toaster for notifications */}
+        <Toaster />
       </body>
     </html>
   );

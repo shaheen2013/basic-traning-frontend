@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
@@ -9,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { courseMenus } from "@/components/partials/header/constans";
 import { usePathname } from "next/navigation";
 import { useChangePasswordMutation } from "@/features/auth/passwordApi";
+import { toast } from "sonner";
 
 type FormValues = {
   current_password: string;
@@ -20,14 +20,15 @@ export default function AccountPassword() {
   const pathname = usePathname();
   const [changePassword, { isLoading }] = useChangePasswordMutation();
 
-  const { handleSubmit, control, getValues } = useForm<FormValues>({
-    defaultValues: {
-      current_password: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-    mode: "onChange",
-  });
+  const { handleSubmit, control, getValues, setError, reset } =
+    useForm<FormValues>({
+      defaultValues: {
+        current_password: "",
+        newPassword: "",
+        confirmPassword: "",
+      },
+      mode: "onChange",
+    });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const payload = {
@@ -38,10 +39,36 @@ export default function AccountPassword() {
     try {
       const resposne = await changePassword(payload).unwrap();
       if (resposne?.success) {
-        alert("Password changed successfully");
+        toast.success(resposne?.message);
+        // Reset form values after successful password change
+        reset();
       }
-      console.log("resposne", resposne);
-    } catch (error) {}
+    } catch (error: any) {
+      const errors = error?.data?.errors;
+
+      if (!errors) return;
+
+      if (errors.current_password?.length) {
+        setError("current_password", {
+          type: "manual",
+          message: errors.current_password.join(", "),
+        });
+      }
+
+      if (errors.password?.length) {
+        setError("newPassword", {
+          type: "manual",
+          message: errors.password.join(", "),
+        });
+      }
+
+      if (errors.password_confirmation?.length) {
+        setError("confirmPassword", {
+          type: "manual",
+          message: errors.password_confirmation.join(", "),
+        });
+      }
+    }
   };
 
   return (
