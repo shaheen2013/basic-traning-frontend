@@ -14,6 +14,7 @@ const SuccessResetPassword = () => {
       open={open}
       onOpenChange={() => setOpen(false)}
       classes={{ dialogContent: "sm:max-w-[496px]" }}
+      aria-labelledby="success-reset-password-title"
     >
       <div className="flex flex-col gap-6 lg:gap-8">
         <Image
