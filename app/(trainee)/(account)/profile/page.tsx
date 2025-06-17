@@ -11,7 +11,10 @@ import { Upload } from "@/components/icons";
 import { courseMenus } from "@/components/partials/header/constans";
 import { usePathname } from "next/navigation";
 import { useMe } from "@/services/hook";
-import { useUpdateProfileMutation } from "@/features/auth/meApi";
+import {
+  useUpdateProfileMutation,
+  useUploadAvatarMutation,
+} from "@/features/auth/meApi";
 import { toast } from "sonner";
 
 export default function ProfileOverview() {
@@ -22,14 +25,9 @@ export default function ProfileOverview() {
 
   const { data: userData } = useMe({});
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [uploadAvatar, { isLoading: isUploading }] = useUploadAvatarMutation();
 
   const { handleSubmit, control, reset, setError } = useForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-    },
     mode: "onChange",
   });
 
@@ -44,11 +42,11 @@ export default function ProfileOverview() {
       return;
     }
 
-    // Check file size (5MB)
-    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    // Check file size (3MB)
+    const MAX_FILE_SIZE = 3 * 1024 * 1024;
     if (file.size > MAX_FILE_SIZE) {
       setFileError(
-        "File size exceeds 5MB limit. Please choose a smaller file."
+        "File size exceeds 3MB limit. Please choose a smaller file."
       );
       e.target.value = "";
       return;
@@ -65,8 +63,16 @@ export default function ProfileOverview() {
 
     try {
       const formPayload = new FormData();
+      formPayload.append("avatar", file);
+      await uploadAvatar(formPayload).unwrap();
     } catch (error: any) {
-      // eslint-disable-line @typescript-eslint/no-explicit-any
+      const errors = error?.data?.errors;
+
+      if (!errors) return;
+
+      if (errors.avatar?.length) {
+        setFileError(errors.avatar.join(", "));
+      }
     }
   };
 
@@ -81,7 +87,18 @@ export default function ProfileOverview() {
       fileInputRef.current.value = "";
     }
     try {
-    } catch (error) {}
+      await uploadAvatar({
+        should_delete_avatar: true,
+      }).unwrap();
+    } catch (error: any) {
+      const errors = error?.data?.errors;
+
+      if (!errors) return;
+
+      if (errors.avatar?.length) {
+        setFileError(errors.avatar.join(", "));
+      }
+    }
   };
 
   const onSubmit = async (data: any) => {
@@ -100,6 +117,7 @@ export default function ProfileOverview() {
           name: data.name,
           phone: data.phone,
           address: data.address,
+          email: userData?.email,
         });
       }
     } catch (error: any) {
@@ -137,6 +155,7 @@ export default function ProfileOverview() {
         phone: userData.phone || "",
         address: userData.address || "",
       });
+      setPreviewImage(userData.avatar || null);
     }
   }, [userData, reset]);
 
@@ -191,6 +210,7 @@ export default function ProfileOverview() {
             </div>
 
             <Button
+              disabled={isUploading}
               type="button"
               onClick={triggerFileInput}
               className="has-[>svg]:px-6"
