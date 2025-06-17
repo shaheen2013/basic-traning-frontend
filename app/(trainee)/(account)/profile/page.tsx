@@ -1,24 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Image from "next/image";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
 import { DeleteIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Upload } from "@/components/icons";
 import { courseMenus } from "@/components/partials/header/constans";
 import { usePathname } from "next/navigation";
-
-type FormValues = {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  avatar?: File;
-};
+import { useMe } from "@/services/hook";
+import { useUpdateProfileMutation } from "@/features/auth/meApi";
+import { toast } from "sonner";
 
 export default function ProfileOverview() {
   const pathname = usePathname();
@@ -26,7 +20,10 @@ export default function ProfileOverview() {
   const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { handleSubmit, control } = useForm<FormValues>({
+  const { data: userData } = useMe({});
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
+  const { handleSubmit, control, reset, setError } = useForm({
     defaultValues: {
       name: "",
       email: "",
@@ -68,8 +65,8 @@ export default function ProfileOverview() {
 
     try {
       const formPayload = new FormData();
-    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-
+    } catch (error: any) {
+      // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   };
 
@@ -87,27 +84,61 @@ export default function ProfileOverview() {
     } catch (error) {}
   };
 
-  const onSubmit: SubmitHandler<FormValues> = async (formData) => {
-    const formPayload = new FormData();
-
-    // Append all form fields
-    formPayload.append("name", formData.name);
-    formPayload.append("email", formData.email);
-    formPayload.append("phone", formData.phone);
-    formPayload.append("address", formData.address);
-
-    // Append the image file if it exists
-    if (fileInputRef.current?.files?.[0]) {
-      formPayload.append("avatar", fileInputRef.current.files[0]);
-    }
-
-    if (!previewImage) {
-      formPayload.append("is_avatar_deleted", "true");
-    }
+  const onSubmit = async (data: any) => {
+    const payload = {
+      name: data.name,
+      phone: data.phone,
+      address: data.address,
+    };
 
     try {
-    } catch (error) {}
+      const resposne = await updateProfile(payload).unwrap();
+      if (resposne?.success) {
+        toast.success(resposne?.message);
+        // Reset form values after successful update
+        reset({
+          name: data.name,
+          phone: data.phone,
+          address: data.address,
+        });
+      }
+    } catch (error: any) {
+      const errors = error?.data?.errors;
+
+      if (!errors) return;
+
+      if (errors.name?.length) {
+        setError("name", {
+          type: "manual",
+          message: errors.name.join(", "),
+        });
+      }
+      if (errors.phone?.length) {
+        setError("phone", {
+          type: "manual",
+          message: errors.phone.join(", "),
+        });
+      }
+      if (errors.address?.length) {
+        setError("address", {
+          type: "manual",
+          message: errors.address.join(", "),
+        });
+      }
+    }
   };
+
+  // Set default values from user data if available
+  useEffect(() => {
+    if (userData) {
+      reset({
+        name: userData.name || "",
+        email: userData.email || "",
+        phone: userData.phone || "",
+        address: userData.address || "",
+      });
+    }
+  }, [userData, reset]);
 
   return (
     <>
@@ -221,7 +252,8 @@ export default function ProfileOverview() {
                 }) => (
                   <Input
                     type="text"
-                    className="bg-white"
+                    className="bg-white cursor-not-allowed"
+                    disabled
                     placeholder="Enter email address"
                     onChange={onChange}
                     onBlur={onBlur}
@@ -280,6 +312,7 @@ export default function ProfileOverview() {
           </div>
 
           <Button
+            disabled={isLoading}
             type="submit"
             className="min-w-32 w-full lg:w-fit"
             variant="secondary"
