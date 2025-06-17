@@ -4,6 +4,7 @@ import { Inter, Vollkorn } from "next/font/google";
 import React from "react";
 import "../globals.css";
 import ReduxProvider from "@/components/partials/provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const vollkorn = Vollkorn({
   variable: "--font-vollkorn",
@@ -21,6 +22,9 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
       <body
         className={`${inter.variable} ${neueHaasDisplay.variable} ${vollkorn.variable}   antialiased`}
       >
+        {/* Sonner Toaster for notifications */}
+        <Toaster />
+        {/* Redux Provider for state management */}
         <ReduxProvider>
           <main className="min-h-screen overflow-x-hidden">
             <Header className="bg-primary font-neue-haas-display" />

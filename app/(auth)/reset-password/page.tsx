@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import SuccessResetPassword from "@/components/partials/modal/success-reset-passowrd";
@@ -7,9 +6,16 @@ import { Button } from "@/components/ui/button";
 import { InputPassword } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Controller, useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { useResetPasswordMutation } from "@/features/auth/passwordApi";
+import { useState } from "react";
 
 export default function ResetPassword() {
-  const { handleSubmit, control } = useForm({
+  const [isOpen, setIsOpen] = useState(false);
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  const searchParams = useSearchParams();
+  const { handleSubmit, control, setError } = useForm({
     defaultValues: {
       password: "",
       confirmPassword: "",
@@ -17,13 +23,41 @@ export default function ResetPassword() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
+    const email = searchParams.get("email");
+    const token = searchParams.get("token");
+    if (!email || !token) {
+      toast.error("Email or token is missing in the URL parameters.");
+      return;
+    }
     const payload = {
-      email: data.email,
+      email,
+      token,
+      password: data.password,
+      password_confirmation: data.confirmPassword,
     };
 
     try {
-    } catch (error) {}
+      const resposne = await resetPassword(payload).unwrap();
+      if (resposne.success) {
+        setIsOpen(true);
+      }
+    } catch (error: any) {
+      const errors = error?.data?.errors;
+      if (!errors) return;
+      if (errors.password?.length) {
+        setError("password", {
+          type: "manual",
+          message: errors.password.join(", "),
+        });
+      }
+      if (errors.password_confirmation?.length) {
+        setError("confirmPassword", {
+          type: "manual",
+          message: errors.password_confirmation.join(", "),
+        });
+      }
+    }
   };
 
   return (
@@ -103,14 +137,19 @@ export default function ResetPassword() {
               </div>
 
               {/* submit */}
-              <Button className="w-full rounded-full" size="2xl" type="submit">
+              <Button
+                className="w-full rounded-full"
+                size="2xl"
+                disabled={isLoading}
+                type="submit"
+              >
                 Reset Password
               </Button>
             </form>
           </div>
         </div>
       </div>
-      <SuccessResetPassword />
+      {isOpen && <SuccessResetPassword />}
     </>
   );
 }
