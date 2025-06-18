@@ -71,7 +71,7 @@ export const courseData = {
   ],
 };
 
-export const type = "quiz"; // can be "video", "live-class", "quiz", "assignment", "preview"
+export const type = "video"; // can be "video", "live-class", "quiz", "assignment", "preview"
 
 export const quizStatus = "result"; // can be "instructions", "result"
 
@@ -108,20 +108,17 @@ export const testData = {
   ],
 };
 
-export const quizInstaructions = {
-
-}
+export const quizInstaructions = {};
 
 export const quizResults = {
-   title: "JavaScript Basics Quiz",
-   time: "10 minutes",
-   score: "2.5/10",
-   percentage: "25%",
-   duration: "1000",
-   startedAt: "2023-10-01T10:00:00Z",
-   completedAt: "2023-10-01T10:10:00Z",
-
-}
+  title: "JavaScript Basics Quiz",
+  time: "10 minutes",
+  score: "2.5/10",
+  percentage: "25%",
+  duration: "1000",
+  startedAt: "2023-10-01T10:00:00Z",
+  completedAt: "2023-10-01T10:10:00Z",
+};
 
 export const previewData = {
   title: "Your are almost Done!",

@@ -4,7 +4,11 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-import { cn, getCurrentWeekAndDay } from "@/lib/utils";
+import {
+  cn,
+  formatSecondsToReadableTime,
+  getCurrentWeekAndDay,
+} from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
   Accordion,
@@ -151,11 +155,13 @@ export default function CourseLayout({
                                             {topic.title}
                                           </h3>
                                           <div className="flex items-center gap-1">
-                                            {topic.type === "video" && (
+                                            {topic.type === "media" && (
                                               <Video className="size-4 text-slate-500" />
                                             )}
                                             <span className="text-slate-500 text-xs">
-                                              {topic.duration}
+                                              {formatSecondsToReadableTime(
+                                                topic?.media_duration
+                                              )}
                                             </span>
                                           </div>
                                         </div>
