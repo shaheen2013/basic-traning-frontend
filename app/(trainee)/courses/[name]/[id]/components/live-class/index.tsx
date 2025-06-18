@@ -5,9 +5,7 @@ import {
   HourGlass,
   TextDescription,
 } from "@/components/icons";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
 
 const LiveClass = () => {
@@ -41,22 +39,12 @@ const LiveClass = () => {
       </div>
       <div className="flex flex-col gap-4 lg:gap-6 px-4 lg:px-6">
         <div className="flex gap-4 items-start">
-          <Image
-            src={`/assets/course-info/course-cover.png`}
-            alt="course-cover"
-            width={1000}
-            height={700}
-            className="max-w-72 w-full h-auto object-cover object-center rounded-xl"
-          />
           <div className="flex flex-col gap-5 w-full">
             <div className="flex justify-between items-center">
               <div className="flex flex-col gap-2">
-                <div className="flex gap-2.5 items-center">
-                  <h3 className="text-primary text-xl font-semibold">
-                    Live class name is here
-                  </h3>
-                  <Badge>Todays</Badge>
-                </div>
+                <h3 className="text-primary text-xl font-semibold">
+                  Live class name is here
+                </h3>
                 <div className="flex gap-4 items-center flex-wrap">
                   <div className="inline-flex items-center gap-1">
                     <HourGlass className="size-5 text-blue-600" />

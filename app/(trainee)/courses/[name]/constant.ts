@@ -71,9 +71,9 @@ export const courseData = {
   ],
 };
 
-export const type = "video"; // can be "video", "live-class", "quiz", "assignment", "preview"
+export const type = "quiz"; // can be "video", "live-class", "quiz", "assignment", "preview"
 
-export const quizStatus = "result"; // can be "instructions", "result"
+export const quizStatus = "instructions"; // can be "instructions", "result"
 
 export const testData = {
   quizId: "lesson-101-quiz",
