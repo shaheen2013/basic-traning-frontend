@@ -13,6 +13,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useGetCourseSummaryQuery } from "@/features/course/dashboardApi";
+import { textToSlug } from "@/lib/utils";
 
 const Dashboard = () => {
   const { data, isLoading, isFetching } = useGetCourseSummaryQuery({});
@@ -89,7 +90,7 @@ const Dashboard = () => {
             Systems
           </h3>
           <Button variant="secondary" asChild>
-            <Link href="/course/1-1-1-welcome-and-introduction">
+            <Link href={`/courses/${textToSlug(courseSummary?.title)}/1`}>
               Continue Course
               <ChevronRight className="size-5 text-white" />
             </Link>
@@ -101,7 +102,7 @@ const Dashboard = () => {
           className="w-full lg:w-fit self-end"
           asChild
         >
-          <Link href="/course">
+          <Link href={`/courses/${textToSlug(courseSummary?.title)}/1`}>
             Start Course
             <ChevronRight className="size-5 text-white" />
           </Link>

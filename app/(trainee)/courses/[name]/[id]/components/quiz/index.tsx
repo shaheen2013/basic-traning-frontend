@@ -1,17 +1,13 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-} from "@/components/icons";
+import { ChevronLeft, ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Result from "./components/result";
-import { quizStatus } from "../../constant";
+import { quizStatus } from "@/app/(trainee)/courses/[name]/constant";
 import Instructions from "./components/instructions";
 
 type QuizStatus = "instructions" | "result";
 
 const typedQuizStatus = quizStatus as QuizStatus;
-
 
 const Quiz = () => {
   return (
@@ -42,9 +38,7 @@ const Quiz = () => {
           </Button>
         </div>
       </div>
-      {
-        typedQuizStatus === "instructions" && <Instructions />
-      }
+      {typedQuizStatus === "instructions" && <Instructions />}
       {typedQuizStatus === "result" && <Result />}
     </section>
   );

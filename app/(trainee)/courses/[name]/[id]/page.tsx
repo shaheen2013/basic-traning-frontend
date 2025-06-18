@@ -1,5 +1,5 @@
+import { type } from "../constant";
 import { Assignment, LiveClass, Preview, Quiz, Video } from "./components";
-import { type } from "./constant";
 
 type Status = "video" | "live-class" | "quiz" | "assignment" | "preview";
 

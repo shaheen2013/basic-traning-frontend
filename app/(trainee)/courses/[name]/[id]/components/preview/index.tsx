@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { previewData } from "../../constant";
 import Link from "next/link";
 import {
   CheckCircleMarkOutline,
   ChevronLeft,
   ChevronRight,
 } from "@/components/icons";
+import { previewData } from "@/app/(trainee)/courses/[name]/constant";
 const Preview = () => {
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
