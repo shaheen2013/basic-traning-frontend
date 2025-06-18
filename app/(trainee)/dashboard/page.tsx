@@ -1,44 +1,62 @@
+"use client";
+
 import {
   Calendar,
   ChevronRight,
   HourGlass,
   TextDescription,
 } from "@/components/icons";
+import moment from "moment";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { progress } from "../(account)/my-course/constant";
 import Link from "next/link";
+import { useGetCourseSummaryQuery } from "@/features/course/dashboardApi";
 
 const Dashboard = () => {
+  const { data, isLoading, isFetching } = useGetCourseSummaryQuery({});
+
+  const courseSummary = data?.data;
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="container my-4 lg:my-6 flex justify-center items-center">
+        <p className="text-slate-700 text-lg font-semibold">Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container my-4 lg:my-6 flex flex-col gap-6 lg:gap-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-6 lg:gap-6 border border-slate-200 rounded-2xl bg-slate-50 shadow-sm">
-        <Image
-          src="/assets/dashboard/dashboard.png"
-          alt="dashboard"
-          width={1000}
-          height={700}
-          className="w-full h-full object-cover object-center rounded-xl"
-        />
+        {courseSummary?.cover_image && (
+          <Image
+            src={courseSummary?.cover_image}
+            alt="Course Cover Image"
+            width={1000}
+            height={700}
+            className="w-full h-full object-cover object-center rounded-xl"
+          />
+        )}
+
         <div className="py-4 lg:py-6 flex flex-col gap-4 lg:gap-6">
           <div>
-            <Badge className="mb-2.5">In Progress</Badge>
+            <Badge className="mb-2.5">{courseSummary?.status}</Badge>
             <h3 className="text-primary text-2xl lg:text-3xl font-semibold mb-3 lg:mb-4">
-              Basic Training
+              {courseSummary?.title}
             </h3>
             <div className="flex gap-4 mb-3 lg:mb-4 items-center flex-wrap">
               <div className="inline-flex items-center gap-1">
                 <Calendar className="size-5 text-blue-600" />
                 <span className="text-slate-700 text-sm font-normal">
-                  March 18, 2025
+                  {moment(courseSummary?.start_date).format("MMMM D, YYYY")}
                 </span>
               </div>
               <div className="inline-flex items-center gap-1">
                 <HourGlass className="size-5 text-blue-600" />
                 <span className="text-slate-700 text-sm font-normal">
-                  20 days
+                  {courseSummary?.duration} days
                 </span>
               </div>
             </div>
@@ -48,10 +66,10 @@ const Dashboard = () => {
                   Progress
                 </span>
                 <span className="text-primary text-base font-medium">
-                  {progress}%
+                  {courseSummary?.progress}%
                 </span>
               </div>
-              <Progress value={progress} />
+              <Progress value={courseSummary?.progress} />
             </div>
           </div>
           <div className="flex flex-col gap-3">
@@ -60,19 +78,12 @@ const Dashboard = () => {
               <h3 className="text-primary text-lg font-semibold">Overview</h3>
             </div>
             <p className="text-slate-700 text-base font-normal">
-              This lesson covers [brief summary of what the lesson includes].
-              Learners will explore key concepts such as [key topics] and get
-              hands-on experience through [activity/project/demo]. This lesson
-              builds foundational knowledge for the upcoming modules. {""}
-              This lesson covers [brief summary of what the lesson includes].
-              Learners will explore key concepts such as [key topics] and get
-              hands-on experience through [activity/project/demo]. This lesson
-              builds foundational knowledge for the upcoming modules.
+              {courseSummary?.description}
             </p>
           </div>
         </div>
       </div>
-      {progress > 0 ? (
+      {courseSummary?.progress > 0 ? (
         <div className="rounded-2xl bg-blue-50 border border-blue-200 p-4 lg:p-6 shadow-sm flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
           <h3 className="text-primary text-2xl lg:text-3xl font-semibold">
             Systems
