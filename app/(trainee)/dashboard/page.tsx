@@ -37,7 +37,7 @@ const Dashboard = () => {
             alt="Course Cover Image"
             width={1000}
             height={700}
-            className="w-full h-full object-cover object-center rounded-xl"
+            className="w-full h-auto max-h-52 lg:max-h-[524px] object-cover object-center rounded-xl"
           />
         )}
 

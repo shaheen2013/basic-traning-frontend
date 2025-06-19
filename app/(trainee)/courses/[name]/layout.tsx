@@ -57,7 +57,7 @@ export default function CourseLayout({
 
   const { currentWeek, currentDay } = getCurrentWeekAndDay(
     courseContentId,
-    modules
+    modules ?? { weeks: [] }
   );
   console.log("Current Week:", currentWeek);
   console.log("Current Day:", currentDay);
@@ -78,7 +78,7 @@ export default function CourseLayout({
           <Accordion
             type="single"
             collapsible
-            defaultValue={currentWeek.toString()}
+            defaultValue={currentWeek?.toString()}
           >
             <div className="px-4 lg:px-6 flex flex-col gap-2">
               {modules?.weeks?.map((week: any) => (
@@ -102,7 +102,7 @@ export default function CourseLayout({
                     <Accordion
                       type="single"
                       collapsible
-                      defaultValue={currentDay.toString()}
+                      defaultValue={currentDay?.toString()}
                     >
                       <div className="flex flex-col gap-2">
                         {week?.days?.map((day: any) => (
@@ -127,8 +127,8 @@ export default function CourseLayout({
 
                                   return (
                                     <Link
-                                      key={topic.title}
-                                      href={topic.id.toString()}
+                                      key={topic?.title}
+                                      href={topic?.id?.toString()}
                                       className="px-4"
                                     >
                                       <div className="flex gap-2">

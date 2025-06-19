@@ -19,7 +19,7 @@ export function formatSecondsToReadableTime(seconds: number): string {
 }
 export function textToSlug(text: string): string {
   return text
-    .toLowerCase()
+    ?.toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[^\w\-]+/g, "")
     .replace(/\-\-+/g, "-")
@@ -27,13 +27,12 @@ export function textToSlug(text: string): string {
 }
 
 export function getCurrentWeekAndDay(topicId: string, modules: any) {
-  console.log("Modules:", modules);
   let currentWeek, currentDay;
 
   // Search through weeks and days
-  for (const week of modules.weeks) {
-    for (const day of week.days) {
-      if (day.topics.some((topic: any) => topic.id === Number(topicId))) {
+  for (const week of modules?.weeks) {
+    for (const day of week?.days) {
+      if (day?.topics?.some((topic: any) => topic.id === Number(topicId))) {
         currentWeek = week.weekNumber;
         currentDay = day.dayNumber;
         return { currentWeek, currentDay };

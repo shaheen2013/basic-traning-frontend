@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "localhost",
       },
+      {
+        hostname: "10.0.0.100",
+      },
     ],
   },
 };
