@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -14,18 +15,33 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useGetCourseSummaryQuery } from "@/features/course/dashboardApi";
 import { textToSlug } from "@/lib/utils";
+import { Loader } from "@/components/partials";
+import { useGetCourseMutation } from "@/features/course/enrollApi";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Dashboard = () => {
+  const router = useRouter();
   const { data, isLoading, isFetching } = useGetCourseSummaryQuery({});
-
   const courseSummary = data?.data;
+  const [getCourse, { isLoading: isGetCourseLoading }] = useGetCourseMutation();
+
+  const handleEnroll = async () => {
+    try {
+      const response = await getCourse({
+        courseId: courseSummary?.id,
+      }).unwrap();
+
+      if (response.success) {
+        router.push(`/courses/${textToSlug(courseSummary?.title)}/1`);
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong.");
+    }
+  };
 
   if (isLoading || isFetching) {
-    return (
-      <div className="container my-4 lg:my-6 flex justify-center items-center">
-        <p className="text-slate-700 text-lg font-semibold">Loading...</p>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
@@ -61,17 +77,19 @@ const Dashboard = () => {
                 </span>
               </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between">
-                <span className="text-primary text-base font-medium">
-                  Progress
-                </span>
-                <span className="text-primary text-base font-medium">
-                  {courseSummary?.progress}%
-                </span>
+            {courseSummary?.status !== "not_enrolled" && (
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between">
+                  <span className="text-primary text-base font-medium">
+                    Progress
+                  </span>
+                  <span className="text-primary text-base font-medium">
+                    {courseSummary?.progress}%
+                  </span>
+                </div>
+                <Progress value={courseSummary?.progress} />
               </div>
-              <Progress value={courseSummary?.progress} />
-            </div>
+            )}
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex gap-2 items-center">
@@ -84,28 +102,35 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      {courseSummary?.progress > 0 ? (
+
+      {courseSummary.status === "ongoing" && (
         <div className="rounded-2xl bg-blue-50 border border-blue-200 p-4 lg:p-6 shadow-sm flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
           <h3 className="text-primary text-2xl lg:text-3xl font-semibold">
             Systems
           </h3>
           <Button variant="secondary" asChild>
-            <Link href={`/courses/${textToSlug(courseSummary?.title)}/1`}>
+            <Link
+              href={`/courses/${textToSlug(courseSummary?.title)}/${
+                courseSummary?.ongoing_lesson
+              }`}
+            >
               Continue Course
               <ChevronRight className="size-5 text-white" />
             </Link>
           </Button>
         </div>
-      ) : (
+      )}
+
+      {courseSummary.status === "not_enrolled" && (
         <Button
           variant="secondary"
           className="w-full lg:w-fit self-end"
           asChild
+          onClick={handleEnroll}
+          disabled={isGetCourseLoading}
         >
-          <Link href={`/courses/${textToSlug(courseSummary?.title)}/1`}>
-            Start Course
-            <ChevronRight className="size-5 text-white" />
-          </Link>
+          Start Course
+          <ChevronRight className="size-5 text-white" />
         </Button>
       )}
     </div>

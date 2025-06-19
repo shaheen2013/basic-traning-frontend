@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { Assignment, LiveClass, Preview, Quiz, Video } from "./components";
 import { useGetCoursesVideoQuery } from "@/features/course/videoApi";
+import { Loader } from "@/components/partials";
 
 const Course = () => {
   const params = useParams();
@@ -16,11 +17,7 @@ const Course = () => {
   const courseStatus = courseData?.type;
 
   if (isLoading || isFetching) {
-    return (
-      <div className="container flex items-center justify-center min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)]">
-        Loading...
-      </div>
-    );
+    return <Loader />;
   }
   return (
     <>

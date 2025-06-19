@@ -29,7 +29,7 @@ import {
 } from "@/components/icons";
 
 import { Button } from "@/components/ui/button";
-import { Modal } from "@/components/partials";
+import { Loader, Modal } from "@/components/partials";
 import { useState } from "react";
 import { DayProgress } from "./[id]/components";
 import { useGetModulesQuery } from "@/features/course/modulesApi";
@@ -47,11 +47,7 @@ export default function CourseLayout({
   const modules = data?.data;
 
   if (isLoading || isFetching) {
-    return (
-      <div className="container flex items-center justify-center min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)]">
-        Loading...
-      </div>
-    );
+    return <Loader />;
   }
   const courseContentId = typeof params.id === "string" ? params.id : "";
 
