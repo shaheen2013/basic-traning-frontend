@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Logout } from "@/components/icons";
 import { useLogoutMutation } from "@/features/auth/authApi";
-import { removeToken } from "@/services/storage/authStorage";
+import { clearToken } from "@/services/storage/authStorage";
 import { useRouter } from "next/navigation";
 
 const LogOutConfirmation = () => {
@@ -18,7 +18,7 @@ const LogOutConfirmation = () => {
   const handleLogOut = async () => {
     try {
       await logout({}).unwrap();
-      removeToken();
+      clearToken();
       router.push("/login");
       setOpen(false);
     } catch (error: any) {

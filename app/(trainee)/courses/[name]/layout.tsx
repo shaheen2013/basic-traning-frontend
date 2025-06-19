@@ -165,6 +165,54 @@ export default function CourseLayout({
                                     </Link>
                                   );
                                 })}
+
+                                {day?.quizzes?.hasQuizzes &&
+                                  (() => {
+                                    const isCompleted = day.quizzes.isCompleted;
+                                    const isActive =
+                                      day.quizzes.id === Number(params.id);
+
+                                    const timeLimit = day.quizzes.timeLimit;
+
+                                    return (
+                                      <Link href="#" className="px-4">
+                                        <div className="flex gap-2">
+                                          {isCompleted ? (
+                                            <CheckCircleMark className="size-6 text-blue-500" />
+                                          ) : (
+                                            <CheckCircleMarkOutline
+                                              className={cn(
+                                                "size-6 text-primary",
+                                                {
+                                                  "text-blue-500": isActive,
+                                                }
+                                              )}
+                                            />
+                                          )}
+
+                                          <div className="flex flex-col gap-0.5">
+                                            <h3
+                                              className={cn(
+                                                "text-primary text-base font-medium",
+                                                { "text-blue-500": isActive }
+                                              )}
+                                            >
+                                              quiz
+                                            </h3>
+                                            <div className="flex items-center gap-1">
+                                              <Video className="size-4 text-slate-500" />
+
+                                              <span className="text-slate-500 text-xs">
+                                                {formatSecondsToReadableTime(
+                                                  timeLimit
+                                                )}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </Link>
+                                    );
+                                  })()}
                               </div>
                             </AccordionContent>
                           </AccordionItem>
