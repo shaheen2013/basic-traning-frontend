@@ -49,7 +49,7 @@ export default function CourseLayout({
   if (isLoading || isFetching) {
     return (
       <div className="container flex items-center justify-center min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)]">
-        <p className="text-slate-500">Loading...</p>
+        Loading...
       </div>
     );
   }

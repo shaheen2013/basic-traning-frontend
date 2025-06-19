@@ -76,7 +76,7 @@ const Video = ({ data }: { data: any }) => {
             <h3 className="text-primary text-lg font-semibold">Overview</h3>
           </div>
           <p className="text-slate-700 text-base font-normal">
-            {data.description}
+            {data?.description}
           </p>
         </div>
       </div>

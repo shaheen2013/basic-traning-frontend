@@ -51,8 +51,8 @@ export const VideoPlayer = (props: any) => {
   }, [playerRef]);
 
   return (
-    <div data-vjs-player className="video-player">
-      <div ref={videoRef} className="w-full" />
+    <div data-vjs-player>
+      <div ref={videoRef} />
     </div>
   );
 };

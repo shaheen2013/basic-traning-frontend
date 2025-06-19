@@ -1,29 +1,43 @@
-/* Base styling for the Video.js player */
 .video-js {
   font-size: 16px;
   color: #cacaca;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.vjs-default-skin .vjs-big-play-button {
-  font-size: 4em;
-  width: 1.5em;
-  height: 1.5em;
-  line-height: 1.5em;
-  border-radius: 50%;
-  background: transparent;
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  transform: translate(-50%, -50%);
-  display: none;
+.video-js .vjs-icon-placeholder:before {
+  color: white;
 }
 
 /* Control bar background */
+.video-js:hover .vjs-big-play-button,
+.video-js .vjs-big-play-button:focus {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  transition: all;
+}
 
 .video-js .vjs-big-play-button {
   background-color: #3b82f6;
-  border-radius: 0.5em;
+  border-radius: 100%;
+  width: 68px;
+  height: 68px;
+  border: none;
+  top: 50%;
+  left: 50%;
+  margin-left: 0;
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  transform: translate(-50%, -50%);
 }
+
+/* @media screen and (max-width: 768px) {
+  .video-js .vjs-big-play-button {
+    width: 48px;
+    height: 48px;
+  }
+} */
 
 .video-js .vjs-playing .vjs-play-control:before {
   content: "\23F8";
@@ -70,18 +84,6 @@
   background: #cacaca !important;
   color: #3b82f6 !important;
   border-radius: 3px;
-}
-
-.vjs-loading-spinner {
-  background: url("https://assets.nflxext.com/en_us/pages/wiplayer/site-spinner.png")
-    no-repeat center center;
-  background-size: 50%;
-  border: none;
-}
-
-.video-js:hover .vjs-control-bar {
-  bottom: 2em;
-  transition: bottom 0.3s ease-in-out;
 }
 
 .video-js.vjs-fullscreen .vjs-control-bar {

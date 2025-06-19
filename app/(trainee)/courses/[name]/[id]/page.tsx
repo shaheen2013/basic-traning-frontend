@@ -15,18 +15,20 @@ const Course = () => {
 
   const courseStatus = courseData?.type;
 
-  console.log("data", data);
-
   if (isLoading || isFetching) {
-    return <div>Loading...</div>;
+    return (
+      <div className="container flex items-center justify-center min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)]">
+        Loading...
+      </div>
+    );
   }
   return (
     <>
       {courseStatus === "media" && <Video data={courseData} />}
-      {/* {courseStatus === "live-class" && <LiveClass data={courseData} />}
+      {courseStatus === "live-class" && <LiveClass data={courseData} />}
       {courseStatus === "quiz" && <Quiz data={courseData} />}
       {courseStatus === "assignment" && <Assignment data={courseData} />}
-      {courseStatus === "preview" && <Preview data={courseData} />} */}
+      {courseStatus === "preview" && <Preview data={courseData} />}
     </>
   );
 };
