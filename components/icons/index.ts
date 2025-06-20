@@ -50,3 +50,5 @@ export { default as Subtract } from "./Subtract";
 export { default as Video } from "./Video";
 export { default as Timer } from "./Timer";
 export { default as Download } from "./Download";
+export { default as Lock } from "./Lock";
+export { default as MagnifyingGlass } from "./MagnifyingGlass";

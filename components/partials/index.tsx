@@ -21,3 +21,4 @@ export { default as DownloadCertificate } from "./modal/download-certificate";
 export { default as QuizResult } from "./modal/quiz-result";
 export { default as VerificationLinkSent } from "./modal/verification-link-sent";
 export { default as Loader } from "./loader";
+export { default as CourseNotFound } from "./not-found/course";

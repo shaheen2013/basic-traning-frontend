@@ -1,24 +1,50 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  ChevronLeft,
+  CheckCircleMarkOutline,
   ChevronRight,
   Clock,
   HourGlass,
   TextDescription,
 } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { useMarkCompleteMutation } from "@/features/course/markComplete";
 import { formatSecondsToReadableTime } from "@/lib/utils";
 import moment from "moment";
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const LiveClass = ({ data }: { data: any }) => {
-  const calculateTimeLeft = (startDate: string, startTime: string): string => {
+  const params = useParams();
+  const router = useRouter();
+  const courseId = params.courseid;
+  const topicId = params.topicid;
+
+  const [markComplete, { isLoading: markCompleteLoading }] =
+    useMarkCompleteMutation();
+
+  const calculateTimeLeft = (
+    startDate: string,
+    startTime: string
+  ): string | null => {
     const combinedDateTime = moment(`${startDate} ${startTime}`);
     const now = moment();
     const diffSeconds = combinedDateTime.diff(now, "seconds");
 
-    if (diffSeconds <= 0) return "Expired";
+    if (diffSeconds <= 0) return null;
     return `Left ${formatSecondsToReadableTime(diffSeconds)}`;
+  };
+
+  const handleMarkComplete = async () => {
+    try {
+      await markComplete({
+        courseId: courseId,
+        topicId: topicId,
+      }).unwrap();
+      router.push(`/courses/${courseId}/topics/${topicId}`);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong.");
+    }
   };
 
   return (
@@ -28,26 +54,22 @@ const LiveClass = ({ data }: { data: any }) => {
           My Course
         </h2>
 
-        <div className="flex items-center justify-between gap-2 lg:gap-4">
+        {data?.completed ? (
+          <Button type="button" variant="secondary" asChild disabled>
+            <div>
+              <CheckCircleMarkOutline className="size-5" /> Completed
+            </div>
+          </Button>
+        ) : (
           <Button
             type="button"
-            variant="outline"
-            className="bg-transparent shadow-none hover:shadow-sm hover:bg-transparent"
-            asChild
+            variant="secondary"
+            onClick={handleMarkComplete}
+            disabled={markCompleteLoading}
           >
-            <Link href="/course">
-              <ChevronLeft className="size-5" />
-              Previous
-            </Link>
+            <CheckCircleMarkOutline className="size-5" /> Mark As Complete
           </Button>
-
-          <Button type="button" variant="secondary" asChild>
-            <Link href="/course">
-              Next
-              <ChevronRight className="size-5" />
-            </Link>
-          </Button>
-        </div>
+        )}
       </div>
       <div className="flex flex-col gap-4 lg:gap-6 px-4 lg:px-6">
         <div className="flex gap-4 items-start">
@@ -58,12 +80,15 @@ const LiveClass = ({ data }: { data: any }) => {
                   {data.title}
                 </h3>
                 <div className="flex gap-4 items-center flex-wrap">
-                  <div className="inline-flex items-center gap-1">
-                    <HourGlass className="size-5 text-blue-600" />
-                    <span className="text-slate-700 text-sm font-normal">
-                      {calculateTimeLeft(data.start_date, data.start_time)}
-                    </span>
-                  </div>
+                  {calculateTimeLeft(data.start_date, data.start_time) && (
+                    <div className="inline-flex items-center gap-1">
+                      <HourGlass className="size-5 text-blue-600" />
+                      <span className="text-slate-700 text-sm font-normal">
+                        {calculateTimeLeft(data.start_date, data.start_time)}
+                      </span>
+                    </div>
+                  )}
+
                   <div className="inline-flex items-center gap-1">
                     <Clock className="size-5 text-blue-600" />
                     <span className="text-slate-700 text-sm font-normal">

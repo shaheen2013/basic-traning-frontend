@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { ChevronLeft, ChevronRight, TextDescription } from "@/components/icons";
+import { CheckCircleMarkOutline, TextDescription } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import "video.js/dist/video-js.css";
 import VideoPlayer from "./components/videoPlayer";
 import Player from "video.js/dist/types/player";
@@ -40,13 +39,9 @@ const Video = ({ data }: { data: any }) => {
     player.on("waiting", () => {
       console.log("Player is waiting");
     });
-
-    player.on("dispose", () => {
-      console.log("Player will dispose");
-    });
   };
 
-  const handleNext = async () => {
+  const handleMarkComplete = async () => {
     try {
       await markComplete({
         courseId: courseId,
@@ -57,38 +52,28 @@ const Video = ({ data }: { data: any }) => {
       toast.error(error?.data?.message || "Something went wrong.");
     }
   };
+
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
       <div className="p-4 lg:p-6 bg-slate-200 flex justify-between items-center">
         <h2 className="font-semibold text-lg lg:text-2xl capitalize text-primary">
           My Course
         </h2>
-
-        <div className="flex items-center justify-between gap-2 lg:gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            className="bg-transparent shadow-none hover:shadow-sm hover:bg-transparent"
-            asChild
-          >
-            <Link href="/course">
-              <ChevronLeft className="size-5" />
-              Previous
-            </Link>
-          </Button>
-
-          <Button
-            type="button"
-            variant="secondary"
-            asChild
-            onClick={handleNext}
-            disabled={markCompleteLoading}
-          >
-            <div>
-              Next
-              <ChevronRight className="size-5" />
-            </div>
-          </Button>
+        <div className="flex items-center justify-between">
+          {data?.status === "completed" ? (
+            <Button type="button" variant="secondary" disabled>
+              <CheckCircleMarkOutline className="size-5" /> Completed
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleMarkComplete}
+              disabled={markCompleteLoading}
+            >
+              <CheckCircleMarkOutline className="size-5" /> Mark As Complete
+            </Button>
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-4 lg:gap-6 px-4 lg:px-6">

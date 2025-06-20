@@ -26,6 +26,7 @@ import {
   Video,
   Hamburger,
   Dismiss,
+  Lock,
 } from "@/components/icons";
 
 import { Button } from "@/components/ui/button";
@@ -72,11 +73,7 @@ export default function CourseLayout({
 
         {/* Weeks and Days Accordion */}
         <div className="overflow-y-auto max-h-[calc(100vh-300px)] lg:max-h-[calc(100vh-350px)] lg-4 lg:pb-6">
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue={currentWeek?.toString()}
-          >
+          <Accordion type="multiple" defaultValue={currentWeek?.toString()}>
             <div className="px-4 lg:px-6 flex flex-col gap-2">
               {modules?.weeks?.map((week: any) => (
                 <AccordionItem
@@ -117,50 +114,55 @@ export default function CourseLayout({
                             <AccordionContent className="bg-slate-100 px-4">
                               <hr className="border-slate-200" />
                               <div className="mt-2.5 flex flex-col gap-2.5">
+                                {/* Topics */}
                                 {day?.topics?.map((topic: any) => {
                                   const isCompleted = topic?.isCompleted;
                                   const isActive =
                                     topic.id === Number(params.topicid);
+                                  const isLocked = !isCompleted && !isActive;
 
                                   return (
                                     <Link
-                                      key={topic?.title}
-                                      href={topic?.id?.toString()}
+                                      key={topic.id}
+                                      href={
+                                        isLocked ? "#" : topic.id.toString()
+                                      }
                                       className="px-4"
                                     >
                                       <div className="flex gap-2">
-                                        {isCompleted ? (
-                                          <CheckCircleMark className="size-6 text-blue-500" />
+                                        {/* Status Icon */}
+                                        {isLocked ? (
+                                          <Lock className="size-5 text-slate-700" />
+                                        ) : isActive ? (
+                                          <CheckCircleMarkOutline className="size-6 text-blue-500" />
                                         ) : (
-                                          <CheckCircleMarkOutline
-                                            className={cn(
-                                              "size-6 text-primary",
-                                              {
-                                                "text-blue-500": isActive,
-                                              }
-                                            )}
-                                          />
+                                          <CheckCircleMark className="size-6 text-blue-500" />
                                         )}
 
+                                        {/* Content */}
                                         <div className="flex flex-col gap-0.5">
                                           <h3
                                             className={cn(
-                                              "text-primary text-base font-medium",
-                                              { "text-blue-500": isActive }
+                                              "text-base font-medium",
+                                              {
+                                                "text-blue-500": isActive,
+                                                "text-primary": !isActive,
+                                                "text-slate-500": isLocked,
+                                              }
                                             )}
                                           >
                                             {topic.title}
                                           </h3>
-                                          <div className="flex items-center gap-1">
-                                            {topic.type === "media" && (
+                                          {topic.type === "media" && (
+                                            <div className="flex items-center gap-1">
                                               <Video className="size-4 text-slate-500" />
-                                            )}
-                                            <span className="text-slate-500 text-xs">
-                                              {formatSecondsToReadableTime(
-                                                topic?.media_duration
-                                              )}
-                                            </span>
-                                          </div>
+                                              <span className="text-slate-500 text-xs">
+                                                {formatSecondsToReadableTime(
+                                                  topic?.media_duration
+                                                )}
+                                              </span>
+                                            </div>
+                                          )}
                                         </div>
                                       </div>
                                     </Link>

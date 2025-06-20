@@ -41,3 +41,7 @@ export function getCurrentWeekAndDay(topicId: string, modules: any) {
   }
   return { currentWeek: null, currentDay: null };
 }
+
+export function isEmptyObject(obj: any) {
+  return Object.keys(obj).length === 0;
+}

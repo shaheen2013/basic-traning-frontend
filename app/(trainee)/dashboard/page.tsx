@@ -14,16 +14,16 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useGetCourseSummaryQuery } from "@/features/course/dashboardApi";
-import { Loader } from "@/components/partials";
+import { CourseNotFound, Loader } from "@/components/partials";
 import { useGetCourseMutation } from "@/features/course/enrollApi";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { isEmptyObject } from "@/lib/utils";
 
 const Dashboard = () => {
   const router = useRouter();
   const { data, isLoading, isFetching, isError } = useGetCourseSummaryQuery({});
 
-  console.log("errr", isError);
   const courseSummary = data?.data;
   const [getCourse, { isLoading: isGetCourseLoading }] = useGetCourseMutation();
 
@@ -44,6 +44,8 @@ const Dashboard = () => {
   if (isLoading || isFetching || isError) {
     return <Loader />;
   }
+
+  if (isEmptyObject(courseSummary)) return <CourseNotFound />;
 
   return (
     <div className="container my-4 lg:my-6 flex flex-col gap-6 lg:gap-8">
