@@ -42,11 +42,13 @@ export default function CourseLayout({
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
 
-  const { data, isLoading, isFetching } = useGetModulesQuery({ id: 1 });
+  const { data, isLoading, isFetching, isError } = useGetModulesQuery({
+    id: 1,
+  });
 
   const modules = data?.data;
 
-  if (isLoading || isFetching) {
+  if (isLoading || isFetching || isError) {
     return <Loader />;
   }
   const courseContentId = typeof params.id === "string" ? params.id : "";

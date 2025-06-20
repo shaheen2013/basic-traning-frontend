@@ -22,7 +22,9 @@ import { toast } from "sonner";
 
 const Dashboard = () => {
   const router = useRouter();
-  const { data, isLoading, isFetching } = useGetCourseSummaryQuery({});
+  const { data, isLoading, isFetching, isError } = useGetCourseSummaryQuery({});
+
+  console.log("errr", isError);
   const courseSummary = data?.data;
   const [getCourse, { isLoading: isGetCourseLoading }] = useGetCourseMutation();
 
@@ -40,7 +42,7 @@ const Dashboard = () => {
     }
   };
 
-  if (isLoading || isFetching) {
+  if (isLoading || isFetching || isError) {
     return <Loader />;
   }
 
@@ -103,7 +105,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {courseSummary.status === "ongoing" && (
+      {courseSummary?.status === "ongoing" && (
         <div className="rounded-2xl bg-blue-50 border border-blue-200 p-4 lg:p-6 shadow-sm flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
           <h3 className="text-primary text-2xl lg:text-3xl font-semibold">
             Systems
@@ -121,7 +123,7 @@ const Dashboard = () => {
         </div>
       )}
 
-      {courseSummary.status === "not_enrolled" && (
+      {courseSummary?.status === "not_enrolled" && (
         <Button
           variant="secondary"
           className="w-full lg:w-fit self-end"
@@ -129,8 +131,10 @@ const Dashboard = () => {
           onClick={handleEnroll}
           disabled={isGetCourseLoading}
         >
-          Start Course
-          <ChevronRight className="size-5 text-white" />
+          <div>
+            Start Course
+            <ChevronRight className="size-5 text-white" />
+          </div>
         </Button>
       )}
     </div>

@@ -7,7 +7,7 @@ import { Loader } from "@/components/partials";
 
 const Course = () => {
   const params = useParams();
-  const { data, isLoading, isFetching } = useGetCoursesVideoQuery({
+  const { data, isLoading, isFetching, isError } = useGetCoursesVideoQuery({
     courseId: 1,
     topicId: params.id as string,
   });
@@ -16,7 +16,7 @@ const Course = () => {
 
   const courseStatus = courseData?.type;
 
-  if (isLoading || isFetching) {
+  if (isLoading || isFetching || isError) {
     return <Loader />;
   }
   return (
