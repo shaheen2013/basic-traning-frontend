@@ -2,8 +2,8 @@ import { ChevronLeft, ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Result from "./components/result";
-import { quizStatus } from "@/app/(trainee)/courses/[name]/constant";
 import Instructions from "./components/instructions";
+import { quizStatus } from "../../../../constant";
 
 type QuizStatus = "instructions" | "result";
 

@@ -14,7 +14,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useGetCourseSummaryQuery } from "@/features/course/dashboardApi";
-import { textToSlug } from "@/lib/utils";
 import { Loader } from "@/components/partials";
 import { useGetCourseMutation } from "@/features/course/enrollApi";
 import { useRouter } from "next/navigation";
@@ -30,13 +29,13 @@ const Dashboard = () => {
 
   const handleEnroll = async () => {
     try {
-      const response = await getCourse({
+      await getCourse({
         courseId: courseSummary?.id,
       }).unwrap();
 
-      if (response.success) {
-        router.push(`/courses/${textToSlug(courseSummary?.title)}/1`);
-      }
+      router.push(
+        `/courses/${courseSummary?.id}/topics/${courseSummary?.ongoing_lesson}`
+      );
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong.");
     }
@@ -112,9 +111,7 @@ const Dashboard = () => {
           </h3>
           <Button variant="secondary" asChild>
             <Link
-              href={`/courses/${textToSlug(courseSummary?.title)}/${
-                courseSummary?.ongoing_lesson
-              }`}
+              href={`/courses/${courseSummary?.id}/topics/${courseSummary?.ongoing_lesson}`}
             >
               Continue Course
               <ChevronRight className="size-5 text-white" />

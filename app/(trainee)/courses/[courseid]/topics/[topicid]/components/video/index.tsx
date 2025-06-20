@@ -8,9 +8,18 @@ import "video.js/dist/video-js.css";
 import VideoPlayer from "./components/videoPlayer";
 import Player from "video.js/dist/types/player";
 import { useRef } from "react";
+import { useMarkCompleteMutation } from "@/features/course/markComplete";
+import { useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Video = ({ data }: { data: any }) => {
+  const params = useParams();
+  const router = useRouter();
+  const courseId = params.courseid;
+  const topicId = params.topicid;
   const playerRef = useRef<Player | null>(null);
+  const [markComplete, { isLoading: markCompleteLoading }] =
+    useMarkCompleteMutation();
 
   const options = {
     autoplay: false,
@@ -37,6 +46,17 @@ const Video = ({ data }: { data: any }) => {
     });
   };
 
+  const handleNext = async () => {
+    try {
+      await markComplete({
+        courseId: courseId,
+        topicId: topicId,
+      }).unwrap();
+      router.push(`/courses/${courseId}/topics/${13}`);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong.");
+    }
+  };
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
       <div className="p-4 lg:p-6 bg-slate-200 flex justify-between items-center">
@@ -57,11 +77,17 @@ const Video = ({ data }: { data: any }) => {
             </Link>
           </Button>
 
-          <Button type="button" variant="secondary" asChild>
-            <Link href="/course">
+          <Button
+            type="button"
+            variant="secondary"
+            asChild
+            onClick={handleNext}
+            disabled={markCompleteLoading}
+          >
+            <div>
               Next
               <ChevronRight className="size-5" />
-            </Link>
+            </div>
           </Button>
         </div>
       </div>

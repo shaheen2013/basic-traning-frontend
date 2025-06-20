@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ChevronLeft,
   ChevronRight,
@@ -6,9 +7,20 @@ import {
   TextDescription,
 } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { formatSecondsToReadableTime } from "@/lib/utils";
+import moment from "moment";
 import Link from "next/link";
 
-const LiveClass = () => {
+const LiveClass = ({ data }: { data: any }) => {
+  const calculateTimeLeft = (startDate: string, startTime: string): string => {
+    const combinedDateTime = moment(`${startDate} ${startTime}`);
+    const now = moment();
+    const diffSeconds = combinedDateTime.diff(now, "seconds");
+
+    if (diffSeconds <= 0) return "Expired";
+    return `Left ${formatSecondsToReadableTime(diffSeconds)}`;
+  };
+
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
       <div className="p-4 lg:p-6 bg-slate-200 flex justify-between items-center">
@@ -43,26 +55,29 @@ const LiveClass = () => {
             <div className="flex justify-between items-center">
               <div className="flex flex-col gap-2">
                 <h3 className="text-primary text-xl font-semibold">
-                  Live class name is here
+                  {data.title}
                 </h3>
                 <div className="flex gap-4 items-center flex-wrap">
                   <div className="inline-flex items-center gap-1">
                     <HourGlass className="size-5 text-blue-600" />
                     <span className="text-slate-700 text-sm font-normal">
-                      Left 5:00 Minuets
+                      {calculateTimeLeft(data.start_date, data.start_time)}
                     </span>
                   </div>
                   <div className="inline-flex items-center gap-1">
                     <Clock className="size-5 text-blue-600" />
                     <span className="text-slate-700 text-sm font-normal">
-                      April 8, 2025, 09:00PM
+                      {moment(data.start_date).format("MMMM D, YYYY")},{" "}
+                      {moment(data.time).format("hh:mm A")}
                     </span>
                   </div>
                 </div>
               </div>
-              <Button variant="secondary">
-                Join Live Class
-                <ChevronRight className="size-5" />
+              <Button variant="secondary" asChild>
+                <Link href={data.zoom_link} target="_blank">
+                  Join Live Class
+                  <ChevronRight className="size-5" />
+                </Link>
               </Button>
             </div>
             <div className="flex flex-col gap-2">
@@ -70,7 +85,6 @@ const LiveClass = () => {
                 Instructions
               </h4>
               <ul className="text-slate-700 text-base font-normal">
-                <li>Time Limit: 5 minutes </li>
                 <li>One Sitting Only – You cannot pause or resume later </li>
                 <li>
                   All Questions Required – You must attempt every question
@@ -87,10 +101,7 @@ const LiveClass = () => {
             <h3 className="text-primary text-lg font-semibold">Overview</h3>
           </div>
           <p className="text-slate-700 text-base font-normal">
-            This lesson covers [brief summary of what the lesson includes].
-            Learners will explore key concepts such as [key topics] and get
-            hands-on experience through [activity/project/demo]. This lesson
-            builds foundational knowledge for the upcoming modules.
+            {data.description}
           </p>
         </div>
       </div>

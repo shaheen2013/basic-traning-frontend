@@ -5,7 +5,7 @@ export const courseEnrollApi = baseApi.injectEndpoints({
     getCourse: builder.mutation({
       query: ({ courseId }) => ({
         url: `courses/${courseId}/enroll`,
-        method: "GET",
+        method: "POST",
       }),
     }),
   }),

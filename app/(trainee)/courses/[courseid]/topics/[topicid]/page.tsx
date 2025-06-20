@@ -8,8 +8,8 @@ import { Loader } from "@/components/partials";
 const Course = () => {
   const params = useParams();
   const { data, isLoading, isFetching, isError } = useGetCoursesVideoQuery({
-    courseId: 1,
-    topicId: params.id as string,
+    courseId: typeof params.courseid === "string" ? params.courseid : "",
+    topicId: typeof params.topicid === "string" ? params.topicid : "",
   });
 
   const courseData = data?.data;
@@ -22,7 +22,7 @@ const Course = () => {
   return (
     <>
       {courseStatus === "media" && <Video data={courseData} />}
-      {courseStatus === "live-class" && <LiveClass data={courseData} />}
+      {courseStatus === "zoom" && <LiveClass data={courseData} />}
       {courseStatus === "quiz" && <Quiz data={courseData} />}
       {courseStatus === "assignment" && <Assignment data={courseData} />}
       {courseStatus === "preview" && <Preview data={courseData} />}

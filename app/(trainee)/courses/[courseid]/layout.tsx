@@ -31,8 +31,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader, Modal } from "@/components/partials";
 import { useState } from "react";
-import { DayProgress } from "./[id]/components";
 import { useGetModulesQuery } from "@/features/course/modulesApi";
+import { DayProgress } from "./topics/[topicid]/components";
 
 export default function CourseLayout({
   children,
@@ -41,9 +41,11 @@ export default function CourseLayout({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
+  const courseId = params.courseid;
+  const topicId = params.topicid;
 
   const { data, isLoading, isFetching, isError } = useGetModulesQuery({
-    id: 1,
+    id: courseId,
   });
 
   const modules = data?.data;
@@ -51,14 +53,11 @@ export default function CourseLayout({
   if (isLoading || isFetching || isError) {
     return <Loader />;
   }
-  const courseContentId = typeof params.id === "string" ? params.id : "";
 
   const { currentWeek, currentDay } = getCurrentWeekAndDay(
-    courseContentId,
+    topicId as string,
     modules ?? { weeks: [] }
   );
-  console.log("Current Week:", currentWeek);
-  console.log("Current Day:", currentDay);
 
   const courseContent = () => {
     return (
@@ -121,7 +120,7 @@ export default function CourseLayout({
                                 {day?.topics?.map((topic: any) => {
                                   const isCompleted = topic?.isCompleted;
                                   const isActive =
-                                    topic.id === Number(params.id);
+                                    topic.id === Number(params.topicid);
 
                                   return (
                                     <Link
@@ -172,7 +171,7 @@ export default function CourseLayout({
                                   (() => {
                                     const isCompleted = day.quizzes.isCompleted;
                                     const isActive =
-                                      day.quizzes.id === Number(params.id);
+                                      day.quizzes.id === Number(params.topicid);
 
                                     const timeLimit = day.quizzes.timeLimit;
 
