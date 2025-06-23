@@ -1,24 +1,36 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { Assignment, LiveClass, Preview, Quiz, Video } from "./components";
+import {
+  Assignment,
+  LiveClass,
+  Lock,
+  Preview,
+  Quiz,
+  Video,
+} from "./components";
 import { useGetCoursesVideoQuery } from "@/features/course/videoApi";
 import { Loader } from "@/components/partials";
 
 const Course = () => {
   const params = useParams();
-  const { data, isLoading, isFetching, isError } = useGetCoursesVideoQuery({
-    courseId: typeof params.courseid === "string" ? params.courseid : "",
-    topicId: typeof params.topicid === "string" ? params.topicid : "",
+  const courseId = params.courseid;
+  const topicId = params.topicid;
+  const { data, isLoading, isFetching } = useGetCoursesVideoQuery({
+    courseId: courseId,
+    topicId: topicId,
   });
 
   const courseData = data?.data;
 
   const courseStatus = courseData?.type;
 
-  if (isLoading || isFetching || isError) {
+  if (isLoading || isFetching) {
     return <Loader />;
   }
+
+  if (false) return <Lock />;
+
   return (
     <>
       {courseStatus === "media" && <Video data={courseData} />}
