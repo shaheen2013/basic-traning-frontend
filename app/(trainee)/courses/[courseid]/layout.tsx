@@ -107,7 +107,7 @@ export default function CourseLayout({
                           >
                             <AccordionTrigger className="px-4 py-3 bg-slate-100 rounded-none">
                               <h3 className="text-primary text-base font-medium">
-                                Day {day.dayNumber}: {day.title}
+                                {day.title}
                               </h3>
                             </AccordionTrigger>
 

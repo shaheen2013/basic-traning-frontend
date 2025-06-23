@@ -14,7 +14,7 @@ const LockLesson = () => {
       </div>
       <div className="flex flex-col items-center justify-center gap-6 px-4 lg:px-6 py-12">
         <div className="flex flex-col items-center gap-4 text-center">
-          <Lock className="size-16" />
+          <Lock className="size-16 text-blue-600" />
           <h3 className="text-xl font-bold text-gray-800">Lesson Locked</h3>
           <p className="text-gray-600 max-w-md">
             Please complete the previous lesson to unlock this content.

@@ -35,6 +35,13 @@ const LiveClass = ({ data }: { data: any }) => {
     return `Left ${formatSecondsToReadableTime(diffSeconds)}`;
   };
 
+  const isEndClass = (start_date: string, start_time: string) => {
+    const combinedDateTime = moment(`${start_date} ${start_time}`);
+    const now = moment();
+    const diffSeconds = combinedDateTime.diff(now, "seconds");
+    if (diffSeconds <= 0) return true;
+    return false;
+  };
   const handleMarkComplete = async () => {
     try {
       await markComplete({
@@ -65,7 +72,10 @@ const LiveClass = ({ data }: { data: any }) => {
             type="button"
             variant="secondary"
             onClick={handleMarkComplete}
-            disabled={markCompleteLoading}
+            disabled={
+              markCompleteLoading ||
+              !isEndClass(data.start_date, data.start_time)
+            }
           >
             <CheckCircleMarkOutline className="size-5" /> Mark As Complete
           </Button>
