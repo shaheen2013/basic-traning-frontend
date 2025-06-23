@@ -10,6 +10,7 @@ import { useRef } from "react";
 import { useMarkCompleteMutation } from "@/features/course/markComplete";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import LockLesson from "../lock";
 
 const Video = ({ data }: { data: any }) => {
   const params = useParams();
@@ -52,7 +53,10 @@ const Video = ({ data }: { data: any }) => {
       toast.error(error?.data?.message || "Something went wrong.");
     }
   };
-
+  // If previous lesson isn't completed, show lock screen
+  // if (true) {
+  //   return <LockLesson />;
+  // }
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
       <div className="p-4 lg:p-6 bg-slate-200 flex justify-between items-center">
