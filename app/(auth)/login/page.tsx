@@ -17,7 +17,7 @@ export default function Login() {
   const [login, { isLoading }] = useLoginMutation();
   const { handleSubmit, control, setError } = useForm({
     defaultValues: {
-      email: "test@example.com",
+      email: "trainee@example.com",
       password: "password",
       remember: false,
     },

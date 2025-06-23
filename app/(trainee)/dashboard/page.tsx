@@ -22,7 +22,7 @@ import { isEmptyObject } from "@/lib/utils";
 
 const Dashboard = () => {
   const router = useRouter();
-  const { data, isLoading, isFetching, isError } = useGetCourseSummaryQuery({});
+  const { data, isLoading, isFetching } = useGetCourseSummaryQuery({});
 
   const courseSummary = data?.data;
   const [getCourse, { isLoading: isGetCourseLoading }] = useGetCourseMutation();
@@ -41,11 +41,10 @@ const Dashboard = () => {
     }
   };
 
-  if (isLoading || isFetching || isError) {
-    return <Loader />;
-  }
+  if (isLoading || isFetching) return <Loader />;
 
-  if (isEmptyObject(courseSummary)) return <CourseNotFound />;
+  if (!isLoading && !isFetching && isEmptyObject(courseSummary))
+    return <CourseNotFound />;
 
   return (
     <div className="container my-4 lg:my-6 flex flex-col gap-6 lg:gap-8">

@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "10.0.0.100",
       },
+      {
+        hostname: "admin-staging.tccbasictraining.com",
+      },
     ],
   },
 };

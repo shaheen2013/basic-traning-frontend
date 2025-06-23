@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/popover";
 import LogOutConfirmation from "@/components/partials/modal/log-out-confirmation";
 import { useMe } from "@/services/hook";
+import Loader from "@/components/partials/loader";
 
 const icons = [
   {
@@ -57,7 +58,10 @@ const CoursMenusWithIcons = courseMenus.map((menu) => ({
 }));
 
 const Header = () => {
-  const { data: userData } = useMe({});
+  const { data: userData, isLoading, isFetching } = useMe({});
+
+  if (isLoading || isFetching) return <Loader />;
+
   return (
     <div className="bg-primary font-inter">
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
