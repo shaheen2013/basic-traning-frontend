@@ -23,7 +23,7 @@ const Course = () => {
 
   const courseData = data?.data;
 
-  const courseStatus = courseData?.type;
+  const courseStatus = "assignment";
 
   if (isLoading || isFetching) {
     return <Loader />;

@@ -118,8 +118,7 @@ export default function CourseLayout({
                                 {/* Topics */}
                                 {day?.topics?.map((topic: any) => {
                                   const isCompleted = topic?.isCompleted;
-                                  const isActive =
-                                    topic.id === Number(params.topicid);
+                                  const isActive = topic.id === Number(topicId);
                                   const isLocked = !isCompleted && !isActive;
 
                                   return (
@@ -190,7 +189,9 @@ export default function CourseLayout({
                                   (() => {
                                     const isCompleted = day.quizzes.isCompleted;
                                     const isActive =
-                                      day.quizzes.id === Number(params.topicid);
+                                      day.id === Number(courseId) &&
+                                      topicId === "quiz";
+
                                     const isLocked = !isCompleted && !isActive;
                                     return (
                                       <Link href="quiz" className="px-4">
@@ -222,18 +223,18 @@ export default function CourseLayout({
                                       </Link>
                                     );
                                   })()}
-                                {/* Assessment */}
+                                {/* assignment */}
                                 {day?.assignment?.hasAssignment &&
                                   (() => {
                                     const isCompleted =
                                       day.assignment.isCompleted;
                                     const isActive =
-                                      day.assignment.id ===
-                                      Number(params.topicid);
+                                      day.id === Number(courseId) &&
+                                      topicId === "assignment";
                                     const isLocked = !isCompleted && !isActive;
 
                                     return (
-                                      <Link href="assessment" className="px-4">
+                                      <Link href="assignment" className="px-4">
                                         <div className="flex gap-2">
                                           {/* Status Icon */}
                                           {isLocked ? (
@@ -255,7 +256,7 @@ export default function CourseLayout({
                                                 }
                                               )}
                                             >
-                                              Assessment
+                                              assignment
                                             </h3>
                                           </div>
                                         </div>
