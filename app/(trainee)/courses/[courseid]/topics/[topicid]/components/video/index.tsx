@@ -43,11 +43,11 @@ const Video = ({ data }: { data: any }) => {
 
   const handleMarkComplete = async () => {
     try {
-      await markComplete({
+      const response = await markComplete({
         courseId: courseId,
         topicId: topicId,
       }).unwrap();
-      router.push(`/courses/${courseId}/topics/${13}`);
+      router.push(`/courses/${courseId}/topics/${response?.data?.next_lesson}`);
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong.");
     }

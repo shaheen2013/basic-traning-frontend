@@ -16,20 +16,21 @@ const Course = () => {
   const params = useParams();
   const courseId = params.courseid;
   const topicId = params.topicid;
-  const { data, isLoading, isFetching } = useGetCoursesVideoQuery({
-    courseId: courseId,
-    topicId: topicId,
-  });
+  const { data, isLoading, isFetching, isError, error } =
+    useGetCoursesVideoQuery({
+      courseId: courseId,
+      topicId: topicId,
+    });
 
   const courseData = data?.data;
 
-  const courseStatus = "assignment";
+  const courseStatus = courseData?.type;
 
   if (isLoading || isFetching) {
     return <Loader />;
   }
 
-  if (false) return <Lock />;
+  if (isError && "status" in error && error.status === 403) return <Lock />;
 
   return (
     <>

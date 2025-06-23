@@ -35,20 +35,23 @@ const LiveClass = ({ data }: { data: any }) => {
     return `Left ${formatSecondsToReadableTime(diffSeconds)}`;
   };
 
-  const isEndClass = (start_date: string, start_time: string) => {
-    const combinedDateTime = moment(`${start_date} ${start_time}`);
-    const now = moment();
-    const diffSeconds = combinedDateTime.diff(now, "seconds");
-    if (diffSeconds <= 0) return true;
-    return false;
+  const isEndClass = (
+    start_date: string,
+    start_time: string,
+    durationHours: number = 1
+  ) => {
+    const classStart = moment(`${start_date} ${start_time}`);
+    const classEnd = classStart.clone().add(durationHours, "hours");
+    return moment().isAfter(classEnd);
   };
+
   const handleMarkComplete = async () => {
     try {
-      await markComplete({
+      const response = await markComplete({
         courseId: courseId,
         topicId: topicId,
       }).unwrap();
-      router.push(`/courses/${courseId}/topics/${topicId}`);
+      router.push(`/courses/${courseId}/topics/${response?.data?.next_lesson}`);
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong.");
     }
@@ -61,11 +64,9 @@ const LiveClass = ({ data }: { data: any }) => {
           My Course
         </h2>
 
-        {data?.completed ? (
-          <Button type="button" variant="secondary" asChild disabled>
-            <div>
-              <CheckCircleMarkOutline className="size-5" /> Completed
-            </div>
+        {data?.status === "completed" ? (
+          <Button type="button" variant="secondary" disabled>
+            <CheckCircleMarkOutline className="size-5" /> Completed
           </Button>
         ) : (
           <Button
@@ -108,12 +109,14 @@ const LiveClass = ({ data }: { data: any }) => {
                   </div>
                 </div>
               </div>
-              <Button variant="secondary" asChild>
-                <Link href={data.zoom_link} target="_blank">
-                  Join Live Class
-                  <ChevronRight className="size-5" />
-                </Link>
-              </Button>
+              {!isEndClass(data.start_date, data.start_time) && (
+                <Button variant="secondary" asChild>
+                  <Link href={data.zoom_link} target="_blank">
+                    Join Live Class
+                    <ChevronRight className="size-5" />
+                  </Link>
+                </Button>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="text-primary text-base font-semibold">

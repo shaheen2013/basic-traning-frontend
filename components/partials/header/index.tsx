@@ -79,7 +79,7 @@ const Header = ({ className }: { className?: string }) => {
               </Link>
             ) : (
               <Link
-                href="/dashboard"
+                href="/my-course"
                 className="text-lg lg:text-xl px-3 lg:px-5 py-2 font-semibold text-white"
               >
                 My Account

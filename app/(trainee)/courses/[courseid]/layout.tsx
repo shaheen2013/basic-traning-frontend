@@ -8,6 +8,7 @@ import {
   cn,
   formatSecondsToReadableTime,
   getCurrentWeekAndDay,
+  textToSlug,
 } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
@@ -78,8 +79,8 @@ export default function CourseLayout({
             <div className="px-4 lg:px-6 flex flex-col gap-2">
               {modules?.weeks?.map((week: any) => (
                 <AccordionItem
-                  key={week.weekNumber}
-                  value={String(week.weekNumber)}
+                  key={week.id + textToSlug(week.title)}
+                  value={String(week.week_number)}
                   className="my-0"
                 >
                   <AccordionTrigger
@@ -102,7 +103,7 @@ export default function CourseLayout({
                       <div className="flex flex-col gap-2">
                         {week?.days?.map((day: any) => (
                           <AccordionItem
-                            key={day.dayNumber}
+                            key={day.dayNumber + textToSlug(day.title)}
                             value={String(day.dayNumber)}
                             className="px-0 border-none my-0 overflow-hidden"
                           >
@@ -117,7 +118,7 @@ export default function CourseLayout({
                               <div className="mt-2.5 flex flex-col gap-2.5">
                                 {/* Topics */}
                                 {day?.topics?.map((topic: any) => {
-                                  const isCompleted = topic?.isCompleted;
+                                  const isCompleted = topic?.is_completed;
                                   const isActive = topic.id === Number(topicId);
                                   const isLocked = !isCompleted && !isActive;
 
@@ -185,9 +186,10 @@ export default function CourseLayout({
                                   );
                                 })}
                                 {/* quiz */}
-                                {day?.quizzes?.hasQuizzes &&
+                                {day?.quizzes?.has_quizzes &&
                                   (() => {
-                                    const isCompleted = day.quizzes.isCompleted;
+                                    const isCompleted =
+                                      day.quizzes.is_completed;
                                     const isActive =
                                       day.id === Number(courseId) &&
                                       topicId === "quiz";
@@ -224,10 +226,10 @@ export default function CourseLayout({
                                     );
                                   })()}
                                 {/* assignment */}
-                                {day?.assignment?.hasAssignment &&
+                                {day?.assignment?.has_assignment &&
                                   (() => {
                                     const isCompleted =
-                                      day.assignment.isCompleted;
+                                      day.assignment.is_completed;
                                     const isActive =
                                       day.id === Number(courseId) &&
                                       topicId === "assignment";
