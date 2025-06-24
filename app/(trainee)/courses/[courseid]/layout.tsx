@@ -23,6 +23,7 @@ import {
   Hamburger,
   Dismiss,
   Lock,
+  Unlock,
 } from "@/components/icons";
 
 import { Button } from "@/components/ui/button";
@@ -53,9 +54,19 @@ export default function CourseLayout({
 
   console.log("modulesData", modulesData);
 
-  const currentWeek = modulesData?.course?.ongoing_week;
-  const currentDay = modulesData?.course?.ongoing_day;
-  console.log("currentDay", currentDay);
+  const currentWeekID = modulesData?.course?.ongoing_week;
+  const currentDayID = modulesData?.course?.ongoing_day;
+  const currentTopicID = modulesData?.course?.ongoing_lesson;
+  console.log("currentDayID", currentDayID);
+
+  const currentDayData = modulesData?.weeks
+    ?.find((week: any) => week.id === currentWeekID)
+    ?.days?.find((day: any) => day.id === currentDayID);
+
+  const totalDays = modulesData?.weeks?.reduce(
+    (total: number, week: any) => total + (week.days?.length || 0),
+    0
+  );
 
   // Move state updates here
   useEffect(() => {
@@ -80,12 +91,12 @@ export default function CourseLayout({
         </div>
 
         {/* Weeks and Days Accordion */}
-        {currentDay && currentWeek && (
+        {currentDayID && currentWeekID && (
           <div className="overflow-y-auto max-h-[calc(100vh-300px)] lg:max-h-[calc(100vh-350px)] lg-4 lg:pb-6">
             <Accordion
               type="single"
               collapsible
-              defaultValue={String(currentWeek)}
+              defaultValue={String(currentWeekID)}
             >
               <div className="px-4 lg:px-6 flex flex-col gap-2">
                 {modulesData?.weeks?.map((week: any) => (
@@ -109,7 +120,7 @@ export default function CourseLayout({
                       <Accordion
                         type="single"
                         collapsible
-                        defaultValue={String(currentDay)}
+                        defaultValue={String(currentDayID)}
                       >
                         <div className="flex flex-col gap-2">
                           {week?.days?.map((day: any) => (
@@ -132,7 +143,12 @@ export default function CourseLayout({
                                     const isCompleted = topic?.is_completed;
                                     const isActive =
                                       topic.id === Number(topicId);
-                                    const isLocked = !isCompleted && !isActive;
+                                    const isUnlock =
+                                      topic.id === currentTopicID &&
+                                      !isActive &&
+                                      !isCompleted;
+                                    const isLocked =
+                                      !isCompleted && !isActive && !isUnlock;
 
                                     return (
                                       <Link
@@ -144,7 +160,9 @@ export default function CourseLayout({
                                       >
                                         <div className="flex gap-2">
                                           {/* Status Icon */}
-                                          {isLocked ? (
+                                          {isUnlock ? (
+                                            <Unlock className="size-6 text-slate-700" />
+                                          ) : isLocked ? (
                                             <Lock className="size-6 text-slate-700" />
                                           ) : isActive ? (
                                             <CheckCircleMarkOutline className="size-6 text-blue-500" />
@@ -305,7 +323,10 @@ export default function CourseLayout({
       <aside className="hidden xl:block w-full max-w-[400px] bg-slate-50 border border-slate-200 rounded-2xl h-fit">
         <div className="flex flex-col gap-4 lg:gap-6">
           <div className="p-4 lg:p-6 bg-slate-200 rounded-t-2xl flex justify-between items-center">
-            <DayProgress />
+            <DayProgress
+              currentDay={currentDayData?.day_number}
+              totalDays={totalDays}
+            />
           </div>
           {courseContent()}
         </div>
