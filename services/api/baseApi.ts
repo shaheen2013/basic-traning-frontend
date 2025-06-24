@@ -40,5 +40,6 @@ export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithAuth,
   tagTypes: ["Me"],
+  refetchOnMountOrArgChange: true,
   endpoints: () => ({}),
 });

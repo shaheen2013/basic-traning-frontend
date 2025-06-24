@@ -8,13 +8,16 @@ import {
 } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useMarkCompleteMutation } from "@/features/course/markComplete";
+import { markTopicCompleted } from "@/features/slice/modules";
 import { formatSecondsToReadableTime } from "@/lib/utils";
 import moment from "moment";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
 const LiveClass = ({ data }: { data: any }) => {
+  const dispatch = useDispatch();
   const params = useParams();
   const router = useRouter();
   const courseId = params.courseid;
@@ -51,6 +54,13 @@ const LiveClass = ({ data }: { data: any }) => {
         courseId: courseId,
         topicId: topicId,
       }).unwrap();
+
+      dispatch(
+        markTopicCompleted({
+          current_lesson: Number(topicId),
+          next_lesson: response?.data?.next_lesson,
+        })
+      );
       router.push(`/courses/${courseId}/topics/${response?.data?.next_lesson}`);
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong.");

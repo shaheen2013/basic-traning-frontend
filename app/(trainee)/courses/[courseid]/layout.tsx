@@ -27,16 +27,19 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Loader, Modal } from "@/components/partials";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetModulesQuery } from "@/features/course/modulesApi";
 import { DayProgress } from "./topics/[topicid]/components";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { shareModules } from "@/features/slice/modules";
 
 export default function CourseLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const courseId = params.courseid;
@@ -46,9 +49,20 @@ export default function CourseLayout({
     id: courseId,
   });
 
-  const modules = data?.data;
-  const currentWeek = modules?.course?.ongoing_week;
-  const currentDay = modules?.course?.ongoing_day;
+  const modulesData = useSelector((state: any) => state.modules);
+
+  console.log("modulesData", modulesData);
+
+  const currentWeek = modulesData?.course?.ongoing_week;
+  const currentDay = modulesData?.course?.ongoing_day;
+  console.log("currentDay", currentDay);
+
+  // Move state updates here
+  useEffect(() => {
+    if (data) {
+      dispatch(shareModules(data.data));
+    }
+  }, [data, dispatch]);
 
   if (isLoading || isFetching) {
     return <Loader />;
@@ -66,214 +80,221 @@ export default function CourseLayout({
         </div>
 
         {/* Weeks and Days Accordion */}
-
-        <div className="overflow-y-auto max-h-[calc(100vh-300px)] lg:max-h-[calc(100vh-350px)] lg-4 lg:pb-6">
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue={String(currentWeek)}
-          >
-            <div className="px-4 lg:px-6 flex flex-col gap-2">
-              {modules?.weeks?.map((week: any) => (
-                <AccordionItem
-                  key={week.id + textToSlug(week.title)}
-                  value={String(week.id)}
-                  className="my-0"
-                >
-                  <AccordionTrigger
-                    icon={
-                      <>
-                        <Plus className="hidden group-data-[state=closed]:block size-4 mt-1 transition-transform" />
-                        <Subtract className="hidden group-data-[state=open]:block size-4 mt-1 transition-transform" />
-                      </>
-                    }
+        {currentDay && currentWeek && (
+          <div className="overflow-y-auto max-h-[calc(100vh-300px)] lg:max-h-[calc(100vh-350px)] lg-4 lg:pb-6">
+            <Accordion
+              type="single"
+              collapsible
+              defaultValue={String(currentWeek)}
+            >
+              <div className="px-4 lg:px-6 flex flex-col gap-2">
+                {modulesData?.weeks?.map((week: any) => (
+                  <AccordionItem
+                    key={week.id + textToSlug(week.title)}
+                    value={String(week.id)}
+                    className="my-0"
                   >
-                    {week.title}
-                  </AccordionTrigger>
-
-                  <AccordionContent>
-                    <Accordion
-                      type="single"
-                      collapsible
-                      defaultValue={String(currentDay)}
+                    <AccordionTrigger
+                      icon={
+                        <>
+                          <Plus className="hidden group-data-[state=closed]:block size-4 mt-1 transition-transform" />
+                          <Subtract className="hidden group-data-[state=open]:block size-4 mt-1 transition-transform" />
+                        </>
+                      }
                     >
-                      <div className="flex flex-col gap-2">
-                        {week?.days?.map((day: any) => (
-                          <AccordionItem
-                            key={day.id + textToSlug(day.title)}
-                            value={String(day.id)}
-                            className="px-0 border-none my-0 overflow-hidden"
-                          >
-                            <AccordionTrigger className="px-4 py-3 bg-slate-100 rounded-none">
-                              <h3 className="text-primary text-base font-medium">
-                                {day.title}
-                              </h3>
-                            </AccordionTrigger>
+                      {week.title}
+                    </AccordionTrigger>
 
-                            <AccordionContent className="bg-slate-100 px-4">
-                              <hr className="border-slate-200" />
-                              <div className="mt-2.5 flex flex-col gap-2.5">
-                                {/* Topics */}
-                                {day?.topics?.map((topic: any) => {
-                                  const isCompleted = topic?.is_completed;
-                                  const isActive = topic.id === Number(topicId);
-                                  const isLocked = !isCompleted && !isActive;
+                    <AccordionContent>
+                      <Accordion
+                        type="single"
+                        collapsible
+                        defaultValue={String(currentDay)}
+                      >
+                        <div className="flex flex-col gap-2">
+                          {week?.days?.map((day: any) => (
+                            <AccordionItem
+                              key={day.id + textToSlug(day.title)}
+                              value={String(day.id)}
+                              className="px-0 border-none my-0 overflow-hidden"
+                            >
+                              <AccordionTrigger className="px-4 py-3 bg-slate-100 rounded-none">
+                                <h3 className="text-primary text-base font-medium">
+                                  {day.title}
+                                </h3>
+                              </AccordionTrigger>
 
-                                  return (
-                                    <Link
-                                      key={topic.id}
-                                      href={
-                                        isLocked ? "#" : topic.id.toString()
-                                      }
-                                      className="px-4"
-                                    >
-                                      <div className="flex gap-2">
-                                        {/* Status Icon */}
-                                        {isLocked ? (
-                                          <Lock className="size-6 text-slate-700" />
-                                        ) : isActive ? (
-                                          <CheckCircleMarkOutline className="size-6 text-blue-500" />
-                                        ) : (
-                                          <CheckCircleMark className="size-6 text-blue-500" />
-                                        )}
+                              <AccordionContent className="bg-slate-100 px-4">
+                                <hr className="border-slate-200" />
+                                <div className="mt-2.5 flex flex-col gap-2.5">
+                                  {/* Topics */}
+                                  {day?.topics?.map((topic: any) => {
+                                    const isCompleted = topic?.is_completed;
+                                    const isActive =
+                                      topic.id === Number(topicId);
+                                    const isLocked = !isCompleted && !isActive;
 
-                                        {/* Content */}
-                                        <div className="flex flex-col gap-0.5">
-                                          <h3
-                                            className={cn(
-                                              "text-base font-medium",
-                                              {
-                                                "text-blue-500": isActive,
-                                                "text-primary": !isActive,
-                                                "text-slate-500": isLocked,
-                                              }
+                                    return (
+                                      <Link
+                                        key={topic.id}
+                                        href={
+                                          isLocked ? "#" : topic.id.toString()
+                                        }
+                                        className="px-4"
+                                      >
+                                        <div className="flex gap-2">
+                                          {/* Status Icon */}
+                                          {isLocked ? (
+                                            <Lock className="size-6 text-slate-700" />
+                                          ) : isActive ? (
+                                            <CheckCircleMarkOutline className="size-6 text-blue-500" />
+                                          ) : (
+                                            <CheckCircleMark className="size-6 text-blue-500" />
+                                          )}
+
+                                          {/* Content */}
+                                          <div className="flex flex-col gap-0.5">
+                                            <h3
+                                              className={cn(
+                                                "text-base font-medium",
+                                                {
+                                                  "text-blue-500": isActive,
+                                                  "text-primary": !isActive,
+                                                  "text-slate-500": isLocked,
+                                                }
+                                              )}
+                                            >
+                                              {topic.title}
+                                            </h3>
+                                            {topic.type === "media" && (
+                                              <div className="flex items-center gap-1">
+                                                <Video className="size-4 text-slate-500" />
+                                                <span className="text-slate-500 text-xs">
+                                                  {formatSecondsToReadableTime(
+                                                    topic?.media_duration
+                                                  )}
+                                                </span>
+                                              </div>
                                             )}
-                                          >
-                                            {topic.title}
-                                          </h3>
-                                          {topic.type === "media" && (
-                                            <div className="flex items-center gap-1">
-                                              <Video className="size-4 text-slate-500" />
-                                              <span className="text-slate-500 text-xs">
-                                                {formatSecondsToReadableTime(
-                                                  topic?.media_duration
-                                                )}
-                                              </span>
-                                            </div>
-                                          )}
-                                          {topic.type === "zoom" && (
-                                            <div className="flex items-center gap-1">
-                                              <Image
-                                                src="/icons/zoom.svg"
-                                                alt="Zoom"
-                                                className="size-5 grayscale-100"
-                                                width={20}
-                                                height={20}
-                                              />
-                                              <span className="text-slate-500 text-xs">
-                                                {formatSecondsToReadableTime(
-                                                  topic?.zoom_duration || 3600
-                                                )}
-                                              </span>
-                                            </div>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </Link>
-                                  );
-                                })}
-                                {/* quiz */}
-                                {day?.quizzes?.has_quizzes &&
-                                  (() => {
-                                    const isCompleted =
-                                      day.quizzes.is_completed;
-                                    const isActive =
-                                      day.id === Number(courseId) &&
-                                      topicId === "quiz";
-
-                                    const isLocked = !isCompleted && !isActive;
-                                    return (
-                                      <Link href="quiz" className="px-4">
-                                        <div className="flex gap-2">
-                                          {/* Status Icon */}
-                                          {isLocked ? (
-                                            <Lock className="size-6 text-slate-700" />
-                                          ) : isActive ? (
-                                            <CheckCircleMarkOutline className="size-6 text-blue-500" />
-                                          ) : (
-                                            <CheckCircleMark className="size-6 text-blue-500" />
-                                          )}
-
-                                          <div className="flex flex-col gap-0.5">
-                                            <h3
-                                              className={cn(
-                                                "text-base font-medium",
-                                                {
-                                                  "text-blue-500": isActive,
-                                                  "text-primary": !isActive,
-                                                  "text-slate-500": isLocked,
-                                                }
-                                              )}
-                                            >
-                                              Quiz
-                                            </h3>
+                                            {topic.type === "zoom" && (
+                                              <div className="flex items-center gap-1">
+                                                <Image
+                                                  src="/icons/zoom.svg"
+                                                  alt="Zoom"
+                                                  className="size-5 grayscale-100"
+                                                  width={20}
+                                                  height={20}
+                                                />
+                                                <span className="text-slate-500 text-xs">
+                                                  {formatSecondsToReadableTime(
+                                                    topic?.zoom_duration || 3600
+                                                  )}
+                                                </span>
+                                              </div>
+                                            )}
                                           </div>
                                         </div>
                                       </Link>
                                     );
-                                  })()}
-                                {/* assignment */}
-                                {day?.assignment?.has_assignment &&
-                                  (() => {
-                                    const isCompleted =
-                                      day.assignment.is_completed;
-                                    const isActive =
-                                      day.id === Number(courseId) &&
-                                      topicId === "assignment";
-                                    const isLocked = !isCompleted && !isActive;
+                                  })}
+                                  {/* quiz */}
+                                  {day?.quizzes?.has_quizzes &&
+                                    (() => {
+                                      const isCompleted =
+                                        day.quizzes.is_completed;
+                                      const isActive =
+                                        day.id === Number(courseId) &&
+                                        topicId === "quiz";
 
-                                    return (
-                                      <Link href="assignment" className="px-4">
-                                        <div className="flex gap-2">
-                                          {/* Status Icon */}
-                                          {isLocked ? (
-                                            <Lock className="size-6 text-slate-700" />
-                                          ) : isActive ? (
-                                            <CheckCircleMarkOutline className="size-6 text-blue-500" />
-                                          ) : (
-                                            <CheckCircleMark className="size-6 text-blue-500" />
-                                          )}
+                                      const isLocked =
+                                        !isCompleted && !isActive;
+                                      return (
+                                        <Link href="quiz" className="px-4">
+                                          <div className="flex gap-2">
+                                            {/* Status Icon */}
+                                            {isLocked ? (
+                                              <Lock className="size-6 text-slate-700" />
+                                            ) : isActive ? (
+                                              <CheckCircleMarkOutline className="size-6 text-blue-500" />
+                                            ) : (
+                                              <CheckCircleMark className="size-6 text-blue-500" />
+                                            )}
 
-                                          <div className="flex flex-col gap-0.5">
-                                            <h3
-                                              className={cn(
-                                                "text-base font-medium",
-                                                {
-                                                  "text-blue-500": isActive,
-                                                  "text-primary": !isActive,
-                                                  "text-slate-500": isLocked,
-                                                }
-                                              )}
-                                            >
-                                              assignment
-                                            </h3>
+                                            <div className="flex flex-col gap-0.5">
+                                              <h3
+                                                className={cn(
+                                                  "text-base font-medium",
+                                                  {
+                                                    "text-blue-500": isActive,
+                                                    "text-primary": !isActive,
+                                                    "text-slate-500": isLocked,
+                                                  }
+                                                )}
+                                              >
+                                                Quiz
+                                              </h3>
+                                            </div>
                                           </div>
-                                        </div>
-                                      </Link>
-                                    );
-                                  })()}
-                              </div>
-                            </AccordionContent>
-                          </AccordionItem>
-                        ))}
-                      </div>
-                    </Accordion>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </div>
-          </Accordion>
-        </div>
+                                        </Link>
+                                      );
+                                    })()}
+                                  {/* assignment */}
+                                  {day?.assignment?.has_assignment &&
+                                    (() => {
+                                      const isCompleted =
+                                        day.assignment.is_completed;
+                                      const isActive =
+                                        day.id === Number(courseId) &&
+                                        topicId === "assignment";
+                                      const isLocked =
+                                        !isCompleted && !isActive;
+
+                                      return (
+                                        <Link
+                                          href="assignment"
+                                          className="px-4"
+                                        >
+                                          <div className="flex gap-2">
+                                            {/* Status Icon */}
+                                            {isLocked ? (
+                                              <Lock className="size-6 text-slate-700" />
+                                            ) : isActive ? (
+                                              <CheckCircleMarkOutline className="size-6 text-blue-500" />
+                                            ) : (
+                                              <CheckCircleMark className="size-6 text-blue-500" />
+                                            )}
+
+                                            <div className="flex flex-col gap-0.5">
+                                              <h3
+                                                className={cn(
+                                                  "text-base font-medium",
+                                                  {
+                                                    "text-blue-500": isActive,
+                                                    "text-primary": !isActive,
+                                                    "text-slate-500": isLocked,
+                                                  }
+                                                )}
+                                              >
+                                                assignment
+                                              </h3>
+                                            </div>
+                                          </div>
+                                        </Link>
+                                      );
+                                    })()}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          ))}
+                        </div>
+                      </Accordion>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </div>
+            </Accordion>
+          </div>
+        )}
       </div>
     );
   };

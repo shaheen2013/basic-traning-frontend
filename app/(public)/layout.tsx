@@ -3,7 +3,6 @@ import { Vollkorn, Inter } from "next/font/google";
 import "../globals.css";
 import { neueHaasDisplay } from "@/public/fonts";
 import { Footer } from "@/components/partials";
-import ReduxProvider from "@/components/partials/provider";
 
 const vollkorn = Vollkorn({
   variable: "--font-vollkorn",
@@ -30,14 +29,12 @@ export default function RootLayout({
       <body
         className={`${neueHaasDisplay.variable} ${vollkorn.variable} ${inter.variable}  antialiased`}
       >
-        <ReduxProvider>
-          <main className="min-h-screen overflow-x-hidden font-neue-haas-display">
-            {children}
-          </main>
+        <main className="min-h-screen overflow-x-hidden font-neue-haas-display">
+          {children}
+        </main>
 
-          {/* Footer component */}
-          <Footer />
-        </ReduxProvider>
+        {/* Footer component */}
+        <Footer />
       </body>
     </html>
   );
