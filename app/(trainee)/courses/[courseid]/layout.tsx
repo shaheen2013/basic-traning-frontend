@@ -4,12 +4,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-import {
-  cn,
-  formatSecondsToReadableTime,
-  getCurrentWeekAndDay,
-  textToSlug,
-} from "@/lib/utils";
+import { cn, formatSecondsToReadableTime, textToSlug } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
   Accordion,
@@ -47,20 +42,17 @@ export default function CourseLayout({
   const courseId = params.courseid;
   const topicId = params.topicid;
 
-  const { data, isLoading, isFetching, isError } = useGetModulesQuery({
+  const { data, isLoading, isFetching } = useGetModulesQuery({
     id: courseId,
   });
 
   const modules = data?.data;
+  const currentWeek = modules?.course?.ongoing_week;
+  const currentDay = modules?.course?.ongoing_day;
 
-  if (isLoading || isFetching || isError) {
+  if (isLoading || isFetching) {
     return <Loader />;
   }
-
-  const { currentWeek, currentDay } = getCurrentWeekAndDay(
-    topicId as string,
-    modules ?? { weeks: [] }
-  );
 
   const courseContent = () => {
     return (
@@ -74,13 +66,18 @@ export default function CourseLayout({
         </div>
 
         {/* Weeks and Days Accordion */}
+
         <div className="overflow-y-auto max-h-[calc(100vh-300px)] lg:max-h-[calc(100vh-350px)] lg-4 lg:pb-6">
-          <Accordion type="multiple" defaultValue={currentWeek?.toString()}>
+          <Accordion
+            type="single"
+            collapsible
+            defaultValue={String(currentWeek)}
+          >
             <div className="px-4 lg:px-6 flex flex-col gap-2">
               {modules?.weeks?.map((week: any) => (
                 <AccordionItem
                   key={week.id + textToSlug(week.title)}
-                  value={String(week.week_number)}
+                  value={String(week.id)}
                   className="my-0"
                 >
                   <AccordionTrigger
@@ -98,13 +95,13 @@ export default function CourseLayout({
                     <Accordion
                       type="single"
                       collapsible
-                      defaultValue={currentDay?.toString()}
+                      defaultValue={String(currentDay)}
                     >
                       <div className="flex flex-col gap-2">
                         {week?.days?.map((day: any) => (
                           <AccordionItem
-                            key={day.dayNumber + textToSlug(day.title)}
-                            value={String(day.dayNumber)}
+                            key={day.id + textToSlug(day.title)}
+                            value={String(day.id)}
                             className="px-0 border-none my-0 overflow-hidden"
                           >
                             <AccordionTrigger className="px-4 py-3 bg-slate-100 rounded-none">
