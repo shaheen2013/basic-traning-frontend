@@ -44,6 +44,7 @@ export default function CourseLayout({
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const courseId = params.courseid;
+  const dayId = params.dayid;
   const topicId = params.topicid;
 
   const { data, isLoading, isFetching } = useGetModulesQuery({
@@ -56,7 +57,8 @@ export default function CourseLayout({
 
   const currentWeekID = modulesData?.course?.ongoing_week;
   const currentDayID = modulesData?.course?.ongoing_day;
-  const currentTopicID = modulesData?.course?.ongoing_lesson;
+  // const currentTopicID = modulesData?.course?.ongoing_lesson;
+  const currentTopicID = "quiz";
   console.log("currentDayID", currentDayID);
 
   const currentDayData = modulesData?.weeks
@@ -221,10 +223,10 @@ export default function CourseLayout({
                                       const isCompleted =
                                         day.quizzes.is_completed;
                                       const isActive =
-                                        day.id === Number(courseId) &&
+                                        day.id === Number(dayId) &&
                                         topicId === "quiz";
                                       const isUnlock =
-                                        day.id === currentTopicID &&
+                                        day.id === Number(dayId) &&
                                         !isActive &&
                                         !isCompleted;
                                       const isLocked =
@@ -271,10 +273,14 @@ export default function CourseLayout({
                                       const isCompleted =
                                         day.assignment.is_completed;
                                       const isActive =
-                                        day.id === Number(courseId) &&
+                                        day.id === Number(dayId) &&
                                         topicId === "assignment";
+                                      const isUnlock =
+                                        day.id === Number(dayId) &&
+                                        !isActive &&
+                                        !isCompleted;
                                       const isLocked =
-                                        !isCompleted && !isActive;
+                                        !isCompleted && !isActive && !isUnlock;
 
                                       return (
                                         <Link

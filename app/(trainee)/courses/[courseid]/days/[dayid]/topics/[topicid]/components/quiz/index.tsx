@@ -1,21 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import Result from "./components/result";
 import Instructions from "./components/instructions";
-import { quizStatus } from "@/app/(trainee)/courses/[courseid]/constant";
+import QuizRunner from "./components/quiz-runner";
+import { useState } from "react";
 
-type QuizStatus = "instructions" | "result";
+const Quiz = ({ data }: { data?: any }) => {
+  const [status, setStatus] = useState(data.status);
 
-const typedQuizStatus = quizStatus as QuizStatus;
-
-const Quiz = () => {
+  const handleStatus = (status: string) => setStatus(status);
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">
       <div className="p-4 lg:p-6 bg-slate-200">
-        <h2 className="font-semibold text-lg lg:text-2xl capitalize text-primary">
-          My Course
-        </h2>
+        <h1 className="font-semibold text-lg lg:text-2xl capitalize text-primary">
+          Quiz
+        </h1>
       </div>
-      {typedQuizStatus === "instructions" && <Instructions />}
-      {typedQuizStatus === "result" && <Result />}
+      {status === "not_started" && (
+        <Instructions data={data} handleStatus={handleStatus} />
+      )}
+      {status === "result" && <Result />}
+      {status === "ongoing" && <QuizRunner />}
     </section>
   );
 };

@@ -8,7 +8,23 @@ export const quizApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    startQuiz: builder.mutation({
+      query: ({ courseId, dayId }) => ({
+        url: `courses/${courseId}/quizzes/${dayId}/start`,
+        method: "POST",
+      }),
+    }),
+    getQuizQuestions: builder.query({
+      query: ({ courseId, dayId }) => ({
+        url: `courses/${courseId}/test/${dayId}/questions`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetQuizQuery } = quizApi;
+export const {
+  useGetQuizQuery,
+  useStartQuizMutation,
+  useGetQuizQuestionsQuery,
+} = quizApi;
