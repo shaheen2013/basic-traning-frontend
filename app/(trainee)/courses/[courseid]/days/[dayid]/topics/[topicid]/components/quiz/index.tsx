@@ -1,6 +1,6 @@
 import Result from "./components/result";
 import Instructions from "./components/instructions";
-import { quizStatus } from "../../../../constant";
+import { quizStatus } from "@/app/(trainee)/courses/[courseid]/constant";
 
 type QuizStatus = "instructions" | "result";
 

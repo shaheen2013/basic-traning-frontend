@@ -34,7 +34,7 @@ export default function Login() {
       const response: any = await login(payload).unwrap();
       if (response.success) {
         setToken(response.data.access_token);
-        router.push("/dashboard");
+        router.push("/my-course");
       }
     } catch (error: any) {
       const errors = error?.data?.errors;

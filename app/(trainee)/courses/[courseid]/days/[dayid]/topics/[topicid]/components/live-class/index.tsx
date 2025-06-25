@@ -61,7 +61,9 @@ const LiveClass = ({ data }: { data: any }) => {
           next_lesson: response?.data?.next_lesson,
         })
       );
-      router.push(`/courses/${courseId}/topics/${response?.data?.next_lesson}`);
+      router.push(
+        `/courses/${courseId}/days/${response?.data?.ongoing_day}/topics/${response?.data?.next_lesson}`
+      );
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong.");
     }

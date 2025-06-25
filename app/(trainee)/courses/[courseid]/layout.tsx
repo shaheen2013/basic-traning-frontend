@@ -30,10 +30,10 @@ import { Button } from "@/components/ui/button";
 import { Loader, Modal } from "@/components/partials";
 import { useEffect, useState } from "react";
 import { useGetModulesQuery } from "@/features/course/modulesApi";
-import { DayProgress } from "./topics/[topicid]/components";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { shareModules } from "@/features/slice/modules";
+import { DayProgress } from "./days/[dayid]/topics/[topicid]/components";
 
 export default function CourseLayout({
   children,
@@ -231,10 +231,15 @@ export default function CourseLayout({
                                         !isCompleted && !isActive && !isUnlock;
 
                                       return (
-                                        <Link href="quiz" className="px-4">
+                                        <Link
+                                          href={isLocked ? "#" : "quiz"}
+                                          className="px-4"
+                                        >
                                           <div className="flex gap-2">
                                             {/* Status Icon */}
-                                            {isLocked ? (
+                                            {isUnlock ? (
+                                              <Unlock className="size-6 text-slate-700" />
+                                            ) : isLocked ? (
                                               <Lock className="size-6 text-slate-700" />
                                             ) : isActive ? (
                                               <CheckCircleMarkOutline className="size-6 text-blue-500" />
@@ -346,7 +351,11 @@ export default function CourseLayout({
           >
             <Hamburger className="text-primary size-5" />
           </Button>
-          <DayProgress className="flex-1" />
+          <DayProgress
+            className="flex-1"
+            currentDay={currentDayData?.day_number}
+            totalDays={totalDays}
+          />
 
           <Modal
             open={isOpen}
@@ -366,7 +375,11 @@ export default function CourseLayout({
                 >
                   <Dismiss className="text-primary size-5" />
                 </Button>
-                <DayProgress className="flex-1" />
+                <DayProgress
+                  className="flex-1"
+                  currentDay={currentDayData?.day_number}
+                  totalDays={totalDays}
+                />
               </div>
               {courseContent()}
             </div>

@@ -42,7 +42,7 @@ const MyCourse = () => {
       }).unwrap();
 
       router.push(
-        `/courses/${courseSummary?.id}/topics/${courseSummary?.ongoing_lesson}`
+        `/courses/${courseSummary?.id}/days/${courseSummary?.ongoing_day}/topics/${courseSummary?.ongoing_lesson}`
       );
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong.");
@@ -134,7 +134,7 @@ const MyCourse = () => {
                 {courseSummary?.status === "ongoing" && (
                   <Button variant="secondary" asChild>
                     <Link
-                      href={`/courses/${courseSummary?.id}/topics/${courseSummary?.ongoing_lesson}`}
+                      href={`/courses/${courseSummary?.id}/days/${courseSummary?.ongoing_day}/topics/${courseSummary?.ongoing_lesson}`}
                     >
                       Continue Course
                       <ChevronRight className="size-5 text-white" />
