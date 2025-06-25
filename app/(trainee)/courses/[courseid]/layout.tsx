@@ -223,9 +223,13 @@ export default function CourseLayout({
                                       const isActive =
                                         day.id === Number(courseId) &&
                                         topicId === "quiz";
-
+                                      const isUnlock =
+                                        day.id === currentTopicID &&
+                                        !isActive &&
+                                        !isCompleted;
                                       const isLocked =
-                                        !isCompleted && !isActive;
+                                        !isCompleted && !isActive && !isUnlock;
+
                                       return (
                                         <Link href="quiz" className="px-4">
                                           <div className="flex gap-2">
