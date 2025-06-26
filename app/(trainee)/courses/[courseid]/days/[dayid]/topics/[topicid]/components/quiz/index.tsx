@@ -20,7 +20,7 @@ const Quiz = ({ data }: { data?: any }) => {
       {status === "not_started" && (
         <Instructions data={data} handleStatus={handleStatus} />
       )}
-      {status === "result" && <Result />}
+      {status === "completed" && <Result />}
       {status === "ongoing" && <QuizRunner />}
     </section>
   );
