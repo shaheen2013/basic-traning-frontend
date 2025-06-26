@@ -685,3 +685,57 @@ export default function StartQuiz() {
     </section>
   );
 }
+
+
+ {/* Multiple Select */}
+        {/* {currentQuiz.questions.type === "multiple" && (
+          <Controller
+            name="answer"
+            control={control}
+            rules={{
+              validate: (value) =>
+                (value as string[])?.length > 0 ||
+                "Please select at least one option",
+            }}
+            render={({ field, fieldState: { error } }) => {
+              const handleCheckboxChange = (
+                checked: boolean,
+                value: string
+              ) => {
+                const current = (field.value as string[]) || [];
+                if (checked) {
+                  field.onChange([...current, value]);
+                } else {
+                  field.onChange(current.filter((v) => v !== value));
+                }
+              };
+
+              return (
+                <>
+                  {currentQuiz.questions.options.map((option) => (
+                    <div
+                      key={option.id}
+                      className="flex items-center gap-2 py-4 px-4 lg:px-6 border-t border-slate-200 last:border-b"
+                    >
+                      <Checkbox
+                        id={`option-${option.id}`}
+                        checked={(field.value as string[])?.includes(option.id)}
+                        onCheckedChange={(checked) =>
+                          handleCheckboxChange(checked as boolean, option.id)
+                        }
+                      />
+                      <Label htmlFor={`option-${option.id}`}>
+                        {option.value}
+                      </Label>
+                    </div>
+                  ))}
+                  {error && (
+                    <span className="text-sm text-red-500 block m-2">
+                      {error.message}
+                    </span>
+                  )}
+                </>
+              );
+            }}
+          />
+        )} */}

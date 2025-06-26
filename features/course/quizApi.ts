@@ -20,6 +20,13 @@ export const quizApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    submitQuizAnswer: builder.mutation({
+      query: ({ course_id, test_id, payload }) => ({
+        url: `courses/${course_id}/test/${test_id}/submit-answer`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
@@ -27,4 +34,5 @@ export const {
   useGetQuizQuery,
   useStartQuizMutation,
   useGetQuizQuestionsQuery,
+  useSubmitQuizAnswerMutation,
 } = quizApi;
