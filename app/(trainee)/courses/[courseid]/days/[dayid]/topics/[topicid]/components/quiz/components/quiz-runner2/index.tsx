@@ -1,39 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QuestionCircle, Timer } from "@/components/icons";
-import { Loader } from "@/components/partials";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
-import {
-  useGetQuizQuestionsQuery,
-  useSubmitQuizAnswerMutation,
-} from "@/features/course/quizApi";
 import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import MatchQuestionItem from "./components/matchQuestion";
+import { test } from "./components/const";
 
 const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const params = useParams();
   const courseID = params.courseid;
-  const dayID = params.dayid;
 
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
   const [currentQuizCount, setCurrentQuizCount] = useState(1);
 
-  const { data, isLoading, isFetching } = useGetQuizQuestionsQuery({
-    courseId: courseID,
-    dayId: dayID,
-  });
-
-  const [submitQuizAnswer, { isLoading: isSubmitting }] =
-    useSubmitQuizAnswerMutation();
-
-  const test = data?.data?.test_paper;
   const totalQuiz = test?.total_quiz || 0;
   const currentQuiz = test?.quizzes?.[currentQuizIndex];
 
@@ -55,7 +40,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
             : { [currentQuiz.questions.id]: "" }
           : {},
     },
-    mode: "onSubmit",
+    mode: "onChange",
   });
 
   console.log("errors", errors);
@@ -89,7 +74,12 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         },
       };
 
-      const response = await submitQuizAnswer(submissionData).unwrap();
+      // const response = await submitQuizAnswer(submissionData).unwrap();
+      const response = {
+        data: {
+          test_completed: false,
+        },
+      };
       if (response.data.test_completed === true) {
         handleStatus("completed");
       }
@@ -118,8 +108,6 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
       toast.error(error.data.message || "Something went wrong.");
     }
   };
-
-  if (isLoading || isFetching) return <Loader />;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -265,7 +253,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
 
         {/* Submit button */}
         <div className="flex justify-end px-4 lg:px-6 mt-6">
-          <Button type="submit" disabled={isSubmitting} variant={"secondary"}>
+          <Button type="submit" variant={"secondary"}>
             Submit Answer
           </Button>
         </div>
