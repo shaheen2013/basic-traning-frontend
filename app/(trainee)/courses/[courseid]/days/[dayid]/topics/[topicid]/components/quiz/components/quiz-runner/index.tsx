@@ -51,6 +51,12 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       answer: [],
+      answers:
+        currentQuiz?.type === "matching"
+          ? Object.fromEntries(
+              currentQuiz.questions.map((q: any) => [q.id, ""])
+            )
+          : {},
     },
     mode: "onChange",
   });
@@ -132,7 +138,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         </div>
         <div className="flex gap-2 text-blue-500">
           <Timer className="size-5" />
-          Time left {formatSecondsToReadableTime(currentQuiz.time_limit * 60)}
+          {/* Time left {formatSecondsToReadableTime(currentQuiz.time_limit * 60)} */}
         </div>
       </div>
 
@@ -237,6 +243,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         )}
 
         {/* Match Type */}
+        {/* Match Type */}
         {currentQuiz.type === "matching" && (
           <div className="space-y-4">
             {currentQuiz?.questions?.map((question: any) => (
@@ -252,25 +259,45 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
                     name={`answers.${question.id}`}
                     control={control}
                     rules={{ required: "Please select a match" }}
-                    render={({ field, fieldState: { error } }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value as unknown as string}
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Select match" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {question.options.map((option: any) => (
-                              <SelectItem key={option.id} value={option.id}>
-                                {option.value}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    )}
+                    render={({ field, fieldState: { error } }) => {
+                      // Find the selected option to display its value
+                      const selectedOption = question.options.find(
+                        (opt: any) =>
+                          opt.id.toString() === field.value?.toString()
+                      );
+
+                      return (
+                        <>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <SelectTrigger className="w-[180px]">
+                              <SelectValue placeholder="Select match">
+                                {selectedOption?.value || "Select match"}
+                              </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                {question.options.map((option: any) => (
+                                  <SelectItem
+                                    key={option.id}
+                                    value={option.id.toString()}
+                                  >
+                                    {option.value}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          {error && (
+                            <span className="text-sm text-red-500 block mt-2">
+                              {error.message}
+                            </span>
+                          )}
+                        </>
+                      );
+                    }}
                   />
                 </div>
               </div>
