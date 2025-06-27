@@ -5,14 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import {
   useGetQuizQuestionsQuery,
   useSubmitQuizAnswerMutation,
@@ -22,6 +15,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import MatchQuestionItem from "./components/matchQuestion";
 
 const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const params = useParams();
@@ -46,16 +40,16 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const currentQuiz = test?.quizzes?.[currentQuizIndex];
   const allQuizSubmitted = submittedQuiz.length === totalQuiz;
 
-  const [timeLeft, setTimeLeft] = useState(currentQuiz?.time_limit || 0);
-
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       answer: [],
       answers:
         currentQuiz?.type === "matching"
-          ? Object.fromEntries(
-              currentQuiz.questions.map((q: any) => [q.id, ""])
-            )
+          ? Array.isArray(currentQuiz.questions)
+            ? Object.fromEntries(
+                currentQuiz.questions.map((q: any) => [q.id, ""])
+              )
+            : { [currentQuiz.questions.id]: "" }
           : {},
     },
     mode: "onChange",
@@ -106,25 +100,6 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (!currentQuiz?.time_limit || isSubmitting) return;
-
-  //   const timer = setInterval(() => {
-  //     setTimeLeft((prev: any) => {
-  //       if (prev <= 1) {
-  //         clearInterval(timer);
-  //         if (!isSubmitting) {
-  //           handleSubmit(onSubmit)();
-  //         }
-  //         return 0;
-  //       }
-  //       return prev - 1;
-  //     });
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, [currentQuizIndex, currentQuiz?.time_limit, isSubmitting]);
-
   if (isLoading || isFetching) return <Loader />;
 
   return (
@@ -138,7 +113,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         </div>
         <div className="flex gap-2 text-blue-500">
           <Timer className="size-5" />
-          {/* Time left {formatSecondsToReadableTime(currentQuiz.time_limit * 60)} */}
+          Time left {formatSecondsToReadableTime(currentQuiz?.time_limit * 60)}
         </div>
       </div>
 
@@ -243,65 +218,24 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         )}
 
         {/* Match Type */}
-        {/* Match Type */}
         {currentQuiz.type === "matching" && (
           <div className="space-y-4">
-            {currentQuiz?.questions?.map((question: any) => (
-              <div
-                key={question.id}
-                className="py-4 px-4 lg:px-6 border-t border-slate-200 flex flex-col last:border-b"
-              >
-                <div className="flex justify-between items-center gap-4">
-                  <h4 className="text-slate-700 text-base font-medium">
-                    {question.title}
-                  </h4>
-                  <Controller
-                    name={`answers.${question.id}`}
-                    control={control}
-                    rules={{ required: "Please select a match" }}
-                    render={({ field, fieldState: { error } }) => {
-                      // Find the selected option to display its value
-                      const selectedOption = question.options.find(
-                        (opt: any) =>
-                          opt.id.toString() === field.value?.toString()
-                      );
-
-                      return (
-                        <>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                          >
-                            <SelectTrigger className="w-[180px]">
-                              <SelectValue placeholder="Select match">
-                                {selectedOption?.value || "Select match"}
-                              </SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                {question.options.map((option: any) => (
-                                  <SelectItem
-                                    key={option.id}
-                                    value={option.id.toString()}
-                                  >
-                                    {option.value}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                          {error && (
-                            <span className="text-sm text-red-500 block mt-2">
-                              {error.message}
-                            </span>
-                          )}
-                        </>
-                      );
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+            {/* Handle both array and object cases for questions */}
+            {Array.isArray(currentQuiz.questions) ? (
+              currentQuiz.questions.map((question: any) => (
+                <MatchQuestionItem
+                  key={question.id}
+                  question={question}
+                  control={control}
+                />
+              ))
+            ) : (
+              <MatchQuestionItem
+                key={currentQuiz.questions.id}
+                question={currentQuiz.questions}
+                control={control}
+              />
+            )}
           </div>
         )}
 
