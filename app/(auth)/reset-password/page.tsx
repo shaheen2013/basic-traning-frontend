@@ -9,9 +9,9 @@ import { Controller, useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useResetPasswordMutation } from "@/features/auth/passwordApi";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
-export default function ResetPassword() {
+function ResetPasswordForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const searchParams = useSearchParams();
@@ -151,5 +151,13 @@ export default function ResetPassword() {
       </div>
       {isOpen && <SuccessResetPassword />}
     </>
+  );
+}
+
+export default function ResetPassword() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }

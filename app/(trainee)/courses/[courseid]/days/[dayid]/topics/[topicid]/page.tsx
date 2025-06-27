@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useParams } from "next/navigation";
@@ -108,9 +109,9 @@ const Course = () => {
     <>
       {contentStatus === "media" && <Video data={contentData} />}
       {contentStatus === "zoom" && <LiveClass data={contentData} />}
-      {contentStatus === "preview" && <Preview data={contentData} />}
+      {/* {contentStatus === "preview" && <Preview data={contentData} />} */}
       {contentStatus === "quiz" && <Quiz data={contentData} />}
-      {contentStatus === "assignment" && <Assignment data={contentData} />}
+      {/* {contentStatus === "assignment" && <Assignment data={contentData} />} */}
     </>
   );
 };

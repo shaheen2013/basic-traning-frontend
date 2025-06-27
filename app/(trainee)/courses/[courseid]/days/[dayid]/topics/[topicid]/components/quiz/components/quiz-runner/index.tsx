@@ -37,7 +37,13 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const totalQuiz = test?.total_quiz || 0;
   const currentQuiz = test?.quizzes?.[currentQuizIndex];
 
-  const { control, handleSubmit, reset } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    clearErrors,
+  } = useForm({
     defaultValues: {
       answer: [],
       answers:
@@ -52,6 +58,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
     mode: "onChange",
   });
 
+  console.log("errors", errors);
   const onSubmit = async (formData: any) => {
     if (!currentQuiz) return;
 
@@ -93,7 +100,19 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
 
       if (currentQuizIndex < totalQuiz - 1) {
         setCurrentQuizIndex(currentQuizIndex + 1);
-        reset({ answer: [] });
+        // Completely reset form with proper defaults for next question
+        reset(
+          {
+            answer: currentQuiz.type === "multiple_choice" ? [] : undefined,
+            answers: {},
+          },
+          {
+            keepErrors: false, // Clear all errors
+            keepDefaultValues: false,
+          }
+        );
+        // Clear any potential error state
+        clearErrors();
       }
     } catch (error: any) {
       toast.error(error.data.message || "Something went wrong.");
@@ -128,7 +147,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
           <Controller
             name="answer"
             control={control}
-            rules={{ required: "Please select an option" }}
+            rules={{ required: "Please select an option true or false" }}
             render={({ field, fieldState: { error } }) => (
               <>
                 <RadioGroup
@@ -166,9 +185,14 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
             name="answer"
             control={control}
             rules={{
-              validate: (value) =>
-                (value as number[])?.length > 0 ||
-                "Please select at least one option",
+              validate: (value) => {
+                // Only validate if current question is multiple_choice
+                if (currentQuiz.type !== "multiple_choice") return true;
+                return (
+                  (value as number[])?.length > 0 ||
+                  "Please select at least one option"
+                );
+              },
             }}
             render={({ field, fieldState: { error } }) => {
               const handleCheckboxChange = (
