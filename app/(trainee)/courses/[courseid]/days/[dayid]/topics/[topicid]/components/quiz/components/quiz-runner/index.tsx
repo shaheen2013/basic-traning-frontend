@@ -12,7 +12,7 @@ import {
 } from "@/features/course/quizApi";
 import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import MatchQuestionItem from "./components/matchQuestion";
@@ -23,9 +23,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const dayID = params.dayid;
 
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
-  const [submittedQuiz, setSubmittedQuiz] = useState<number[]>([]);
-
-  console.log("Submitted Quiz:", submittedQuiz);
+  const [currentQuizCount, setCurrentQuizCount] = useState(1);
 
   const { data, isLoading, isFetching } = useGetQuizQuestionsQuery({
     courseId: courseID,
@@ -38,7 +36,6 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const test = data?.data?.test_paper;
   const totalQuiz = test?.total_quiz || 0;
   const currentQuiz = test?.quizzes?.[currentQuizIndex];
-  const allQuizSubmitted = submittedQuiz.length === totalQuiz;
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -89,7 +86,10 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
       if (response.data.test_completed === true) {
         handleStatus("completed");
       }
-      setSubmittedQuiz((prev) => [...prev, currentQuiz.id]);
+
+      if (currentQuizCount !== totalQuiz) {
+        setCurrentQuizCount(currentQuizCount + 1);
+      }
 
       if (currentQuizIndex < totalQuiz - 1) {
         setCurrentQuizIndex(currentQuizIndex + 1);
@@ -108,7 +108,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         <div className="flex gap-2 text-slate-600 items-center">
           <QuestionCircle className="size-5" />
           <h3 className="text-lg font-semibold">
-            Question {submittedQuiz.length}/{totalQuiz}
+            Question {currentQuizCount}/{totalQuiz}
           </h3>
         </div>
         <div className="flex gap-2 text-blue-500">
