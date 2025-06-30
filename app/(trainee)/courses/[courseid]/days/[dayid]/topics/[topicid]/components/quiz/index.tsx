@@ -3,7 +3,7 @@
 
 import Result from "./components/result";
 import Instructions from "./components/instructions";
-import QuizRunner from "./components/quiz-runner2";
+import QuizRunner from "./components/quiz-runner";
 import { useState } from "react";
 
 const Quiz = ({ data }: { data?: any }) => {
@@ -17,12 +17,11 @@ const Quiz = ({ data }: { data?: any }) => {
           Quiz
         </h1>
       </div>
-      {/* {status === "not_started" && (
+      {status === "not_started" && (
         <Instructions data={data} handleStatus={handleStatus} />
       )}
       {status === "completed" && <Result />}
-      {status === "ongoing" && <QuizRunner handleStatus={handleStatus} />} */}
-      <QuizRunner handleStatus={handleStatus} />
+      {status === "ongoing" && <QuizRunner handleStatus={handleStatus} />}
     </section>
   );
 };

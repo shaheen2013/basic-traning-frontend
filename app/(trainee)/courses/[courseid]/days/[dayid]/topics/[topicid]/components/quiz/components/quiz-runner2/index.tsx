@@ -6,11 +6,11 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import MatchQuestionItem from "./components/matchQuestion";
 import { test } from "./components/const";
+import MatchQuestionItem from "./components/matchQuestion";
 
 const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const params = useParams();
@@ -22,49 +22,86 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const totalQuiz = test?.total_quiz || 0;
   const currentQuiz = test?.quizzes?.[currentQuizIndex];
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    clearErrors,
-  } = useForm({
+  const [timeLeft] = useState(currentQuiz?.time_limit * 60 || 0);
+
+  const { control, handleSubmit, reset, clearErrors } = useForm({
     defaultValues: {
-      answer: [],
-      answers:
-        currentQuiz?.type === "matching"
+      single_answer: null,
+      multiple_answer: [],
+      matching_answers: {},
+    },
+    mode: "onChange",
+  });
+
+  // Reset form completely when question changes
+  useEffect(() => {
+    if (!currentQuiz) return;
+
+    reset({
+      single_answer: null,
+      multiple_answer: [],
+      matching_answers:
+        currentQuiz.type === "matching"
           ? Array.isArray(currentQuiz.questions)
             ? Object.fromEntries(
                 currentQuiz.questions.map((q: any) => [q.id, ""])
               )
             : { [currentQuiz.questions.id]: "" }
           : {},
-    },
-    mode: "onChange",
-  });
+    });
+    clearErrors();
+  }, [currentQuiz, reset, clearErrors]);
 
-  console.log("errors", errors);
+  // Timer countdown
+  // useEffect(() => {
+  //   if (!currentQuiz || timeLeft <= 0) return;
+
+  //   const timer = setInterval(() => {
+  //     setTimeLeft((prev) => prev - 1);
+  //   }, 1000);
+
+  //   return () => clearInterval(timer);
+  // }, [currentQuizIndex, currentQuiz, timeLeft]);
+
+  // Reset timer when quiz changes
+  // useEffect(() => {
+  //   setTimeLeft(currentQuiz?.time_limit * 60 || 0);
+  // }, [currentQuiz]);
+
   const onSubmit = async (formData: any) => {
+    console.log("formData clicked", formData);
     if (!currentQuiz) return;
 
-    const questionsPayload =
-      currentQuiz.type === "matching"
-        ? Object.entries(formData.answers || {}).map(
-            ([questionId, optionId]) => ({
-              question_id: Number(questionId),
-              option_id: [optionId].filter(Boolean),
-            })
-          )
-        : [
-            {
-              question_id: currentQuiz.questions.id,
-              option_id: Array.isArray(formData.answer)
-                ? formData.answer
-                : [formData.answer],
-            },
-          ];
-
     try {
+      let questionsPayload;
+
+      if (currentQuiz.type === "matching") {
+        questionsPayload = Object.entries(formData.matching_answers || {}).map(
+          ([questionId, optionId]) => ({
+            question_id: Number(questionId),
+            option_id: [optionId].filter(Boolean),
+          })
+        );
+      } else if (currentQuiz.type === "multiple_choice") {
+        questionsPayload = [
+          {
+            question_id: Array.isArray(currentQuiz.questions)
+              ? currentQuiz.questions[0].id
+              : currentQuiz.questions.id,
+            option_id: formData.multiple_answer || [],
+          },
+        ];
+      } else {
+        questionsPayload = [
+          {
+            question_id: Array.isArray(currentQuiz.questions)
+              ? currentQuiz.questions[0].id
+              : currentQuiz.questions.id,
+            option_id: formData.single_answer ? [formData.single_answer] : [],
+          },
+        ];
+      }
+
       const submissionData = {
         course_id: courseID,
         test_id: test?.id,
@@ -74,12 +111,15 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         },
       };
 
+      console.log("Submission Data:", submissionData);
+
       // const response = await submitQuizAnswer(submissionData).unwrap();
       const response = {
         data: {
           test_completed: false,
         },
       };
+
       if (response.data.test_completed === true) {
         handleStatus("completed");
       }
@@ -90,19 +130,6 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
 
       if (currentQuizIndex < totalQuiz - 1) {
         setCurrentQuizIndex(currentQuizIndex + 1);
-        // Completely reset form with proper defaults for next question
-        reset(
-          {
-            answer: currentQuiz.type === "multiple_choice" ? [] : undefined,
-            answers: {},
-          },
-          {
-            keepErrors: false, // Clear all errors
-            keepDefaultValues: false,
-          }
-        );
-        // Clear any potential error state
-        clearErrors();
       }
     } catch (error: any) {
       toast.error(error.data.message || "Something went wrong.");
@@ -120,22 +147,24 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         </div>
         <div className="flex gap-2 text-blue-500">
           <Timer className="size-5" />
-          Time left {formatSecondsToReadableTime(currentQuiz?.time_limit * 60)}
+          Time left {formatSecondsToReadableTime(timeLeft)}
         </div>
       </div>
 
       <p className="text-lg text-primary font-semibold mb-4 px-4 lg:px-6">
-        {currentQuiz.title}
+        {currentQuiz?.title}
       </p>
 
       <div className="mb-6">
         {/* Single or True/False */}
-        {(currentQuiz.type === "single" ||
-          currentQuiz.type === "true_or_false") && (
+        {(currentQuiz?.type === "single" ||
+          currentQuiz?.type === "true_or_false") && (
           <Controller
-            name="answer"
+            name="single_answer"
             control={control}
-            rules={{ required: "Please select an option true or false" }}
+            rules={{
+              required: timeLeft > 0 ? "Please select an option" : false,
+            }}
             render={({ field, fieldState: { error } }) => (
               <>
                 <RadioGroup
@@ -143,23 +172,25 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
                   value={field.value as unknown as string}
                   className="gap-0"
                 >
-                  {currentQuiz.questions.options.map((option: any) => (
-                    <div
-                      key={option.id}
-                      className="flex items-center gap-2 py-4 px-4 lg:px-6 border-t border-slate-200 last:border-b"
-                    >
-                      <RadioGroupItem
-                        value={option.id}
-                        id={`option-${option.id}`}
-                      />
-                      <Label htmlFor={`option-${option.id}`}>
-                        {option.value}
-                      </Label>
-                    </div>
-                  ))}
+                  {(currentQuiz?.questions as any).options?.map(
+                    (option: any) => (
+                      <div
+                        key={option.id}
+                        className="flex items-center gap-2 py-4 px-4 lg:px-6 border-t border-slate-200 last:border-b"
+                      >
+                        <RadioGroupItem
+                          value={option.id}
+                          id={`option-${option.id}`}
+                        />
+                        <Label htmlFor={`option-${option.id}`}>
+                          {option.value}
+                        </Label>
+                      </div>
+                    )
+                  )}
                 </RadioGroup>
                 {error && (
-                  <span className="text-sm text-red-500 block m-2">
+                  <span className="text-sm text-red-500 block mx-6 my-3">
                     {error.message}
                   </span>
                 )}
@@ -168,18 +199,17 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
           />
         )}
 
-        {currentQuiz.type === "multiple_choice" && (
+        {/* Multiple Choice */}
+        {currentQuiz?.type === "multiple_choice" && (
           <Controller
-            name="answer"
+            name="multiple_answer"
             control={control}
             rules={{
               validate: (value) => {
-                // Only validate if current question is multiple_choice
-                if (currentQuiz.type !== "multiple_choice") return true;
-                return (
-                  (value as number[])?.length > 0 ||
-                  "Please select at least one option"
-                );
+                return timeLeft > 0
+                  ? (value as number[])?.length > 0 ||
+                      "Please select at least one option"
+                  : false;
               },
             }}
             render={({ field, fieldState: { error } }) => {
@@ -197,7 +227,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
 
               return (
                 <>
-                  {currentQuiz.questions.options.map((option: any) => (
+                  {(currentQuiz.questions as any).options.map((option: any) => (
                     <div
                       key={option.id}
                       className="flex items-center gap-2 py-4 px-4 lg:px-6 border-t border-slate-200 last:border-b"
@@ -219,7 +249,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
                     </div>
                   ))}
                   {error && (
-                    <span className="text-sm text-red-500 block m-2">
+                    <span className="text-sm text-red-500 block mx-6 my-3">
                       {error.message}
                     </span>
                   )}
@@ -229,28 +259,21 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
           />
         )}
 
-        {/* Match Type */}
-        {currentQuiz.type === "matching" && (
-          <div className="space-y-4">
-            {/* Handle both array and object cases for questions */}
-            {Array.isArray(currentQuiz.questions) ? (
-              currentQuiz.questions.map((question: any) => (
-                <MatchQuestionItem
-                  key={question.id}
-                  question={question}
-                  control={control}
-                />
-              ))
-            ) : (
+        {currentQuiz?.type === "matching" && (
+          <div className="space-y-4" aria-live="polite">
+            {(Array.isArray(currentQuiz.questions)
+              ? currentQuiz.questions
+              : [currentQuiz.questions]
+            ).map((question) => (
               <MatchQuestionItem
-                key={currentQuiz.questions.id}
-                question={currentQuiz.questions}
+                key={question.id}
+                question={question}
                 control={control}
+                timeLeft={timeLeft}
               />
-            )}
+            ))}
           </div>
         )}
-
         {/* Submit button */}
         <div className="flex justify-end px-4 lg:px-6 mt-6">
           <Button type="submit" variant={"secondary"}>
