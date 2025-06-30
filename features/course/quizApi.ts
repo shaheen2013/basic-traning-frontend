@@ -27,6 +27,13 @@ export const quizApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    quizComplete: builder.mutation({
+      query: ({ course_id, test_id }) => ({
+        url: `courses/${course_id}/test/${test_id}/complete`,
+        method: "POST",
+        body: {},
+      }),
+    }),
   }),
 });
 
@@ -35,4 +42,5 @@ export const {
   useStartQuizMutation,
   useGetQuizQuestionsQuery,
   useSubmitQuizAnswerMutation,
+  useQuizCompleteMutation,
 } = quizApi;

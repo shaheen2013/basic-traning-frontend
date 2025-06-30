@@ -50,22 +50,26 @@ const LiveClass = ({ data }: { data: any }) => {
 
   const handleMarkComplete = async () => {
     try {
-      const response = await markComplete({
-        courseId: courseId,
-        topicId: topicId,
-      }).unwrap();
+      const { data } = await markComplete({ courseId, topicId }).unwrap();
+
+      const nextActivity = data.ongoing_quiz
+        ? "quiz"
+        : data.ongoing_assignment
+        ? "assignment"
+        : data.ongoing_lesson;
 
       dispatch(
         markTopicCompleted({
           current_lesson: Number(topicId),
-          next_lesson: response?.data?.next_lesson,
+          next_lesson: nextActivity,
         })
       );
+
       router.push(
-        `/courses/${courseId}/days/${response?.data?.ongoing_day}/topics/${response?.data?.next_lesson}`
+        `/courses/${courseId}/days/${data.ongoing_day}/topics/${nextActivity}`
       );
     } catch (error: any) {
-      toast.error(error?.data?.message || "Something went wrong.");
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
 
@@ -140,7 +144,6 @@ const LiveClass = ({ data }: { data: any }) => {
                   All Questions Required – You must attempt every question
                   before submitting{" "}
                 </li>
-                <li>Will allow you to go back and change your answers.</li>
               </ul>
             </div>
           </div>

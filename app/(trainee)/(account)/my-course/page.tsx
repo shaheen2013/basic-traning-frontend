@@ -37,12 +37,18 @@ const MyCourse = () => {
 
   const handleEnroll = async () => {
     try {
-      await getCourse({
+      const { data } = await getCourse({
         courseId: courseSummary?.id,
       }).unwrap();
 
+      const nextActivity = data?.ongoing_quiz
+        ? "quiz"
+        : data?.ongoing_assignment
+        ? "assignment"
+        : data?.ongoing_lesson;
+
       router.push(
-        `/courses/${courseSummary?.id}/days/${courseSummary?.ongoing_day}/topics/${courseSummary?.ongoing_lesson}`
+        `/courses/${courseSummary?.id}/days/${data?.ongoing_day}/topics/${nextActivity}`
       );
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong.");
@@ -62,7 +68,7 @@ const MyCourse = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           {courseSummary?.cover_image && (
             <Image
-              src={courseSummary?.cover_image}
+              src={courseSummary?.cover_image.trim()}
               alt="Course Cover Image"
               width={1000}
               height={700}
@@ -134,7 +140,15 @@ const MyCourse = () => {
                 {courseSummary?.status === "ongoing" && (
                   <Button variant="secondary" asChild>
                     <Link
-                      href={`/courses/${courseSummary?.id}/days/${courseSummary?.ongoing_day}/topics/${courseSummary?.ongoing_lesson}`}
+                      href={`/courses/${courseSummary.id}/days/${
+                        courseSummary.ongoing_day
+                      }/topics/${
+                        courseSummary.ongoing_quiz
+                          ? "quiz"
+                          : courseSummary.ongoing_assignment
+                          ? "assignment"
+                          : courseSummary.ongoing_lesson
+                      }`}
                     >
                       Continue Course
                       <ChevronRight className="size-5 text-white" />

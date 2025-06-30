@@ -9,6 +9,8 @@ import { useState } from "react";
 const Quiz = ({ data }: { data?: any }) => {
   const [status, setStatus] = useState(data.status);
 
+  console.log("status", status);
+
   const handleStatus = (status: string) => setStatus(status);
   return (
     <section className="bg-slate-50 flex flex-col gap-4 lg:gap-6 pb-4 lg:pb-6">

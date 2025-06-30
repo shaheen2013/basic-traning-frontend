@@ -57,8 +57,11 @@ export default function CourseLayout({
 
   const currentWeekID = modulesData?.course?.ongoing_week;
   const currentDayID = modulesData?.course?.ongoing_day;
-  // const currentTopicID = modulesData?.course?.ongoing_lesson;
-  const currentTopicID = "quiz";
+  const currentTopicID = modulesData?.course?.ongoing_quiz
+    ? "quiz"
+    : modulesData?.course?.ongoing_assignment
+    ? "assignment"
+    : modulesData?.course?.ongoing_lesson;
   console.log("currentDayID", currentDayID);
 
   const currentDayData = modulesData?.weeks
@@ -228,7 +231,8 @@ export default function CourseLayout({
                                       const isUnlock =
                                         day.id === Number(dayId) &&
                                         !isActive &&
-                                        !isCompleted;
+                                        !isCompleted &&
+                                        currentTopicID == "quiz";
                                       const isLocked =
                                         !isCompleted && !isActive && !isUnlock;
 
@@ -278,7 +282,8 @@ export default function CourseLayout({
                                       const isUnlock =
                                         day.id === Number(dayId) &&
                                         !isActive &&
-                                        !isCompleted;
+                                        !isCompleted &&
+                                        currentTopicID == "assignment";
                                       const isLocked =
                                         !isCompleted && !isActive && !isUnlock;
 

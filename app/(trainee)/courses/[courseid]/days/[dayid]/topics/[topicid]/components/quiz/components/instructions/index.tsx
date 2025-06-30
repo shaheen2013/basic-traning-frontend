@@ -43,7 +43,6 @@ const Instructions = ({
               <li>Number of questions: {data.number_of_questions} </li>
               <li>Has a time limit of:  {data.time_limit} minutes</li>
               <li>Questions displayed per page: 1</li>
-              <li>Will allow you to go back and change your answers.</li>
               <li>Will not let you finish with any questions unattempt.</li>
             </ul>
           </div>

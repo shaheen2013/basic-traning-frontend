@@ -13,6 +13,7 @@ import MatchQuestionItem from "./components/matchQuestion";
 import {
   useGetQuizQuestionsQuery,
   useSubmitQuizAnswerMutation,
+  useQuizCompleteMutation,
 } from "@/features/course/quizApi";
 import { Loader } from "@/components/partials";
 
@@ -31,6 +32,8 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
 
   const [submitQuizAnswer, { isLoading: isSubmitting }] =
     useSubmitQuizAnswerMutation();
+
+  const [quizComplete, { isLoading: isCompleting }] = useQuizCompleteMutation();
 
   const test = data?.data?.test_paper;
   const totalQuiz = test?.total_quiz || 0;
@@ -129,7 +132,8 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
 
       const response = await submitQuizAnswer(submissionData).unwrap();
 
-      if (response.data.test_completed === true) {
+      if (response.data.ongoing_quiz === null) {
+        handleQuizComplete();
         handleStatus("completed");
       }
 
@@ -145,6 +149,19 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
     }
   };
 
+  const handleQuizComplete = async () => {
+    const payload = {
+      course_id: courseID,
+      test_id: test?.id,
+    };
+    try {
+      await quizComplete(payload).unwrap();
+      handleStatus("completed");
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.data?.message || "Something went wrong.");
+    }
+  };
   if (isLoading || isFetching) return <Loader />;
 
   return (
@@ -287,7 +304,11 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         )}
         {/* Submit button */}
         <div className="flex justify-end px-4 lg:px-6 mt-6">
-          <Button type="submit" variant={"secondary"} disabled={isSubmitting}>
+          <Button
+            type="submit"
+            variant={"secondary"}
+            disabled={isSubmitting || isCompleting}
+          >
             Submit Answer
           </Button>
         </div>
