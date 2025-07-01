@@ -32,7 +32,7 @@ const MyCourse = () => {
   const router = useRouter();
   const { data, isLoading, isFetching } = useGetCourseSummaryQuery({});
 
-  const courseSummary = data?.data;
+  const courseSummary = data?.data || {};
   const [getCourse, { isLoading: isGetCourseLoading }] = useGetCourseMutation();
 
   const handleEnroll = async () => {
@@ -62,7 +62,7 @@ const MyCourse = () => {
   return (
     <>
       <div className="hidden lg:block font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl capitalize">
-        {courseMenus.find((menu) => menu.href === pathname)?.label}
+        {courseMenus?.find((menu) => menu?.href === pathname)?.label}
       </div>
       <div className="flex flex-col gap-4 lg:gap-6 p-4 lg:p-6">
         <div className="flex flex-col lg:flex-row gap-4">
@@ -141,13 +141,13 @@ const MyCourse = () => {
                   <Button variant="secondary" asChild>
                     <Link
                       href={`/courses/${courseSummary.id}/days/${
-                        courseSummary.ongoing_day
+                        courseSummary?.ongoing_day
                       }/topics/${
-                        courseSummary.ongoing_quiz
+                        courseSummary?.ongoing_quiz
                           ? "quiz"
-                          : courseSummary.ongoing_assignment
+                          : courseSummary?.ongoing_assignment
                           ? "assignment"
-                          : courseSummary.ongoing_lesson
+                          : courseSummary?.ongoing_lesson
                       }`}
                     >
                       Continue Course

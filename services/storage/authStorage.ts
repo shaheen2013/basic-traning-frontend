@@ -1,8 +1,21 @@
 // services/storage/authStorage.ts
-export const getToken = () => localStorage.getItem("btToken");
-
-export const setToken = (token: string) => {
-  localStorage.setItem("btToken", token);
+export const getToken = () => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("btToken");
+  }
+  return null;
 };
 
-export const clearToken = () => localStorage.removeItem("btToken");
+export const setToken = (token: string) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("btToken", token);
+  }
+  return null;
+};
+
+export const clearToken = () => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("btToken");
+  }
+  return null;
+};

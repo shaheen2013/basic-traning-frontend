@@ -7,17 +7,21 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Dismiss, Hamburger } from "@/components/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TrainingSlot from "../modal/training-slot";
 import { usePathname } from "next/navigation";
-import { useMe } from "@/services/hook";
+import { getToken } from "@/services/storage/authStorage";
 
 const Header = ({ className }: { className?: string }) => {
-  const { data: userData } = useMe({});
+  const [hasToken, setHasToken] = useState<boolean | null>(null);
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isHomePage = pathname === "/";
 
+  useEffect(() => {
+    // This will only run on the client after hydration
+    setHasToken(!!getToken());
+  }, []);
   return (
     <div className={cn(className, open && "bg-primary")}>
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
@@ -70,21 +74,23 @@ const Header = ({ className }: { className?: string }) => {
         </div>
         <>
           <div className="flex gap-3 items-center">
-            {!userData ? (
-              <Link
-                href="/login"
-                className="text-lg lg:text-xl px-3 lg:px-5 py-2 font-semibold text-white"
-              >
-                Login
-              </Link>
-            ) : (
-              <Link
-                href="/my-course"
-                className="text-lg lg:text-xl px-3 lg:px-5 py-2 font-semibold text-white"
-              >
-                My Account
-              </Link>
-            )}
+            <div className={hasToken === null ? "invisible" : ""}>
+              {hasToken ? (
+                <Link
+                  href="/my-course"
+                  className="text-lg lg:text-xl px-3 lg:px-5 py-2 font-semibold text-white"
+                >
+                  My Account
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className="text-lg lg:text-xl px-3 lg:px-5 py-2 font-semibold text-white"
+                >
+                  Login
+                </Link>
+              )}
+            </div>
 
             <div className="hidden lg:flex">
               <TrainingSlot>
