@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import TestimonialCard from "../testimonial";
 import { ArrowUpRight } from "@/components/icons";
 import TrainingSlot from "../modal/training-slot";
+import { EnrollSkeleton } from "./components/loader";
 
 const Enroll = ({ isShow }: { isShow?: boolean }) => {
+  if (true) return <EnrollSkeleton isShow={isShow} />;
   return (
     <section className="bg-slate-50  py-12 lg:py-32">
       <div className="container flex flex-col gap-8 lg:gap-24">

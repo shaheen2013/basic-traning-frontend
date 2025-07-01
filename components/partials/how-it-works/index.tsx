@@ -1,8 +1,10 @@
 import { ArrowUpRight, Four, One, Three, Two } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import TrainingSlot from "../modal/training-slot";
+import { HowWorksSkeleton } from "./components/loader";
 
 const HowWorks = () => {
+  if (true) return <HowWorksSkeleton />;
   return (
     <section className="container flex flex-col gap-8 lg:gap-24 py-12 lg:py-32">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">

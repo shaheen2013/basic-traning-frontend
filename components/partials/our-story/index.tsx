@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { OurStorySkeleton } from "./components/loader";
 
 const OurStory = () => {
+  if (true) return <OurStorySkeleton />;
   return (
     <section className="container grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 lg:py-32">
       <div className="flex flex-col gap-4 lg:gap-8">

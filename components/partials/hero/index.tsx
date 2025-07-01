@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import Header from "../header";
 import { ArrowUpRight } from "@/components/icons";
 import Link from "next/link";
+import { HeroSkeleton } from "./components/loader";
 
 const Hero = () => {
+  if (true) return <HeroSkeleton />;
   return (
     <div
       className="w-full min-h-dvh"

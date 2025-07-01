@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import NotifyMe from "@/components/partials/modal/notify-me";
 
 const UpcomingEvents = () => {

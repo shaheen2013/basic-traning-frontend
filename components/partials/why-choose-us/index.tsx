@@ -1,7 +1,9 @@
 import { Star } from "@/components/icons";
 import { reasons } from "./constants";
+import { WhyChooseUsSkeleton } from "./components/loader";
 
 const WhyChooseUs = () => {
+  if (true) return <WhyChooseUsSkeleton />;
   return (
     <div className="bg-slate-50">
       <div className="container py-12 lg:py-32 flex flex-col gap-8 lg:gap-24">

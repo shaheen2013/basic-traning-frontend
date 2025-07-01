@@ -1,3 +1,5 @@
+"use client";
+
 import {
   AboutBasicTraning,
   Enroll,
@@ -9,8 +11,12 @@ import {
   UpcomingCourse,
   WhyChooseUs,
 } from "@/components/partials";
+import { useGetHomePageContentQuery } from "@/features/cms/cmsApi";
 
 export default function Home() {
+  const { data, isFetching, isLoading } = useGetHomePageContentQuery({});
+
+  const loader = isLoading || isFetching;
   return (
     <>
       <Hero />

@@ -5,8 +5,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { faqs } from "./constant";
+import { FaqSkeleton } from "./components/loader";
 
 const Faq = () => {
+  if (true) return <FaqSkeleton />;
   return (
     <section
       id="faq"

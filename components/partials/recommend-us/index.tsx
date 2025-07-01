@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/carousel";
 import TestimonialCard from "../testimonial";
 import Autoplay from "embla-carousel-autoplay";
+import { RecommendUsSkeleton } from "./components/loader";
 
 const RecommendUs = () => {
+  if (true) return <RecommendUsSkeleton />;
   return (
     <section id="reviews" className="py-12 lg:py-32 bg-slate-50 ">
       <div className="container flex justify-center flex-col gap-y-8 lg:gap-y-24">
