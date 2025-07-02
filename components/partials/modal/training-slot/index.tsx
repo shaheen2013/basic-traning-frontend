@@ -97,12 +97,13 @@ const TrainingSlot = ({
             <Button
               type="button"
               variant="outline"
+              size="xl"
               className="rounded-full w-1/2"
               onClick={() => setOpen(false)}
             >
               Cancel
             </Button>
-            <Button type="submit" className="rounded-full w-1/2">
+            <Button type="submit" size="xl" className="rounded-full w-1/2">
               Proceed to Checkout
             </Button>
           </div>

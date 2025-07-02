@@ -7,11 +7,14 @@ import { AlertBadge } from "@/components/icons";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Controller, useForm } from "react-hook-form";
+import { useSubscribeMutation } from "@/features/newsletter/newsLetterApi";
+import { toast } from "sonner";
 
 const NotifyMe = () => {
   const [open, setOpen] = useState(false);
+  const [subscribe, { isLoading }] = useSubscribeMutation();
 
-  const { handleSubmit, control } = useForm<{
+  const { handleSubmit, control, setError } = useForm<{
     email: string;
   }>({
     defaultValues: {
@@ -20,17 +23,19 @@ const NotifyMe = () => {
     mode: "onChange",
   });
 
-  const onSubmit = async () => {
-    // const payload = {
-    //   email: data.email,
-    // };
-    // try {
-    // } catch (error) {
-    //   setError("email", {
-    //     type: "manual",
-    //     message: error.message || "Email already exists",
-    //   });
-    // }
+  const onSubmit = async (data: { email: string }) => {
+    const payload = {
+      email: data.email,
+    };
+    try {
+      const resposne = await subscribe(payload).unwrap();
+      toast.success(resposne.message);
+    } catch (error) {
+      setError("email", {
+        type: "manual",
+        message: (error as Error).message || "You are already subscribed",
+      });
+    }
   };
   return (
     <div>
@@ -87,13 +92,19 @@ const NotifyMe = () => {
           <div className="mt-4 flex justify-between gap-4 w-full">
             <Button
               type="button"
+              size="xl"
               variant={"outline"}
               className="rounded-full w-1/2"
               onClick={() => setOpen(false)}
             >
               Cancel
             </Button>
-            <Button type="submit" className="rounded-full w-1/2">
+            <Button
+              type="submit"
+              size="xl"
+              className="rounded-full w-1/2"
+              disabled={isLoading}
+            >
               Notify Me
             </Button>
           </div>
