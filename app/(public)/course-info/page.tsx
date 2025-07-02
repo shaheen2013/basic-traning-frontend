@@ -17,9 +17,9 @@ export default function CourseInfo() {
   const loader = isLoading || isFetching;
   return (
     <div className="min-h-screen overflow-x-hidden font-neue-haas-display">
-      <Hero isLoading={loader} />
+      <Hero isLoading={loader} data={data?.hero} />
       <UpcomingAvailability isLoading={loader} />
-      <WhyChooseUs data={data?.["why_us-items"]} isLoading={loader} />
+      <WhyChooseUs data={data?.why_us_items} isLoading={loader} />
       <RecommendUs data={data?.feedbacks} isLoading={loader} />
     </div>
   );

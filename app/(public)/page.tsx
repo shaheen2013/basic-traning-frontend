@@ -25,15 +25,15 @@ export default function Home() {
   const loader = isLoading || isFetching;
   return (
     <>
-      <Hero isLoading={loader} />
-      <AboutBasicTraning isLoading={loader} />
+      <Hero isLoading={loader} data={data?.hero} />
+      <AboutBasicTraning isLoading={loader} data={data?.about_us} />
       <Enroll isShow={true} isLoading={loader} data={data?.feedbacks[0]} />
-      <HowWorks isLoading={loader} />
+      <HowWorks isLoading={loader} data={data?.working_guides} />
       <UpcomingCourse isLoading={loader} />
       <Enroll isLoading={loader} data={data?.feedbacks[1]} />
       <Faq data={data?.faqs} isLoading={loader} />
-      <WhyChooseUs data={data?.["why_us-items"]} isLoading={loader} />
-      <OurStory isLoading={loader} />
+      <WhyChooseUs data={data?.why_us_items} isLoading={loader} />
+      <OurStory isLoading={loader} data={data?.our_story} />
       <RecommendUs data={data?.feedbacks} isLoading={loader} />
     </>
   );

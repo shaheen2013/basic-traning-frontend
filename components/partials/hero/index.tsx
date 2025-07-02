@@ -5,13 +5,15 @@ import { ArrowUpRight } from "@/components/icons";
 import Link from "next/link";
 import { HeroSkeleton } from "./components/loader";
 
-const Hero = ({ isLoading }: { isLoading: boolean }) => {
+const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
   if (isLoading) return <HeroSkeleton />;
   return (
     <div
       className="w-full min-h-dvh"
       style={{
-        background: `linear-gradient(0deg, rgba(5, 6, 33, 0.50) 0%, rgba(5, 6, 33, 0.50) 100%), url(${"/assets/landing-page/background-image.png"}) lightgray 50% / cover no-repeat`,
+        background: `linear-gradient(0deg, rgba(5, 6, 33, 0.50) 0%, rgba(5, 6, 33, 0.50) 100%), url(${
+          data.image || "/assets/landing-page/background-image.png"
+        }) lightgray 50% / cover no-repeat`,
       }}
     >
       <Header />
@@ -21,15 +23,11 @@ const Hero = ({ isLoading }: { isLoading: boolean }) => {
           <p className="text-3xl font-medium text-slate-50">
             Start training for <span className="font-bold">$549</span>
           </p>
-          <h2 className="text-white font-semibold text-5xl lg:text-8xl leading-[60px] lg:leading-[120px]">
-            Transform Learning with{" "}
-            <span className="block font-vollkorn italic font-bold">
-              Basic Training
-            </span>
+          <h2 className="text-white font-semibold italic font-vollkorn text-5xl lg:text-8xl leading-[60px] lg:leading-[120px]">
+            {data.title}
           </h2>
           <p className="text-base lg:text-4xl text-slate-50 font-normal">
-            A powerful training tool that takes the guesswork out of new team
-            member development.
+            {data.description}
           </p>
         </div>
         <Button

@@ -59,7 +59,7 @@ const TestimonialCard = ({ data }: any) => {
               alt={data?.user_name}
               width={80}
               height={80}
-              className="size-16 lg:size-20 object-center object-contain shrink-0"
+              className="size-16 lg:size-20 object-center object-contain shrink-0 rounded-full"
             />
           )}
 

@@ -1,19 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowUpRight, Four, One, Three, Two } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import TrainingSlot from "../modal/training-slot";
 import { HowWorksSkeleton } from "./components/loader";
 
-const HowWorks = ({ isLoading }: { isLoading?: boolean }) => {
+const HowWorks = ({ isLoading, data }: { isLoading?: boolean; data?: any }) => {
   if (isLoading) return <HowWorksSkeleton />;
   return (
     <section className="container flex flex-col gap-8 lg:gap-24 py-12 lg:py-32">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
-        <h3 className="text-primary text-3xl lg:text-7xl font-semibold">
-          How <span className="font-normal font-vollkorn">It Works</span>
+        <h3 className="text-primary text-3xl lg:text-7xl font-normal font-vollkorn">
+          {data.title}
         </h3>
         <p className="text-slate-800 text-base lg:text-4xl font-medium">
-          Getting started with Basic Training is easy. Follow these steps and
-          begin training today!
+          {data.description}
         </p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16">
