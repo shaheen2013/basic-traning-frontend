@@ -42,9 +42,12 @@ const WhyChooseUs = ({
           {data.map((reason: any, index: number) => (
             <div
               key={index}
-              className="p-0.5 hover:bg-gradient-to-r active:bg-gradient-to-r from-blue-600 via-blue-100 to-blue-600 hover:shadow-sm transition-shadow rounded-sm duration-50"
+              className="group relative p-0.5 rounded-sm overflow-hidden"
             >
-              <div className="flex flex-col gap-5 lg:gap-10 p-5 lg:p-10 bg-white h-full">
+              {/* Animated gradient border - now with proper group-hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-100 to-blue-600 bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-gradient-shift rounded-sm transition-opacity duration-300" />
+
+              <div className="flex flex-col gap-5 lg:gap-10 p-5 lg:p-10 bg-white h-full relative z-10">
                 {reason.icon && (
                   <Image
                     src={reason.icon}

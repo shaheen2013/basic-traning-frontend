@@ -137,3 +137,18 @@
     @apply w-full max-w-[1696px] mx-auto px-4;
   }
 }
+@layer utilities {
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient-shift {
+    animation: gradient-shift 2s linear infinite;
+    background-size: 200% 100%;
+  }
+}
