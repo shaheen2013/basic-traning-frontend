@@ -112,10 +112,10 @@ const Header = ({ className }: { className?: string }) => {
             <>
               {/* Overlay */}
               <div
-                className="fixed top-[80px] left-0 w-full h-[calc(100vh-80px)] bg-slate-900/80 z-20"
+                className="fixed top-[76px] left-0 w-full h-[calc(100vh-76px)] bg-slate-900/80 z-20"
                 onClick={() => setOpen(!open)}
               />
-              <div className="absolute top-[80px] left-0 w-full h-fit bg-white z-30 lg:hidden flex flex-col">
+              <div className="absolute top-[76px] left-0 w-full h-fit bg-white z-30 lg:hidden flex flex-col">
                 {menus.map((menu) => (
                   <Link
                     key={menu.href}
