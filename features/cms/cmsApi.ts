@@ -5,7 +5,11 @@ export const cmsApi = baseApi.injectEndpoints({
     getHomePageContent: builder.query({
       query: () => "home-page-contents",
     }),
+    getCourseInfoContent: builder.query({
+      query: () => "course-info-page-contents",
+    }),
   }),
 });
 
-export const { useGetHomePageContentQuery } = cmsApi;
+export const { useGetHomePageContentQuery, useGetCourseInfoContentQuery } =
+  cmsApi;

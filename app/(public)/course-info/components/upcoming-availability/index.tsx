@@ -1,7 +1,9 @@
 import { AlertBadge } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { UpcomingAvailabilitySkeleton } from "./components/loader";
 
-const UpcomingAvailability = () => {
+const UpcomingAvailability = ({ isLoading }: { isLoading: boolean }) => {
+  if (isLoading) return <UpcomingAvailabilitySkeleton />;
   return (
     <section className="container max-w-4xl flex flex-col justify-center items-center gap-8 lg:gap-16 py-12 lg:py-32">
       <h3 className="text-3xl lg:text-7xl font-semibold text-primary w-full">

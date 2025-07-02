@@ -3,12 +3,7 @@ import { HeaderSkeleton } from "../../header/components/header-skeletons";
 
 export const HeroSkeleton = () => {
   return (
-    <div
-      className="w-full min-h-dvh"
-      style={{
-        background: `linear-gradient(0deg, rgba(5, 6, 33, 0.50) 0%, rgba(5, 6, 33, 0.50) 100%), lightgray 50% / cover no-repeat`,
-      }}
-    >
+    <div className="w-full min-h-dvh bg-gray-800">
       <HeaderSkeleton />
 
       <div className="container flex flex-col gap-12 items-start justify-end py-10 lg:py-20 min-h-[calc(100dvh-120px)]">

@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "@/components/icons";
 import { Header } from "@/components/partials";
+import { HeroSkeleton } from "./components/loader";
 
-const Hero = () => {
+const Hero = ({ isLoading }: { isLoading: boolean }) => {
+  if (isLoading) return <HeroSkeleton />;
   return (
     <div
       className="w-full min-h-dvh"
