@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AboutBasicTrainingSkeleton } from "./components/loader";
 
 const AboutBasicTraning = ({ isLoading }: { isLoading?: boolean }) => {
-  if (true) return <AboutBasicTrainingSkeleton />;
+  if (isLoading) return <AboutBasicTrainingSkeleton />;
   return (
     <section className="container grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 lg:py-32">
       <div className="flex flex-col gap-4 lg:gap-8">

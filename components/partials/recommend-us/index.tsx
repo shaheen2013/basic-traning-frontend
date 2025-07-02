@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -12,8 +13,14 @@ import TestimonialCard from "../testimonial";
 import Autoplay from "embla-carousel-autoplay";
 import { RecommendUsSkeleton } from "./components/loader";
 
-const RecommendUs = () => {
-  if (true) return <RecommendUsSkeleton />;
+const RecommendUs = ({
+  data: feedbacks,
+  isLoading,
+}: {
+  data: any;
+  isLoading: boolean;
+}) => {
+  if (isLoading) return <RecommendUsSkeleton />;
   return (
     <section id="reviews" className="py-12 lg:py-32 bg-slate-50 ">
       <div className="container flex justify-center flex-col gap-y-8 lg:gap-y-24">
@@ -34,9 +41,9 @@ const RecommendUs = () => {
           ]}
         >
           <CarouselContent>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {feedbacks?.map((feedback: any, index: number) => (
               <CarouselItem key={index}>
-                <TestimonialCard />
+                <TestimonialCard data={feedback} />
               </CarouselItem>
             ))}
           </CarouselContent>

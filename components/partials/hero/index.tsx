@@ -5,8 +5,8 @@ import { ArrowUpRight } from "@/components/icons";
 import Link from "next/link";
 import { HeroSkeleton } from "./components/loader";
 
-const Hero = () => {
-  if (true) return <HeroSkeleton />;
+const Hero = ({ isLoading }: { isLoading: boolean }) => {
+  if (isLoading) return <HeroSkeleton />;
   return (
     <div
       className="w-full min-h-dvh"
