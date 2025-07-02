@@ -6,12 +6,10 @@ import { menus } from "../header/constans";
 import { Facebook, Instagram, Linkedin, X, Youtube } from "@/components/icons";
 import { usePathname } from "next/navigation";
 import { Link as LinkScroll } from "react-scroll";
-import { FooterSkeleton } from "./components/loader";
 
 const Footer = () => {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-  if (true) return <FooterSkeleton />;
   return (
     <footer className="bg-gray-800 py-6 lg:py-16 font-neue-haas-display">
       <div className="container flex flex-col gap-8 lg:gap-12">
