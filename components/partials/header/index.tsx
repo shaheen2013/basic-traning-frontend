@@ -10,10 +10,9 @@ import { ArrowRight, Dismiss, Hamburger } from "@/components/icons";
 import { useState } from "react";
 import TrainingSlot from "../modal/training-slot";
 import { usePathname } from "next/navigation";
-import { useMe } from "@/services/hook";
+import { getToken } from "@/services/storage/authStorage";
 
 const Header = ({ className }: { className?: string }) => {
-  const { data: userData } = useMe({});
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isHomePage = pathname === "/";
@@ -70,7 +69,7 @@ const Header = ({ className }: { className?: string }) => {
         </div>
         <>
           <div className="flex gap-3 items-center">
-            {!userData ? (
+            {!getToken() ? (
               <Link
                 href="/login"
                 className="text-lg lg:text-xl px-3 lg:px-5 py-2 font-semibold text-white"
