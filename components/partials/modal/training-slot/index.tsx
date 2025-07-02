@@ -68,7 +68,7 @@ const TrainingSlot = ({
             </p>
           </div>
           <RadioGroup
-            defaultValue="july-01-20"
+            defaultValue="june-01-20"
             className="gap-0 overflow-y-auto max-h-[300px] lg:max-h-[400px]"
           >
             {trainingSlots.map((slot) => (

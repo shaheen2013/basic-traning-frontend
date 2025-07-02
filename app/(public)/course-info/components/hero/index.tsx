@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "@/components/icons";
-import { Header } from "@/components/partials";
+import { Header, TrainingSlot } from "@/components/partials";
 import { HeroSkeleton } from "./components/loader";
 
 const Hero = ({ isLoading }: { isLoading: boolean }) => {
@@ -25,14 +25,16 @@ const Hero = ({ isLoading }: { isLoading: boolean }) => {
             daily progress tracking.
           </p>
         </div>
-        <Button
-          variant="outline"
-          className="border border-slate-200 text-white rounded-full w-full lg:w-fit"
-          size="2xl"
-        >
-          Book Session
-          <ArrowUpRight className="ml-3 text-white" />
-        </Button>
+        <TrainingSlot>
+          <Button
+            variant="outline"
+            className="border border-slate-200 text-white rounded-full w-full lg:w-fit"
+            size="2xl"
+          >
+            Book Session
+            <ArrowUpRight className="ml-3 text-white" />
+          </Button>
+        </TrainingSlot>
       </div>
     </div>
   );

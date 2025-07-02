@@ -1,6 +1,5 @@
-import { AlertBadge } from "@/components/icons";
-import { Button } from "@/components/ui/button";
 import { UpcomingAvailabilitySkeleton } from "./components/loader";
+import { NotifyMe } from "@/components/partials";
 
 const UpcomingAvailability = ({ isLoading }: { isLoading: boolean }) => {
   if (isLoading) return <UpcomingAvailabilitySkeleton />;
@@ -26,10 +25,7 @@ const UpcomingAvailability = ({ isLoading }: { isLoading: boolean }) => {
           </li>
         </ul>
       </div>
-      <Button className="w-full lg:w-fit rounded-full" size="2xl">
-        Get Notified Upcoming Classes
-        <AlertBadge className="ml-2 size-6 text-white" />
-      </Button>
+      <NotifyMe />
     </section>
   );
 };
