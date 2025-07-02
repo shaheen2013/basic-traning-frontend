@@ -18,25 +18,27 @@ const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
       }}
     >
       <Header />
-      <div className="container flex flex-col gap-12 items-start justify-end py-10 lg:py-20 min-h-[calc(100dvh-120px)]">
-        <div className="flex flex-col gap-6 max-w-[1068px]">
-          <h2 className="text-white font-semibold text-5xl lg:text-7xl">
-            {data?.title}
-          </h2>
-          <p className="text-base lg:text-4xl text-slate-50 font-medium">
-            {data?.description}
-          </p>
+      <div className="container flex items-center py-10 lg:py-20 min-h-[calc(100dvh-120px)]">
+        <div className="flex flex-col gap-12 items-start">
+          <div className="flex flex-col gap-6 max-w-[1068px]">
+            <h2 className="text-white font-semibold text-5xl lg:text-7xl">
+              {data?.title}
+            </h2>
+            <p className="text-base lg:text-4xl text-slate-50 font-medium">
+              {data?.description}
+            </p>
+          </div>
+          <TrainingSlot>
+            <Button
+              variant="outline"
+              className="border border-slate-200 text-white rounded-full w-full lg:w-fit"
+              size="2xl"
+            >
+              Book Session
+              <ArrowUpRight className="ml-3 text-white" />
+            </Button>
+          </TrainingSlot>
         </div>
-        <TrainingSlot>
-          <Button
-            variant="outline"
-            className="border border-slate-200 text-white rounded-full w-full lg:w-fit"
-            size="2xl"
-          >
-            Book Session
-            <ArrowUpRight className="ml-3 text-white" />
-          </Button>
-        </TrainingSlot>
       </div>
     </div>
   );

@@ -7,8 +7,11 @@ const OurStory = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
   return (
     <section className="container grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 lg:py-32">
       <div className="flex flex-col gap-4 lg:gap-8">
-        <h3 className="text-3xl lg:text-7xl font-normal font-vollkorn italic text-primary">
-          {data.title}
+        <h3 className="text-3xl lg:text-7xl font-semibold text-primary">
+          {data.title.split(" ")[0]}{" "}
+          <span className="font-normal font-vollkorn italic">
+            {data.title.split(" ").slice(1).join(" ")}
+          </span>
         </h3>
         <div
           className="text-slate-800 text-base lg:text-3xl font-medium prose max-w-none [&_ul>li]:marker:text-slate-700"

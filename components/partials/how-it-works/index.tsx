@@ -9,8 +9,11 @@ const HowWorks = ({ isLoading, data }: { isLoading?: boolean; data?: any }) => {
   return (
     <section className="container flex flex-col gap-8 lg:gap-24 py-12 lg:py-32">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
-        <h3 className="text-primary text-3xl lg:text-7xl font-normal font-vollkorn">
-          {data.title}
+        <h3 className="text-3xl lg:text-7xl font-semibold text-primary">
+          {data.title.split(" ")[0]}{" "}
+          <span className="font-normal font-vollkorn italic">
+            {data.title.split(" ").slice(1).join(" ")}
+          </span>
         </h3>
         <p className="text-slate-800 text-base lg:text-4xl font-medium">
           {data.description}

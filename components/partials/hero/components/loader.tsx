@@ -6,7 +6,7 @@ export const HeroSkeleton = () => {
     <div className="w-full min-h-dvh bg-gray-800">
       <HeaderSkeleton />
 
-      <div className="container flex flex-col gap-12 items-start justify-end py-10 lg:py-20 min-h-[calc(100dvh-120px)]">
+      <div className="container flex flex-col gap-12 justify-center py-10 lg:py-20 min-h-[calc(100dvh-120px)]">
         <div className="flex flex-col gap-4 lg:gap-6 max-w-[1098px] w-full">
           {/* Price line skeleton */}
           <Skeleton className="h-8 w-48 lg:w-64 rounded-md" />
