@@ -23,7 +23,7 @@ export const HeaderSkeleton = () => {
 
         {/* CTA button skeleton - hidden on mobile */}
         <div className="hidden lg:flex">
-          <Skeleton className="h-12 w-48 rounded-md" />
+          <Skeleton className="h-12 w-48 rounded-full" />
         </div>
 
         {/* Mobile menu button skeleton */}

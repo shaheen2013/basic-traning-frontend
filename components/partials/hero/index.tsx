@@ -31,13 +31,13 @@ const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
         </div>
         <Button
           variant="outline"
-          className="border border-slate-200 text-white rounded-full w-full lg:w-fit"
+          className="rounded-full w-full lg:w-fit text-white"
           size="2xl"
           asChild
         >
           <Link href="/course-info">
             Upcoming Sessions
-            <ArrowUpRight className="ml-3 text-white" />
+            <ArrowUpRight className="ml-3" />
           </Link>
         </Button>
       </div>

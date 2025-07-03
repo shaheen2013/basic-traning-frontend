@@ -70,25 +70,29 @@ const Header = ({ className }: { className?: string }) => {
         <>
           <div className="flex gap-3 items-center">
             {!getToken() ? (
-              <Link
-                href="/login"
-                className="text-lg lg:text-xl px-3 lg:px-5 py-2 font-semibold text-white"
+              <Button
+                asChild
+                variant="ghost"
+                size="2xl"
+                className="text-white px-2 lg:px-6"
               >
-                Login
-              </Link>
+                <Link href="/login"> Login</Link>
+              </Button>
             ) : (
-              <Link
-                href="/my-course"
-                className="text-lg lg:text-xl px-3 lg:px-5 py-2 font-semibold text-white"
+              <Button
+                asChild
+                variant="ghost"
+                size="2xl"
+                className="text-white px-2 lg:px-6"
               >
-                My Account
-              </Link>
+                <Link href="/my-course">My Account</Link>
+              </Button>
             )}
 
             <div className="hidden lg:flex">
               <TrainingSlot>
                 <Button
-                  className="bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-900 px-8"
+                  className="bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-primary has-[>svg]:px-6 rounded-full"
                   size="2xl"
                 >
                   Start Training Today

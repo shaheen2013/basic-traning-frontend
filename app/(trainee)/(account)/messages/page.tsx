@@ -1,6 +1,11 @@
 "use client";
 
-import { Comment as CommentIcon, Reply as ReplyIcon } from "@/components/icons";
+import {
+  Comment as CommentIcon,
+  Plus,
+  Reply as ReplyIcon,
+  Search,
+} from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { MorePopOver } from "./components";
@@ -9,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { courseMenus } from "@/components/partials/header/constans";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 interface User {
   id: number;
@@ -32,6 +38,7 @@ interface Comment extends User {
 
 export default function Conversations() {
   const pathname = usePathname();
+  const [search, setSearch] = useState<string>("");
   // State for active reply form
   const [activeReply, setActiveReply] = useState<{
     id: number;
@@ -314,9 +321,34 @@ export default function Conversations() {
   };
 
   return (
-    <>
+    <div className="relative">
       <div className="hidden lg:block font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl capitalize">
         {courseMenus.find((menu) => menu.href === pathname)?.label}
+      </div>
+      <div className="absolute top-0 right-0 p-4">
+        <div className="hidden lg:flex items-center gap-2">
+          <Input
+            type="text"
+            placeholder="Search"
+            className="max-w-96 w-full bg-white h-10 rounded-lg"
+            startIcon={<Search className="size-5 text-slate-600" />}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Button variant="secondary" className="rounded-lg">
+            <Plus className="size-4 text-white" />
+            New Message
+          </Button>
+        </div>
+
+        <div className="flex lg:hidden items-center gap-2 absolute -top-11 right-12">
+          <div>
+            <Search className="size-6 text-primary" />
+          </div>
+          <Link href="/messages/create">
+            <Plus className="size-6 text-primary" />
+          </Link>
+        </div>
       </div>
       <div className="bg-slate-50 p-4 lg:p-6">
         <div className="space-y-6">
@@ -445,6 +477,6 @@ export default function Conversations() {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

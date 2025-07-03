@@ -31,11 +31,11 @@ const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
           <TrainingSlot>
             <Button
               variant="outline"
-              className="border border-slate-200 text-white rounded-full w-full lg:w-fit"
+              className="rounded-full w-full lg:w-fit text-white"
               size="2xl"
             >
               Book Session
-              <ArrowUpRight className="ml-3 text-white" />
+              <ArrowUpRight className="ml-3" />
             </Button>
           </TrainingSlot>
         </div>
