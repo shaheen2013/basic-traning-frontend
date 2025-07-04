@@ -74,7 +74,7 @@ const TrainingSlot = ({
             {trainingSlots.map((slot) => (
               <div
                 key={slot.value}
-                className="cursor-pointer flex items-center space-x-2 border-x border-t border-slate-300 px-6 py-4 hover:bg-slate-50 transition-colors last:border-b"
+                className=" flex items-center space-x-2 border-x border-t border-slate-300 px-6 py-4 hover:bg-slate-50 transition-colors last:border-b"
               >
                 <RadioGroupItem value={slot.value} id={String(slot.id)} />
                 <Label

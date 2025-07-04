@@ -11,6 +11,7 @@ import {
   UpcomingCourse,
   WhyChooseUs,
 } from "@/components/partials";
+import { VideoModal } from "@/components/partials/modal/home-page-video-modal";
 import { useGetHomePageContentQuery } from "@/features/cms/cmsApi";
 
 export default function Home() {
@@ -35,6 +36,7 @@ export default function Home() {
       <WhyChooseUs data={data?.why_us_items} isLoading={loader} />
       <OurStory isLoading={loader} data={data?.our_story} />
       <RecommendUs data={data?.feedbacks} isLoading={loader} />
+      <VideoModal />
     </>
   );
 }
