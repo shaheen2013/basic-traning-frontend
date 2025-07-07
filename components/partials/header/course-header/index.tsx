@@ -79,12 +79,12 @@ const Header = () => {
             By Trophy Club Consulting
           </p>
         </Link>
-        <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-12">
+        <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-8">
           {menus.map((menu) => (
             <Link
               key={menu.href}
               href={menu.href}
-              className="text-xl font-semibold text-white"
+              className="text-xl font-semibold px-2 py-3 text-white"
             >
               {menu.label}
             </Link>

@@ -31,12 +31,12 @@ const Footer = () => {
               By Trophy Club Consulting
             </p>
           </div>
-          <div className="order-3 lg:order-2 flex items-center lg:justify-center gap-8">
+          <div className="order-3 lg:order-2 flex items-center lg:justify-center gap-4 lg:gap-8">
             {menus.map((menu) => (
               <Link
                 key={menu.href}
                 href={menu.href}
-                className="text-base lg:text-xl font-normal lg:font-semibold text-white"
+                className="text-base lg:text-xl font-normal px-2 py-3 lg:font-semibold text-white"
               >
                 {menu.label}
               </Link>
@@ -48,7 +48,7 @@ const Footer = () => {
                 smooth={true}
                 duration={500}
                 spy
-                className="text-base lg:text-xl font-normal lg:font-semibold text-white cursor-pointer"
+                className="text-base lg:text-xl  px-2 py-3 font-normal lg:font-semibold text-white cursor-pointer"
               >
                 Faq
               </LinkScroll>
@@ -56,7 +56,7 @@ const Footer = () => {
               <Link
                 key="faq"
                 href="/#faq"
-                className="text-base lg:text-xl font-normal lg:font-semibold text-white cursor-pointer"
+                className="text-base lg:text-xl font-normal px-2 py-3 lg:font-semibold text-white cursor-pointer"
               >
                 Faq
               </Link>
@@ -66,7 +66,7 @@ const Footer = () => {
               smooth={true}
               duration={500}
               spy
-              className="text-base lg:text-xl font-normal lg:font-semibold text-white cursor-pointer"
+              className="text-base lg:text-xl font-normal lg:font-semibold  px-2 py-3 text-white cursor-pointer"
             >
               Reviews
             </LinkScroll>
