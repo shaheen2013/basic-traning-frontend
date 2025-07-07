@@ -41,12 +41,12 @@ const Header = ({ className }: { className?: string }) => {
             By Trophy Club Consulting
           </p>
         </Link>
-        <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-12">
+        <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-8">
           {menus.map((menu) => (
             <Link
               key={menu.href}
               href={menu.href}
-              className="text-xl font-semibold text-white"
+              className="text-xl font-semibold text-white px-2 py-3"
             >
               {menu.label}
             </Link>
@@ -57,7 +57,7 @@ const Header = ({ className }: { className?: string }) => {
               smooth={true}
               duration={500}
               spy
-              className="text-xl font-semibold text-white cursor-pointer"
+              className="text-xl font-semibold text-white cursor-pointer px-2 py-3"
             >
               Faq
             </LinkScroll>
@@ -65,7 +65,7 @@ const Header = ({ className }: { className?: string }) => {
             <Link
               key="faq"
               href="/#faq"
-              className="text-xl font-semibold text-white"
+              className="text-xl font-semibold text-white px-2 py-3 "
             >
               Faq
             </Link>
@@ -74,23 +74,19 @@ const Header = ({ className }: { className?: string }) => {
         <>
           <div className="flex gap-3 items-center">
             {!userData ? (
-              <Button
-                asChild
-                variant="ghost"
-                size="2xl"
-                className="text-white px-2 lg:px-6"
+              <Link
+                href="/login"
+                className="text-white text-xl font-semibold px-4 py-3"
               >
-                <Link href="/login"> Login</Link>
-              </Button>
+                Login
+              </Link>
             ) : (
-              <Button
-                asChild
-                variant="ghost"
-                size="2xl"
-                className="text-white px-2 lg:px-6"
+              <Link
+                href="/my-course"
+                className="text-white text-xl font-semibold px-4 py-3"
               >
-                <Link href="/my-course">My Account</Link>
-              </Button>
+                My Account
+              </Link>
             )}
 
             <div className="hidden lg:flex">

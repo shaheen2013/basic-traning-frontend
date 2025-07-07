@@ -25,11 +25,11 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
         <ReduxProvider>
           {/* Sonner Toaster for notifications */}
           <Toaster />
-          <main className="min-h-screen overflow-x-hidden">
+          <main className="overflow-x-hidden">
             <Header className="bg-primary font-neue-haas-display" />
             <div className="grid grid-cols-12 font-inter">
               <div className="col-span-12 lg:col-span-6">{children}</div>
-              <div className="lg:block hidden col-span-6 relative">
+              <div className="lg:block hidden lg:col-span-6">
                 <AuthRightSidebar />
               </div>
             </div>
