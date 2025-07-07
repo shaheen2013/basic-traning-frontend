@@ -48,10 +48,10 @@ export default function CreateMessage() {
   return (
     <>
       <div className="flex items-center gap-2 font-semibold lg:text-2xl text-lg lg:py-6 lg:px-8 p-4 bg-slate-200 rounded-t-2xl capitalize">
-        <Link href="/messages" className="flex lg:hidden">
+        <Link href="/chats" className="flex lg:hidden">
           <ChevronLeft className="size-6 text-primary" />
         </Link>
-        Create a Message
+        Create a Chat
       </div>
 
       <div className="bg-slate-50 p-4 lg:p-6">
@@ -140,14 +140,7 @@ export default function CreateMessage() {
             )}
           </div>
 
-          <div className="flex flex-col lg:flex-row items-center gap-4 mt-6">
-            <Button
-              type="button"
-              variant="outline"
-              className="min-w-32 w-full lg:w-fit "
-            >
-              Cancel
-            </Button>
+          <div className="flex justify-end mt-6">
             <Button
               type="submit"
               className="min-w-32 w-full lg:w-fit"

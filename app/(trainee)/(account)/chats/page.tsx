@@ -335,9 +335,12 @@ export default function Conversations() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Button variant="secondary" className="rounded-lg">
-            <Plus className="size-4 text-white" />
-            New Message
+
+          <Button variant="secondary" className="rounded-lg" asChild>
+            <Link href="/chats/create">
+              <Plus className="size-4 text-white" />
+              New Chat
+            </Link>
           </Button>
         </div>
 
@@ -345,7 +348,7 @@ export default function Conversations() {
           <div>
             <Search className="size-6 text-primary" />
           </div>
-          <Link href="/messages/create">
+          <Link href="/chats/create">
             <Plus className="size-6 text-primary" />
           </Link>
         </div>

@@ -37,7 +37,7 @@ const icons = [
   },
   {
     id: 4,
-    label: "Messages",
+    label: "Chats",
     icon: (
       <User className="size-5 text-slate-700 group-hover:text-white transition-colors duration-200" />
     ),

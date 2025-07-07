@@ -2,8 +2,8 @@
 import { Button } from "@/components/ui/button";
 import Header from "../header";
 import { ArrowUpRight } from "@/components/icons";
-import Link from "next/link";
 import { HeroSkeleton } from "./components/loader";
+import TrainingSlot from "../modal/training-slot";
 
 const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
   if (isLoading) return <HeroSkeleton />;
@@ -29,17 +29,16 @@ const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
             {data.description}
           </p>
         </div>
-        <Button
-          variant="outline"
-          className="rounded-full w-full lg:w-fit text-white"
-          size="2xl"
-          asChild
-        >
-          <Link href="/course-info">
-            Upcoming Sessions
-            <ArrowUpRight className="ml-3" />
-          </Link>
-        </Button>
+        <TrainingSlot>
+          <Button
+            variant="outline"
+            className="rounded-full w-full lg:w-fit text-white"
+            size="2xl"
+          >
+            Enroll Now
+            <ArrowUpRight />
+          </Button>
+        </TrainingSlot>
       </div>
     </div>
   );

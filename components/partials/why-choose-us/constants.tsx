@@ -11,7 +11,7 @@ export const reasons = [
   {
     id: 1,
     title: "Interactive Training Session",
-    desc: "Live Zoom integration for real-time learning.",
+    desc: "Live sessions integration for real-time learning.",
     icon: <TrainingSession className="text-inherit size-full" />,
   },
   {

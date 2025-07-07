@@ -37,8 +37,8 @@ const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
               className="rounded-full w-full lg:w-fit text-white"
               size="2xl"
             >
-              Book Session
-              <ArrowUpRight className="ml-3" />
+              Enroll Now
+              <ArrowUpRight />
             </Button>
           </TrainingSlot>
         </div>

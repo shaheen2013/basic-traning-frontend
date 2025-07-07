@@ -6,7 +6,7 @@ export const menus = [
   {
     label: "Upcoming Classes",
     href: "/course-info",
-  }
+  },
 ];
 
 export const courseMenus = [
@@ -27,13 +27,13 @@ export const courseMenus = [
   },
   {
     id: 4,
-    label: "Messages",
-    href: "/messages",
+    label: "Chats",
+    href: "/chats",
     items: [
       {
         id: 1,
-        label: "Create Message",
-        href: "/messages/create",
+        label: "Create chat",
+        href: "/chats/create",
       },
     ],
   },

@@ -106,18 +106,9 @@ const TrainingSlot = ({ children, className }: TrainingSlotProps) => {
 const FirstModal = ({ open, onClose, onSubmit, control }: any) => (
   <Modal open={open} onOpenChange={onClose}>
     <form className="flex flex-col gap-3 lg:gap-5" onSubmit={onSubmit}>
-      <h3 className="mb-2 text-primary text-xl lg:text-4xl font-semibold">
-        Reserve Your Training Slot – ${PRICE} One-Time Payment
+      <h3 className="mb-2 text-primary text-xl lg:text-3xl font-semibold">
+        Select your training start date - ${PRICE}
       </h3>
-
-      <div className="flex flex-col gap-2">
-        <h4 className="text-primary text-lg lg:text-xl font-medium">
-          Choose Your Training Start Date
-        </h4>
-        <p className="text-slate-600 text-sm lg:text-xl font-medium">
-          Select a preferred start date from the available monthly batches.
-        </p>
-      </div>
 
       <Controller
         name="trainingSlot"

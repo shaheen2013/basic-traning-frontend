@@ -33,7 +33,11 @@ export default function ProfileLayout({
               href={menu.href}
               className={cn(
                 "text-base font-semibold text-slate-700 px-4 py-3 hover:bg-blue-600 hover:text-white rounded-lg transition-colors duration-200",
-                { "bg-blue-600 text-white": pathname === menu.href }
+                {
+                  "bg-blue-600 text-white":
+                    pathname === menu.href ||
+                    menu.items?.some((item) => item.href === pathname),
+                }
               )}
             >
               {menu.label}
@@ -43,7 +47,7 @@ export default function ProfileLayout({
       </div>
       <div className="flex-1 min-h-[calc(100vh-144px)] lg:min-h-[calc(100vh-184px)]">
         <div className="bg-slate-50 border-slate-200 h-full border rounded-2xl overflow-hidden">
-          {pathname !== "/syllabus" && pathname !== "/messages/create" && (
+          {pathname !== "/syllabus" && pathname !== "/chats/create" && (
             <MobileMenu />
           )}
           {children}

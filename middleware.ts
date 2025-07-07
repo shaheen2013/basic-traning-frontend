@@ -11,8 +11,9 @@ export function middleware(request: NextRequest) {
     "/my-course",
     "/profile",
     "/analytics",
-    "/messages",
+    "/chats",
     "/settings",
+    "/syllabus",
   ];
 
   // Define public routes
@@ -65,8 +66,9 @@ export const config = {
     "/my-course/:path*",
     "/profile/:path*",
     "/analytics/:path*",
-    "/messages/:path*",
+    "/chats/:path*",
     "/settings/:path*",
+    "/syllabus/:path*",
 
     // Auth routes
     "/login",

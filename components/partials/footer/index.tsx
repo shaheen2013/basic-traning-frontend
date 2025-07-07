@@ -72,19 +72,19 @@ const Footer = () => {
             </LinkScroll>
           </div>
           <div className="order-2 lg:order-3 flex gap-4 items-center lg:justify-end">
-            <Link href={"#"}>
+            <Link href={"/"}>
               <Youtube className="text-white size-6" />
             </Link>
-            <Link href={"#"}>
+            <Link href={"/"}>
               <Facebook className="text-white size-6" />
             </Link>
-            <Link href={"#"}>
+            <Link href={"/"}>
               <X className="text-white size-6" />
             </Link>
-            <Link href={"#"}>
+            <Link href={"/"}>
               <Instagram className="text-white size-6" />
             </Link>
-            <Link href={"#"}>
+            <Link href={"/"}>
               <Linkedin className="text-white size-6" />
             </Link>
           </div>
