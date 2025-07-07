@@ -12,63 +12,49 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 
-interface TrainingSlotProps {
-  children?: React.ReactNode;
-  className?: string;
-}
+const price = 549;
 
-interface FirstFormData {
-  email: string;
-  trainingSlot: string;
-}
-
-interface SecondFormData {
-  numberOfTrainees: number;
-}
-
-const PRICE = 549;
-
-const TrainingSlot = ({ children, className }: TrainingSlotProps) => {
+const TrainingSlot = ({ children, className }: any) => {
   const [open, setOpen] = useState(false);
-  const [openSecondModal, setOpenSecondModal] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState("");
-
-  const { handleSubmit, control, reset } = useForm<FirstFormData>({
-    defaultValues: {
-      trainingSlot: "",
-    },
-    mode: "onChange",
-  });
+  const [step, setStep] = useState(1);
 
   const {
-    handleSubmit: handleSubmitSecond,
-    reset: resetSecond,
-    control: controlSecond,
+    handleSubmit,
+    control,
     watch,
-  } = useForm<SecondFormData>({
+    formState: { isValid },
+    reset,
+  } = useForm({
     defaultValues: {
-      numberOfTrainees: 1,
+      trainingSlot: "",
+      numberOfTrainees: undefined,
     },
     mode: "onChange",
   });
 
-  const watchNumberOfTrainees = watch("numberOfTrainees");
+  console.log("isValid:", isValid);
 
-  console.log(typeof watchNumberOfTrainees);
-  const onSubmitFirstForm = async (data: FirstFormData) => {
-    setSelectedSlot(data.trainingSlot);
-    setOpenSecondModal(true);
-    setOpen(false);
+  const numberOfTrainees = watch("numberOfTrainees") || 0;
+  const selectedTrainingSlot = watch("trainingSlot");
+
+  const onSubmit = async (data: any) => {
+    if (step === 1) {
+      setStep(2);
+    } else {
+      try {
+        // Handle final submission
+        console.log("Form submitted:", data);
+        setOpen(false);
+        setStep(1);
+        reset();
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
+    }
   };
 
-  const onSubmitSecondForm = async (data: SecondFormData) => {
-    // Handle final submission with both forms' data
-    const payload = {
-      trainingSlot: selectedSlot,
-      numberOfTrainees: data.numberOfTrainees,
-    };
-    console.log("Submitting:", payload);
-    // Add actual submission logic
+  const handleBack = () => {
+    setStep(1);
   };
 
   return (
@@ -76,186 +62,227 @@ const TrainingSlot = ({ children, className }: TrainingSlotProps) => {
       <div
         onClick={() => setOpen(true)}
         className={cn(
-          "pointer-cursor flex items-center justify-center",
+          "cursor-pointer flex items-center justify-center",
           className
         )}
+        role="button"
+        tabIndex={0}
       >
         {children}
       </div>
 
-      <FirstModal
-        open={open}
-        onClose={() => (setOpen(false), reset(), resetSecond())}
-        onSubmit={handleSubmit(onSubmitFirstForm)}
-        control={control}
-      />
+      <Modal open={open} onOpenChange={setOpen}>
+        <div className="flex items-center justify-center gap-4">
+          <div className="flex gap-2 items-center">
+            <Image
+              src="/icons/batch-step.svg"
+              alt="select batch"
+              width={32}
+              height={32}
+              className="h-auto max-w-8 w-full object-contain object-center"
+            />
 
-      <SecondModal
-        open={openSecondModal}
-        onClose={() => (setOpenSecondModal(false), setOpen(true))}
-        onSubmit={handleSubmitSecond(onSubmitSecondForm)}
-        control={controlSecond}
-        price={PRICE}
-        numberOfTrainees={watchNumberOfTrainees}
-      />
+            <span className="text-blue-600 text-base font-semibold">
+              Select batch
+            </span>
+          </div>
+
+          <div
+            className={cn(
+              "w-12 bg-slate-300 h-0.5",
+              step === 2 && "bg-blue-600"
+            )}
+          />
+          <div className="flex gap-2 items-center">
+            <div
+              className={cn(
+                "size-8 rounded-full bg-transparent border-2 border-slate-300 flex items-center justify-center",
+                step === 2 && "bg-blue-600 border-blue-200"
+              )}
+            >
+              <div
+                className={cn(
+                  "size-3 rounded-full bg-slate-300",
+                  step === 2 && "bg-white"
+                )}
+              ></div>
+            </div>
+            <span
+              className={cn(
+                "text-primary text-base font-semibold",
+                step === 2 && "text-blue-600"
+              )}
+            >
+              Number of trainee
+            </span>
+          </div>
+        </div>
+        {step === 1 && (
+          <form
+            className="flex flex-col gap-3 lg:gap-6"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className="flex flex-col gap-2">
+              <h3 className="text-primary text-2xl lg:text-4xl font-semibold">
+                Select your training start date
+              </h3>
+              <p className="text-slate-600 text-base lg:text-xl">
+                Pick the start date that works best for your team. We run fresh
+                sessions every month.
+              </p>
+            </div>
+
+            <Controller
+              name="trainingSlot"
+              control={control}
+              rules={{ required: "Please select a training slot" }}
+              render={({ field, fieldState: { error } }) => (
+                <div className="space-y-2">
+                  <RadioGroup
+                    className="gap-0 overflow-y-auto max-h-[300px] lg:max-h-[400px]"
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    aria-label="Training slots"
+                  >
+                    {trainingSlots.map((slot) => (
+                      <Label
+                        key={slot.value}
+                        htmlFor={String(slot.id)}
+                        className="flex items-center space-x-2 border-x border-t border-slate-300 px-6 py-4 hover:bg-slate-50 transition-colors last:border-b"
+                      >
+                        <RadioGroupItem
+                          value={slot.value}
+                          id={String(slot.id)}
+                        />
+                        <span className="cursor-pointer text-slate-800 text-sm lg:text-xl font-medium">
+                          {slot.label}
+                        </span>
+                      </Label>
+                    ))}
+                  </RadioGroup>
+                  {error && (
+                    <p className="text-red-500 text-sm">{error.message}</p>
+                  )}
+                </div>
+              )}
+            />
+
+            <div className="mt-4 flex justify-between gap-4 w-full">
+              <Button
+                type="button"
+                variant="outline"
+                size="xl"
+                className="rounded-full w-1/2"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                size="xl"
+                className="rounded-full w-1/2"
+                disabled={!selectedTrainingSlot}
+              >
+                Continue
+              </Button>
+            </div>
+          </form>
+        )}
+
+        {step === 2 && (
+          <form
+            className="flex flex-col gap-3 lg:gap-6"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className="flex flex-col gap-2">
+              <h3 className="text-primary text-2xl lg:text-4xl font-semibold">
+                Add Trainees & Review Cost ${price}/p
+              </h3>
+              <p className="text-slate-600 text-base lg:text-xl">
+                Enter how many trainees you’re enrolling to calculate your total
+                fee.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="numberOfTrainees">Number of Trainees *</Label>
+              <Controller
+                name="numberOfTrainees"
+                control={control}
+                rules={{
+                  required: "Number of trainees is required",
+                  min: {
+                    value: 1,
+                    message: "Must be at least 1 trainee",
+                  },
+                  max: {
+                    value: 10000,
+                    message: "Must be at most 10000 trainees",
+                  },
+                  validate: (value) =>
+                    Number.isInteger(Number(value)) || "Must be a whole number",
+                }}
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => (
+                  <div className="space-y-1">
+                    <Input
+                      id="numberOfTrainees"
+                      type="number"
+                      min="1"
+                      max="10000"
+                      step="1"
+                      placeholder="Enter number of trainees"
+                      className="rounded-full"
+                      value={value ?? ""}
+                      onChange={(e) =>
+                        onChange(
+                          e.target.value === ""
+                            ? undefined
+                            : Number(e.target.value)
+                        )
+                      }
+                      errorText={error?.message}
+                    />
+                  </div>
+                )}
+              />
+            </div>
+
+            {numberOfTrainees > 0 && isValid && (
+              <div className="flex items-center justify-between px-4 py-2.5 text-3xl font-semibold border rounded-lg bg-amber-50 border-amber-500 text-amber-500">
+                <div>
+                  {numberOfTrainees} × ${price}
+                </div>
+                <div>= ${price * numberOfTrainees}</div>
+              </div>
+            )}
+
+            <div className="mt-4 flex justify-between gap-4 w-full">
+              <Button
+                type="button"
+                variant="outline"
+                size="xl"
+                className="rounded-full w-1/2"
+                onClick={handleBack}
+              >
+                Back
+              </Button>
+              <Button
+                type="submit"
+                size="xl"
+                className="rounded-full w-1/2"
+                disabled={!isValid}
+              >
+                Continue
+              </Button>
+            </div>
+          </form>
+        )}
+      </Modal>
     </>
   );
 };
-
-// Extracted First Modal Component
-const FirstModal = ({ open, onClose, onSubmit, control }: any) => (
-  <Modal open={open} onOpenChange={onClose}>
-    <form className="flex flex-col gap-3 lg:gap-5" onSubmit={onSubmit}>
-      <h3 className="mb-2 text-primary text-xl lg:text-3xl font-semibold">
-        Select your training start date - ${PRICE}
-      </h3>
-
-      <Controller
-        name="trainingSlot"
-        control={control}
-        rules={{ required: "Please select a training slot" }}
-        render={({ field, fieldState: { error } }) => (
-          <>
-            <RadioGroup
-              className="gap-0 overflow-y-auto max-h-[300px] lg:max-h-[400px]"
-              value={field.value}
-              onValueChange={field.onChange}
-            >
-              {trainingSlots.map((slot) => (
-                <Label
-                  key={slot.value}
-                  htmlFor={String(slot.id)}
-                  className="flex items-center space-x-2 border-x border-t border-slate-300 px-6 py-4 hover:bg-slate-50 transition-colors last:border-b"
-                >
-                  <RadioGroupItem value={slot.value} id={String(slot.id)} />
-                  <span className="cursor-pointer text-slate-800 text-sm lg:text-xl font-medium">
-                    {slot.label}
-                  </span>
-                </Label>
-              ))}
-            </RadioGroup>
-            {error && <p className="text-red-500 text-sm">{error.message}</p>}
-          </>
-        )}
-      />
-
-      <StripeNote />
-
-      <div className="mt-4 flex justify-between gap-4 w-full">
-        <Button
-          type="button"
-          variant="outline"
-          size="xl"
-          className="rounded-full w-1/2"
-          onClick={onClose}
-        >
-          Cancel
-        </Button>
-        <Button type="submit" size="xl" className="rounded-full w-1/2">
-          Continue
-        </Button>
-      </div>
-    </form>
-  </Modal>
-);
-
-// Extracted Second Modal Component
-const SecondModal = ({
-  open,
-  onClose,
-  onSubmit,
-  control,
-  price,
-  numberOfTrainees,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: () => void;
-  control: any;
-  price: number;
-  numberOfTrainees: number;
-}) => (
-  <Modal open={open} onOpenChange={onClose}>
-    <form
-      className="flex flex-col gap-3 lg:gap-5 max-w-[600px] w-full"
-      onSubmit={onSubmit}
-    >
-      <Image
-        src={"/icons/stripe.png"}
-        alt="stripe"
-        width={1000}
-        height={700}
-        className="h-auto max-w-28 w-full object-contain object-center"
-      />
-      <h3 className="text-primary text-xl lg:text-4xl font-semibold">
-        Secure Your Spot with a One-Time Payment
-      </h3>
-      <p className="text-slate-700 text-sm lg:text-xl font-medium">
-        You’re just one step away from unlocking full access to your training.
-        Pay securely via Stripe to continue.
-      </p>
-
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="numberOfTrainees">Number of Trainees *</Label>
-        <Controller
-          name="numberOfTrainees"
-          control={control}
-          rules={{
-            required: "Number of trainees is required",
-            min: {
-              value: 1,
-              message: "Must be at least 1 trainee",
-            },
-            max: {
-              value: 10000,
-              message: "Must be at most 10000 trainees",
-            },
-          }}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <Input
-              id="numberOfTrainees"
-              type="number"
-              min="1"
-              max="10000"
-              placeholder="Enter number of trainees"
-              className="rounded-full"
-              value={value}
-              onChange={onChange}
-              errorText={error?.message}
-            />
-          )}
-        />
-      </div>
-      {numberOfTrainees > 0 && (
-        <p className="text-primary text-lg lg:text-2xl font-medium font-inter truncate">
-          Pricing: ${price} × {numberOfTrainees} = ${price * numberOfTrainees}
-        </p>
-      )}
-      <div className="mt-4 flex justify-between gap-4 w-full">
-        <Button
-          type="button"
-          variant="outline"
-          size="xl"
-          className="rounded-full w-1/2"
-          onClick={onClose}
-        >
-          Back
-        </Button>
-        <Button type="submit" size="xl" className="rounded-full w-1/2">
-          Proceed
-        </Button>
-      </div>
-    </form>
-  </Modal>
-);
-// Extracted Stripe Note Component
-const StripeNote = () => (
-  <div className="bg-[#FFFAEB] py-2.5 border border-[#F79009] rounded">
-    <p className="text-[#F79009] text-xs lg:text-lg text-center font-medium">
-      Note: Secure checkout powered by{" "}
-      <span className="font-vollkorn italic font-bold">Stripe</span>.
-    </p>
-  </div>
-);
 
 export default TrainingSlot;
