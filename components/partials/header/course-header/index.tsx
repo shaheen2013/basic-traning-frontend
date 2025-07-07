@@ -62,7 +62,7 @@ const Header = () => {
   return (
     <div className="bg-primary font-inter">
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
-        <div className="flex flex-col gap-1 cursor-pointer">
+        <Link href="/" className="flex flex-col gap-1 cursor-pointer">
           <div className="flex gap-1.6 lg:gap-2 items-center">
             <Image
               src="/logo.png"
@@ -78,7 +78,7 @@ const Header = () => {
           <p className="text-white text-[8px] lg:text-xs">
             By Trophy Club Consulting
           </p>
-        </div>
+        </Link>
         <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-12">
           {menus.map((menu) => (
             <Link
@@ -92,7 +92,11 @@ const Header = () => {
         </div>
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="ghost" size="2xl" className="text-white">
+            <Button
+              variant="ghost"
+              size="2xl"
+              className="text-white hover:bg-transparent hover:text-white"
+            >
               <div className="flex items-center justify-center size-12 rounded-full">
                 {userData?.avatar && (
                   <Image

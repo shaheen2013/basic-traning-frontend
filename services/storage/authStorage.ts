@@ -1,21 +1,38 @@
 // services/storage/authStorage.ts
-export const getToken = () => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("btToken");
-  }
-  return null;
+import Cookies from "js-cookie";
+
+const TOKEN_KEY = "btToken";
+
+// Client-side token access
+export const getToken = (): string | null => {
+  if (typeof window === "undefined") return null;
+  return Cookies.get(TOKEN_KEY) || null;
 };
 
-export const setToken = (token: string) => {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("btToken", token);
-  }
-  return null;
+export const setToken = (token: string): void => {
+  if (typeof window === "undefined") return;
+
+  Cookies.set(TOKEN_KEY, token, {
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    expires: 7, // days
+    path: "/",
+  });
 };
 
-export const clearToken = () => {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("btToken");
-  }
-  return null;
+export const clearToken = (): void => {
+  if (typeof window === "undefined") return;
+
+  Cookies.remove(TOKEN_KEY, {
+    path: "/",
+  });
+};
+
+// Server-side token access (for middleware/API routes)
+export const getTokenFromRequest = (request: {
+  cookies: {
+    get: (key: string) => { value: string } | undefined;
+  };
+}): string | null => {
+  return request.cookies.get(TOKEN_KEY)?.value ?? null;
 };

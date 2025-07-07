@@ -10,17 +10,21 @@ import { ArrowRight, Dismiss, Hamburger } from "@/components/icons";
 import { useState } from "react";
 import TrainingSlot from "../modal/training-slot";
 import { usePathname } from "next/navigation";
-import { getToken } from "@/services/storage/authStorage";
+import { useMe } from "@/services/hook";
+import { HeaderSkeleton } from "./components/header-skeletons";
 
 const Header = ({ className }: { className?: string }) => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isHomePage = pathname === "/";
+  const { data: userData, isLoading, isFetching } = useMe({});
 
+  if (isLoading || isFetching)
+    return <HeaderSkeleton className={cn(className, open && "bg-primary")} />;
   return (
     <div className={cn(className, open && "bg-primary")}>
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
-        <div className="flex flex-col gap-1 cursor-pointer">
+        <Link href={"/"} className="flex flex-col gap-1 cursor-pointer">
           <div className="flex gap-1.6 lg:gap-2 items-center">
             <Image
               src="/logo.png"
@@ -36,7 +40,7 @@ const Header = ({ className }: { className?: string }) => {
           <p className="text-white text-[8px] lg:text-xs font-inter">
             By Trophy Club Consulting
           </p>
-        </div>
+        </Link>
         <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-12">
           {menus.map((menu) => (
             <Link
@@ -69,7 +73,7 @@ const Header = ({ className }: { className?: string }) => {
         </div>
         <>
           <div className="flex gap-3 items-center">
-            {!getToken() ? (
+            {!userData ? (
               <Button
                 asChild
                 variant="ghost"
