@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "@/components/icons";
 import { Header, TrainingSlot } from "@/components/partials";
