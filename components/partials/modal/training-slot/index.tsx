@@ -95,14 +95,14 @@ const TrainingSlot = ({ children, className, batches }: any) => {
       </div>
 
       <Modal open={open} onOpenChange={setOpen}>
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-2 lg:gap-4">
           <div className="flex gap-2 items-center">
             <Image
               src="/icons/batch-step.svg"
               alt="select batch"
               width={32}
               height={32}
-              className="h-auto max-w-8 w-full object-contain object-center"
+              className="h-auto max-w-6 lg:max-w-8 w-full object-contain object-center"
             />
 
             <span className="text-blue-600 text-base font-semibold">
@@ -112,20 +112,20 @@ const TrainingSlot = ({ children, className, batches }: any) => {
 
           <div
             className={cn(
-              "w-12 bg-slate-300 h-0.5",
+              "w-8 lg:w-12 bg-slate-300 h-0.5",
               step === 2 && "bg-blue-600"
             )}
           />
           <div className="flex gap-2 items-center">
             <div
               className={cn(
-                "size-8 rounded-full bg-transparent border-2 border-slate-300 flex items-center justify-center",
+                "size-6 lg:size-8 rounded-full bg-transparent border-2 border-slate-300 flex items-center justify-center",
                 step === 2 && "bg-blue-600 border-blue-200"
               )}
             >
               <div
                 className={cn(
-                  "size-3 rounded-full bg-slate-300",
+                  "size-2.5 lg:size-3 rounded-full bg-slate-300",
                   step === 2 && "bg-white"
                 )}
               ></div>
@@ -142,10 +142,10 @@ const TrainingSlot = ({ children, className, batches }: any) => {
         </div>
         {step === 1 && (
           <form
-            className="flex flex-col gap-3 lg:gap-6"
+            className="flex flex-col gap-4 lg:gap-6 mt-2.5"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               <h3 className="text-primary text-2xl lg:text-4xl font-semibold">
                 Select your training start date
               </h3>
@@ -212,10 +212,10 @@ const TrainingSlot = ({ children, className, batches }: any) => {
 
         {step === 2 && (
           <form
-            className="flex flex-col gap-3 lg:gap-6"
+            className="flex flex-col gap-4 lg:gap-6 mt-2.5"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               <h3 className="text-primary text-2xl lg:text-4xl font-semibold">
                 Add Trainees & Review Cost ${price}/p
               </h3>
@@ -289,7 +289,7 @@ const TrainingSlot = ({ children, className, batches }: any) => {
             </div>
 
             {numberOfTrainees > 0 && isValid && (
-              <div className="flex items-center justify-between px-4 py-2.5 text-3xl font-semibold border rounded-lg bg-amber-50 border-amber-500 text-amber-500">
+              <div className="flex items-center justify-between px-4 py-2.5 text-xl lg:text-3xl font-semibold border rounded-lg bg-amber-50 border-amber-500 text-amber-500">
                 <div>
                   {numberOfTrainees} × ${price}
                 </div>

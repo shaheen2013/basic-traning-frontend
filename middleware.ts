@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("btToken")?.value;
-  console.log("Token:", token);
   const { pathname, searchParams } = request.nextUrl;
 
   // Define all protected routes
