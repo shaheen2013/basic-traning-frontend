@@ -11,14 +11,15 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import moment from "moment";
+import { ClipboardListIcon, Loader } from "lucide-react";
+import { toast } from "sonner";
 
 const price = 549;
 
 const TrainingSlot = ({ children, className, batches }: any) => {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
-
-  console.log("batches:", batches);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     handleSubmit,
     control,
@@ -33,24 +34,45 @@ const TrainingSlot = ({ children, className, batches }: any) => {
     mode: "onChange",
   });
 
-  console.log("isValid:", isValid);
-
   const numberOfTrainees = watch("numberOfTrainees") || 0;
   const selectedTrainingSlot = watch("trainingSlot");
 
   const onSubmit = async (data: any) => {
     if (step === 1) {
       setStep(2);
-    } else {
-      try {
-        // Handle final submission
-        console.log("Form submitted:", data);
+      return;
+    }
+
+    setIsSubmitting(true);
+    // setError(null);
+
+    try {
+      // Safely construct URL
+      const baseUrl = process.env.NEXT_PUBLIC_ADMIN_PANEL_URL;
+
+      const params = new URLSearchParams({
+        batch_id: data.trainingSlot,
+        trainee_count: data.numberOfTrainees.toString(),
+      });
+
+      const redirectUrl = `${baseUrl}/register?${params.toString()}`;
+
+      // Brief delay for smoother UX (optional)
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      // Redirect (using .assign() to ensure history is kept)
+      window.location.assign(redirectUrl);
+
+      // Fallback cleanup (if redirect fails)
+      setTimeout(() => {
         setOpen(false);
         setStep(1);
         reset();
-      } catch (error) {
-        console.error("Error submitting form:", error);
-      }
+      }, 1000);
+    } catch (err) {
+      toast.error("Redirect error:", err || "Redirection failed");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -203,6 +225,23 @@ const TrainingSlot = ({ children, className, batches }: any) => {
               </p>
             </div>
 
+            {/* Information Collection Redirection Notice */}
+            <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <ClipboardListIcon className="flex-shrink-0 text-blue-600 mt-0.5" />
+              <div>
+                <p className="text-sm text-blue-600">
+                  We&apos;ll redirect you to securely complete your team&apos;s
+                  training registration.
+                </p>
+                {process.env.NEXT_PUBLIC_ADMIN_PANEL_URL && (
+                  <p className="text-xs text-blue-500 mt-1">
+                    Secure connection:{" "}
+                    {new URL(process.env.NEXT_PUBLIC_ADMIN_PANEL_URL).hostname}
+                  </p>
+                )}
+              </div>
+            </div>
+
             <div className="flex flex-col gap-2">
               <Label htmlFor="numberOfTrainees">Number of Trainees *</Label>
               <Controller
@@ -272,9 +311,15 @@ const TrainingSlot = ({ children, className, batches }: any) => {
                 type="submit"
                 size="xl"
                 className="rounded-full w-1/2"
-                disabled={!isValid}
+                disabled={!isValid || isSubmitting}
               >
-                Continue
+                {isSubmitting ? (
+                  <span className="flex items-center gap-2">
+                    <Loader className="animate-spin" /> Redirecting...
+                  </span>
+                ) : (
+                  "Continue"
+                )}
               </Button>
             </div>
           </form>
