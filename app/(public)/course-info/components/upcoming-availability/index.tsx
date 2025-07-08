@@ -19,14 +19,16 @@ const UpcomingAvailability = ({
       </h3>
       <div className="border border-slate-300 overflow-hidden h-fit w-full">
         <div className="bg-slate-200 px-6 py-4 flex flex-col lg:flex-row gap-4 w-full justify-between lg:items-center">
-          <h3 className="lg:text-xl font-medium text-primary">Month </h3>
+          <h3 className="text-xl lg:text-2xl font-semibold text-primary">
+            Month{" "}
+          </h3>
         </div>
         <ul className="[&>*:nth-child(odd)]:bg-white [&>*:nth-child(even)]:bg-slate-50">
           {batches &&
             batches.map((batch: any) => (
               <li
                 key={batch.id}
-                className="px-6 py-3 lg:py-4 text-base lg:text-lg font-medium text-slate-800 border-b border-slate-100"
+                className="px-6 py-3 lg:py-4 text-lg lg:text-xl font-semibold text-primary border-b border-slate-100"
               >
                 {batch.month}
                 {moment(batch.start_date).format("MMMM DD")} -{" "}
