@@ -19,8 +19,7 @@ const Header = ({ className }: { className?: string }) => {
   const isHomePage = pathname === "/";
   const { data: userData, isLoading, isFetching } = useMe({});
 
-  if (isLoading || isFetching)
-    return <HeaderSkeleton className={cn(className, open && "bg-primary")} />;
+  if (isLoading || isFetching) return <HeaderSkeleton />;
   return (
     <div className={cn(className, open && "bg-primary")}>
       <div className="container flex justify-between items-center relative py-4 lg:py-8">

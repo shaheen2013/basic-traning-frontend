@@ -1,14 +1,9 @@
 "use client";
-
-import { HeaderSkeleton } from "@/components/partials/header/components/header-skeletons";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const HeroSkeleton = () => {
   return (
     <div className="w-full min-h-dvh bg-gray-800">
-      {/* Header skeleton */}
-      <HeaderSkeleton />
-
       {/* Hero content skeleton */}
       <div className="container flex items-center py-10 lg:py-20 min-h-[calc(100dvh-120px)]">
         <div className="flex flex-col gap-12 items-start w-full">

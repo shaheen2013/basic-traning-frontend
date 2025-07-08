@@ -1,11 +1,10 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 
-export const HeaderSkeleton = ({ className }: { className?: string }) => {
+export const HeaderSkeleton = () => {
   return (
-    <div className={cn(className)}>
+    <div className="bg-gray-800">
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
         {/* Logo skeleton */}
 
