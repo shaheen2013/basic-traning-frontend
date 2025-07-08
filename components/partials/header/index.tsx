@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Link from "next/link";
@@ -13,7 +14,13 @@ import { usePathname } from "next/navigation";
 import { useMe } from "@/services/hook";
 import { HeaderSkeleton } from "./components/header-skeletons";
 
-const Header = ({ className }: { className?: string }) => {
+const Header = ({
+  className,
+  batches,
+}: {
+  className?: string;
+  batches: any;
+}) => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isHomePage = pathname === "/";
@@ -89,7 +96,7 @@ const Header = ({ className }: { className?: string }) => {
             )}
 
             <div className="hidden lg:flex">
-              <TrainingSlot>
+              <TrainingSlot batches={batches}>
                 <Button
                   className="bg-[#FFBB00] hover:bg-[#FFBB00]/90 text-primary has-[>svg]:px-6 rounded-full"
                   size="2xl"

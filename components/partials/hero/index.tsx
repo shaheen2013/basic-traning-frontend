@@ -21,7 +21,7 @@ const Hero = ({
         background: `linear-gradient(0deg, rgba(5, 6, 33, 0.50) 0%, rgba(5, 6, 33, 0.50) 100%), url(${data?.image}) lightgray 50% / cover no-repeat`,
       }}
     >
-      <Header />
+      <Header batches={batches} />
       {isLoading ? (
         <HeroSkeleton />
       ) : (

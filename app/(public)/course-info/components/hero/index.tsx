@@ -25,7 +25,7 @@ const Hero = ({
                  url(${data?.image}) lightgray 50% / cover no-repeat`,
       }}
     >
-      <Header />
+      <Header batches={batches} />
       {isLoading ? (
         <HeroSkeleton />
       ) : (
