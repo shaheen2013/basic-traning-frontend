@@ -8,7 +8,7 @@ export const cmsApi = baseApi.injectEndpoints({
     getCourseInfoContent: builder.query({
       query: () => "course-info-page-contents",
     }),
-    getBatches: builder.query({
+    getUpcomingBatches: builder.query({
       query: () => "batches",
     }),
   }),
@@ -17,5 +17,5 @@ export const cmsApi = baseApi.injectEndpoints({
 export const {
   useGetHomePageContentQuery,
   useGetCourseInfoContentQuery,
-  useGetBatchesQuery,
+  useGetUpcomingBatchesQuery,
 } = cmsApi;

@@ -13,13 +13,22 @@ import Image from "next/image";
 import moment from "moment";
 import { ClipboardListIcon, Loader } from "lucide-react";
 import { toast } from "sonner";
+import { useGetUpcomingBatchesQuery } from "@/features/cms/cmsApi";
 
 const price = 549;
 
-const TrainingSlot = ({ children, className, batches }: any) => {
+const TrainingSlot = ({ children, className, batches = [] }: any) => {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: upcomingBatchesResponse } = useGetUpcomingBatchesQuery(
+    {},
+    {
+      skip: batches.length > 0,
+    }
+  );
+
+  const upcomingBatches = upcomingBatchesResponse?.data?.batches || batches;
   const {
     handleSubmit,
     control,
@@ -167,7 +176,7 @@ const TrainingSlot = ({ children, className, batches }: any) => {
                     onValueChange={field.onChange}
                     aria-label="Training slots"
                   >
-                    {batches.map((slot: any) => (
+                    {upcomingBatches.map((slot: any) => (
                       <Label
                         key={slot.id}
                         htmlFor={String(slot.id)}
