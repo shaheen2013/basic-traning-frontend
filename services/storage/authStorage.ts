@@ -15,7 +15,6 @@ export const setToken = (token: string): void => {
   Cookies.set(TOKEN_KEY, token, {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    expires: 7, // days
     path: "/",
   });
 };
