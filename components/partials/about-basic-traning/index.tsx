@@ -8,9 +8,11 @@ import { AboutBasicTrainingSkeleton } from "./components/loader";
 const AboutBasicTraning = ({
   isLoading,
   data,
+  batches,
 }: {
-  isLoading?: boolean;
-  data?: any;
+  isLoading: boolean;
+  data: any;
+  batches: any;
 }) => {
   if (isLoading) return <AboutBasicTrainingSkeleton />;
   return (
@@ -33,7 +35,7 @@ const AboutBasicTraning = ({
           </Link>
         </Button>
       </div>
-      <UpcomingEvents />
+      <UpcomingEvents batches={batches} />
     </section>
   );
 };

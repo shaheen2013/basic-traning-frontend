@@ -12,13 +12,20 @@ export default function CourseInfo() {
     isLoading,
   } = useGetCourseInfoContentQuery({});
 
+  const loader = isLoading || isFetching;
   const data = response?.data;
 
-  const loader = isLoading || isFetching;
   return (
     <div className="min-h-screen overflow-x-hidden font-neue-haas-display">
-      <Hero isLoading={loader} data={data?.hero} />
-      <UpcomingAvailability isLoading={loader} />
+      <Hero
+        isLoading={loader}
+        data={data?.hero}
+        batches={data?.upcoming_batches}
+      />
+      <UpcomingAvailability
+        isLoading={loader}
+        batches={data?.upcoming_batches}
+      />
       <WhyChooseUs data={data?.why_us_items} isLoading={loader} />
       <RecommendUs data={data?.feedbacks} isLoading={loader} />
     </div>

@@ -7,17 +7,18 @@ import { Button } from "@/components/ui/button";
 import { Controller, useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { trainingSlots } from "./constant";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import moment from "moment";
 
 const price = 549;
 
-const TrainingSlot = ({ children, className }: any) => {
+const TrainingSlot = ({ children, className, batches }: any) => {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
 
+  console.log("batches:", batches);
   const {
     handleSubmit,
     control,
@@ -144,18 +145,16 @@ const TrainingSlot = ({ children, className }: any) => {
                     onValueChange={field.onChange}
                     aria-label="Training slots"
                   >
-                    {trainingSlots.map((slot) => (
+                    {batches.map((slot: any) => (
                       <Label
-                        key={slot.value}
+                        key={slot.id}
                         htmlFor={String(slot.id)}
                         className="flex items-center space-x-2 border-x border-t border-slate-300 px-6 py-4 hover:bg-slate-50 transition-colors last:border-b"
                       >
-                        <RadioGroupItem
-                          value={slot.value}
-                          id={String(slot.id)}
-                        />
+                        <RadioGroupItem value={slot.id} id={String(slot.id)} />
                         <span className="cursor-pointer text-slate-800 text-sm lg:text-xl font-medium">
-                          {slot.label}
+                          {moment(slot.start_date).format("MMMM DD")} -{" "}
+                          {moment(slot.end_date).format("MMMM DD")}
                         </span>
                       </Label>
                     ))}

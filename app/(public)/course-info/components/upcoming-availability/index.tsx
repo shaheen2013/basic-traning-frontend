@@ -1,7 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import moment from "moment";
 import { UpcomingAvailabilitySkeleton } from "./components/loader";
 import { NotifyMe } from "@/components/partials";
 
-const UpcomingAvailability = ({ isLoading }: { isLoading: boolean }) => {
+const UpcomingAvailability = ({
+  isLoading,
+  batches,
+}: {
+  isLoading: boolean;
+  batches: any;
+}) => {
   if (isLoading) return <UpcomingAvailabilitySkeleton />;
   return (
     <section className="container max-w-4xl flex flex-col justify-center items-center gap-8 lg:gap-16 py-12 lg:py-32">
@@ -14,15 +22,17 @@ const UpcomingAvailability = ({ isLoading }: { isLoading: boolean }) => {
           <h3 className="lg:text-xl font-medium text-primary">Month </h3>
         </div>
         <ul className="[&>*:nth-child(odd)]:bg-white [&>*:nth-child(even)]:bg-slate-50">
-          <li className="px-6 py-3 lg:py-4 text-base lg:text-lg font-medium text-slate-800 border-b border-slate-100 cursor-pointer">
-            June 01 - June 20
-          </li>
-          <li className="px-6 py-3 lg:py-4 text-base lg:text-lg font-medium text-slate-800 border-b border-slate-100 cursor-pointer">
-            July 10 - July 30
-          </li>
-          <li className="px-6 py-3 lg:py-4 text-base lg:text-lg font-medium text-slate-800 border-b border-slate-100 cursor-pointer">
-            August 01 - August 20
-          </li>
+          {batches &&
+            batches.map((batch: any) => (
+              <li
+                key={batch.id}
+                className="px-6 py-3 lg:py-4 text-base lg:text-lg font-medium text-slate-800 border-b border-slate-100"
+              >
+                {batch.month}
+                {moment(batch.start_date).format("MMMM DD")} -{" "}
+                {moment(batch.end_date).format("MMMM DD")}
+              </li>
+            ))}
         </ul>
       </div>
       <NotifyMe />

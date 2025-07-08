@@ -21,6 +21,7 @@ const RecommendUs = ({
   isLoading: boolean;
 }) => {
   if (isLoading) return <RecommendUsSkeleton />;
+  if (feedbacks.length === 0) return null;
   return (
     <section id="reviews" className="py-12 lg:py-32 bg-slate-50 ">
       <div className="container flex justify-center flex-col gap-y-8 lg:gap-y-24">

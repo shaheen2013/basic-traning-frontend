@@ -5,7 +5,15 @@ import { ArrowUpRight } from "@/components/icons";
 import { HeroSkeleton } from "./components/loader";
 import TrainingSlot from "../modal/training-slot";
 
-const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
+const Hero = ({
+  isLoading,
+  data,
+  batches,
+}: {
+  isLoading: boolean;
+  data: any;
+  batches: any;
+}) => {
   if (isLoading) return <HeroSkeleton />;
   return (
     <div
@@ -29,7 +37,7 @@ const Hero = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
             {data.description}
           </p>
         </div>
-        <TrainingSlot>
+        <TrainingSlot batches={batches}>
           <Button
             variant="outline"
             className="rounded-full w-full lg:w-fit text-white"

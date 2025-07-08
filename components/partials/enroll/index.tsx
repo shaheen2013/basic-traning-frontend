@@ -15,6 +15,7 @@ const Enroll = ({
   data?: any;
 }) => {
   if (isLoading) return <EnrollSkeleton isShow={isShow} />;
+  if (!data) return null;
   return (
     <section className="bg-slate-50  py-12 lg:py-32">
       <div className="container flex flex-col gap-8 lg:gap-24">

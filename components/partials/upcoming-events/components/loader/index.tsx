@@ -11,7 +11,7 @@ export const UpcomingEventsSkeleton = () => {
 
       {/* Events list skeleton */}
       <ul className="[&>*:nth-child(odd)]:bg-white [&>*:nth-child(even)]:bg-slate-50">
-        {[...Array(7)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <li
             key={i}
             className="px-6 py-3 lg:py-4 border-b border-slate-100 flex items-center"
