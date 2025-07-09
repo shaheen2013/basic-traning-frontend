@@ -22,3 +22,4 @@ export { default as QuizResult } from "./modal/quiz-result";
 export { default as VerificationLinkSent } from "./modal/verification-link-sent";
 export { default as Loader } from "./loader";
 export { default as CourseNotFound } from "./not-found/course";
+export { default as SessionProvider } from "./session-provider";
