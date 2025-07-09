@@ -18,7 +18,7 @@ export const meApi = baseApi.injectEndpoints({
       query: (formData) => ({
         url: "user/avatar",
         method: "POST",
-        body: formData,
+        body: { ...formData, _method: "PATCH" },
       }),
       invalidatesTags: ["Me"],
     }),

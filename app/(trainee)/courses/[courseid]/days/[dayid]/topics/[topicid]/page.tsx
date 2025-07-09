@@ -15,6 +15,7 @@ import { Loader } from "@/components/partials";
 import { useGetCoursesLessonsQuery } from "@/features/course/videoApi";
 import { useGetQuizQuery } from "@/features/course/quizApi";
 import { useGetAssignmentQuery } from "@/features/course/assigmentsApi";
+import QuizRunner from "./components/quiz/components/quiz-runner2";
 
 const Course = () => {
   const params = useParams();
@@ -95,23 +96,24 @@ const Course = () => {
   }
 
   // Error handling
-  if (
-    (isError && "status" in error && error.status === 403) ||
-    (quizIsError && "status" in quizError && quizError.status === 403) ||
-    (assignmentIsError &&
-      "status" in assignmentError &&
-      assignmentError.status === 403)
-  ) {
-    return <Lock />;
-  }
+  // if (
+  //   (isError && "status" in error && error.status === 403) ||
+  //   (quizIsError && "status" in quizError && quizError.status === 403) ||
+  //   (assignmentIsError &&
+  //     "status" in assignmentError &&
+  //     assignmentError.status === 403)
+  // ) {
+  //   return <Lock />;
+  // }
 
   return (
     <>
-      {contentStatus === "media" && <Video data={contentData} />}
-      {contentStatus === "zoom" && <LiveClass data={contentData} />}
+      {/* {contentStatus === "media" && <Video data={contentData} />} */}
+      {/* {contentStatus === "zoom" && <LiveClass data={contentData} />} */}
       {/* {contentStatus === "preview" && <Preview data={contentData} />} */}
-      {contentStatus === "quiz" && <Quiz data={contentData} />}
+      {/* {contentStatus === "quiz" && <Quiz data={contentData} />} */}
       {/* {contentStatus === "assignment" && <Assignment data={contentData} />} */}
+      <Quiz data={{}} />
     </>
   );
 };

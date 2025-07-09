@@ -16,10 +16,10 @@ import { HeaderSkeleton } from "./components/header-skeletons";
 
 const Header = ({
   className,
-  batches,
+  batches = [],
 }: {
   className?: string;
-  batches: any;
+  batches?: any;
 }) => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);

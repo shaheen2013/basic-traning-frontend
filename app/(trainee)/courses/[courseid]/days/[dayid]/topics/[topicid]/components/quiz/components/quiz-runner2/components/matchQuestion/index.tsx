@@ -12,21 +12,16 @@ import { Controller } from "react-hook-form";
 const MatchQuestionItem = ({
   question,
   control,
-  timeLeft,
 }: {
   question: any;
   control: any;
-  timeLeft: number;
 }) => (
   <div className="py-4 px-4 lg:px-6 border-t border-slate-200 flex flex-col last:border-b">
     <div className="flex justify-between items-center gap-4">
       <Controller
         name={`matching_answers.${question.id}`}
         control={control}
-        rules={{
-          required: timeLeft > 0 ? "Please select a match" : false,
-        }}
-        render={({ field, fieldState: { error } }) => {
+        render={({ field }) => {
           const selectedOption = question.options.find(
             (opt: any) => opt.id.toString() === field.value?.toString()
           );
@@ -57,11 +52,6 @@ const MatchQuestionItem = ({
                   </SelectContent>
                 </Select>
               </div>
-              {error && (
-                <span className="text-sm text-red-500 block mt-2">
-                  {error.message}
-                </span>
-              )}
             </div>
           );
         }}
