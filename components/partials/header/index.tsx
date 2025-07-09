@@ -30,20 +30,15 @@ const Header = ({
   return (
     <div className={cn(className, open && "bg-primary")}>
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
-        <Link href={"/"} className="flex flex-col gap-1 cursor-pointer">
-          <div className="flex gap-1.6 lg:gap-2 items-center">
-            <Image
-              src="/logo.png"
-              alt="logo"
-              width={33}
-              height={32}
-              className="h-6 lg:h-8 object-center object-contain"
-            />
-            <h3 className="text-white text-lg lg:text-2xl font-bold">
-              Basic Training
-            </h3>
-          </div>
-          <p className="text-white text-[8px] lg:text-xs font-inter">
+        <Link href={"/"} className="flex flex-col gap-0.5 cursor-pointer">
+          <Image
+            src="/logo1.png"
+            alt="logo"
+            width={1000}
+            height={700}
+            className="w-full max-w-[212px] filter brightness-0 invert"
+          />
+          <p className="text-white text-xs font-inter">
             By Trophy Club Consulting
           </p>
         </Link>
