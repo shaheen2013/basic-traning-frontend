@@ -11,6 +11,17 @@ const Syllabus = () => {
   const content = data?.data?.syllabus;
 
   if (isLoading || isFetching) return <Loader />;
+  if (!content) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full w-full space-y-4">
+        <h3 className="text-xl font-medium text-gray-600">No Syllabus Found</h3>
+        <p className="text-gray-500 text-center max-w-md">
+          We couldn&apos;t find any syllabus content. Please check back later or
+          contact support.
+        </p>
+      </div>
+    );
+  }
   return (
     <>
       <div className="flex items-center gap-2 font-semibold lg:text-2xl text-lg lg:py-6 lg:px-6 p-4 bg-slate-200 rounded-t-2xl capitalize">

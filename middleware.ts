@@ -16,6 +16,7 @@ export async function middleware(request: NextRequest) {
     "/settings",
     "/chats",
     "/dashboard",
+    "/syllabus",
   ];
 
   // Auth routes (should not be accessible when logged in)
@@ -57,5 +58,6 @@ export const config = {
     "/settings/:path*",
     "/chats/:path*",
     "/dashboard/:path*",
+    "/syllabus/:path*",
   ],
 };
