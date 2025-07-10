@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QuestionCircle, Timer } from "@/components/icons";
+import { QuestionCircle } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { formatSecondsToReadableTime } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { test } from "./components/const";
 import MatchQuestionItem from "./components/matchQuestion";
+import Progress from "./components/progress";
+import Timer from "./components/timer";
 
 interface Answer {
   quiz_id: number;
@@ -108,21 +109,6 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
     }
   };
 
-  // Timer countdown and auto-submit when time is up
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      // Time is up, submit all answers
-      submitAllAnswers();
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft]);
-
   const handlePreviousQuestion = () => {
     setCurrentQuizIndex((prev) => prev - 1);
   };
@@ -133,6 +119,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   };
 
   const saveCurrentAnswer = (formData: any) => {
+    console.log("curremt Index", currentQuizIndex);
     if (!currentQuiz) return;
 
     let questionsPayload;
@@ -195,18 +182,17 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
             Question {currentQuizIndex + 1}/{totalQuiz}
           </h3>
         </div>
-
-        {timeLeft <= 0 ? (
-          <div className="flex gap-2">
-            <Timer className="size-5 text-red-500" />
-            <span className="text-red-500">Time&apos;s up!</span>{" "}
-          </div>
-        ) : (
-          <div className="flex gap-2 text-blue-500">
-            <Timer className="size-5" />
-            Time left {formatSecondsToReadableTime(timeLeft)}
-          </div>
-        )}
+        <Progress
+          total={totalQuiz}
+          setCurrentQuizIndex={setCurrentQuizIndex}
+          answers={answers}
+          timeLeft={timeLeft}
+        />
+        <Timer
+          timeLeft={timeLeft}
+          setTimeLeft={setTimeLeft}
+          submitAllAnswers={submitAllAnswers}
+        />
       </div>
 
       <p className="text-lg text-primary font-semibold mb-4 px-4 lg:px-6">
