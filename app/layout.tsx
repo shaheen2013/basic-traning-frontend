@@ -26,14 +26,10 @@ export default function RootLayout({ children }: any) {
   return (
     <html lang="en">
       <body
-        className={`${neueHaasDisplay.variable} ${vollkorn.variable} ${inter.variable}  antialiased`}
+        className={`${neueHaasDisplay.variable} ${vollkorn.variable} ${inter.variable} min-h-screen overflow-x-hidden  antialiased`}
       >
         <SessionProvider>
-          <ReduxProvider>
-            <main className="min-h-screen overflow-x-hidden font-neue-haas-display">
-              {children}
-            </main>
-          </ReduxProvider>
+          <ReduxProvider>{children}</ReduxProvider>
           {/* Sonner Toaster for notifications */}
           <Toaster />
         </SessionProvider>
