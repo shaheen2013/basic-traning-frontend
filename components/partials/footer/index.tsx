@@ -14,23 +14,22 @@ const Footer = () => {
     <footer className="bg-gray-800 py-6 lg:py-16 font-neue-haas-display">
       <div className="container flex flex-col gap-8 lg:gap-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="order-1 flex flex-col gap-1 cursor-pointer">
-            <div className="flex gap-1.6 lg:gap-2 items-center">
-              <Image
-                src="/logo.png"
-                alt="logo"
-                width={33}
-                height={32}
-                className="h-6 lg:h-8 object-center object-contain"
-              />
-              <h3 className="text-white text-lg lg:text-2xl font-bold">
-                Basic Training
-              </h3>
-            </div>
-            <p className="text-white text-[8px] lg:text-xs font-inter">
+          <Link
+            href={"/"}
+            className="order-1 cursor-pointer flex flex-col gap-0.5"
+          >
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={212}
+              height={40}
+              className="w-full h-auto max-w-[212px]"
+              priority
+            />
+            <p className="text-white text-xs font-inter">
               By Trophy Club Consulting
             </p>
-          </div>
+          </Link>
           <div className="order-3 lg:order-2 flex items-center lg:justify-center gap-4 lg:gap-8">
             {menus.map((menu) => (
               <Link
