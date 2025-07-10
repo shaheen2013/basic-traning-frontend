@@ -1,44 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { clearToken, getToken } from "../storage/authStorage";
-import { toast } from "sonner";
+import { Session } from "next-auth";
+
+// Define the shape of your session with the access token
+interface AppSession extends Session {
+  accessToken?: string;
+}
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || "",
+  prepareHeaders: async (headers) => {
+    try {
+      // Dynamically import getSession to avoid SSR issues
+      const { getSession } = await import("next-auth/react");
+      const session = (await getSession()) as AppSession | null;
 
-  prepareHeaders: (headers) => {
-    const token = getToken();
-    if (token) headers.set("Authorization", `Bearer ${token}`);
-    headers.set("Accept", "application/json");
+      if (session?.accessToken) {
+        headers.set("Authorization", `Bearer ${session.accessToken}`);
+      }
+
+      // Set common headers
+      headers.set("Accept", "application/json");
+    } catch (error) {
+      console.error("Error preparing headers:", error);
+    }
     return headers;
   },
 });
 
-const baseQueryWithAuth = async (args: any, api: any, extraOptions: any) => {
-  const result = await baseQuery(args, api, extraOptions);
-  if (result.error && result.error.status === 401) {
-    const allowedPaths = ["/login", "/home", "/course-info", "/"];
-    const currentPath = window.location.pathname;
-
-    // Check if current path is NOT in allowedPaths (exact match)
-    const shouldRedirect = !allowedPaths.some((path) =>
-      path === "/" ? currentPath === "/" : currentPath.startsWith(path)
-    );
-
-    if (shouldRedirect) {
-      toast.error("Session expired. Please login again.");
-      clearToken();
-      window.location.href = "/login";
-    }
-  }
-  return result;
-};
-
 export const baseApi = createApi({
   reducerPath: "api",
-  baseQuery: baseQueryWithAuth,
+  baseQuery: baseQuery,
   tagTypes: ["Me"],
-  refetchOnMountOrArgChange: true,
+  // refetchOnMountOrArgChange: true,
   endpoints: () => ({}),
 });

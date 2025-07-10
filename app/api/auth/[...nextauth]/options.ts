@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/auth/[...nextauth]/route.ts
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -34,26 +36,26 @@ export const authOptions = {
               email: data.data.user.email,
               image: data.data.user.avatar,
               accessToken: data.data.access_token,
-              user: data.data.user, // Store entire user object
+              user: data.data.user,
             };
           }
-          return null;
+          // Return error information
+          return Promise.reject(new Error(data.message || "Login failed"));
         } catch (error) {
-          console.error("Login error:", error);
-          return null;
+          return Promise.reject(new Error("An error occurred during login"));
         }
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.accessToken = user.accessToken;
         token.user = user.user;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       session.accessToken = token.accessToken;
       session.user = token.user;
       return session;

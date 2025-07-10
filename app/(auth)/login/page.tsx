@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Input, InputPassword } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -15,22 +17,16 @@ interface LoginFormData {
   remember: boolean;
 }
 
-interface ApiError {
-  data?: {
-    errors?: {
-      email?: string[];
-      password?: string[];
-    };
-    message?: string;
-  };
-}
-
 export default function Login() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/my-course";
+
   const {
     handleSubmit,
     control,
     setError,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<LoginFormData>({
     defaultValues: {
       email: "trainee@example.com",
@@ -50,47 +46,33 @@ export default function Login() {
         email: data.email,
         password: data.password,
         remember: data.remember,
-        callbackUrl: "/dashboard",
+        callbackUrl: callbackUrl,
       });
 
-      if (result?.error) {
+      if (result?.ok) {
+        // Handle successful login
+        if (result.url) {
+          // Safely redirect to callbackUrl or default
+          const url = new URL(result.url);
+          if (url.origin === window.location.origin) {
+            router.push(url.pathname + url.search);
+          } else {
+            router.push("/my-course");
+          }
+        } else {
+          router.push("/my-course");
+        }
+      } else if (result?.error) {
         setError("root", {
           type: "manual",
-          message: result.error,
-        });
-      } else if (result?.url) {
-        window.location.href = result.url;
-      }
-    } catch (error: unknown) {
-      if (typeof error === "object" && error !== null && "data" in error) {
-        const apiError = error as ApiError;
-
-        if (apiError.data?.errors?.email) {
-          setError("email", {
-            type: "manual",
-            message: apiError.data.errors.email.join(", "),
-          });
-        }
-
-        if (apiError.data?.errors?.password) {
-          setError("password", {
-            type: "manual",
-            message: apiError.data.errors.password.join(", "),
-          });
-        }
-
-        if (apiError.data?.message) {
-          setError("root", {
-            type: "manual",
-            message: apiError.data.message,
-          });
-        }
-      } else {
-        setError("root", {
-          type: "manual",
-          message: "An unexpected error occurred",
+          message: result.error || "Invalid credentials",
         });
       }
+    } catch (error) {
+      setError("root", {
+        type: "manual",
+        message: "An unexpected error occurred. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -159,11 +141,10 @@ export default function Login() {
                 name="password"
                 rules={{
                   required: "Password is required",
-                  // minLength: { value: 8, message: "Minimum length is 8" },
-                  // pattern: {
-                  //   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
-                  //   message: "Must contain uppercase, lowercase & number",
-                  // },
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
                 }}
                 render={({
                   field: { onChange, value, onBlur },
@@ -195,8 +176,7 @@ export default function Login() {
                     <Checkbox
                       id="remember"
                       checked={value}
-                      onCheckedChange={onChange}
-                      onBlur={onBlur}
+                      onCheckedChange={onBlur}
                     />
                   )}
                 />
@@ -216,7 +196,7 @@ export default function Login() {
               className="w-full rounded-full"
               size="2xl"
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !isValid}
             >
               {isLoading ? "Logging in..." : "Login"}
             </Button>
@@ -234,6 +214,7 @@ export default function Login() {
             className="w-full rounded-full bg-blue-600 hover:bg-blue-600/90"
             size="2xl"
             type="button"
+            onClick={() => null}
           >
             Login as Organization
           </Button>
