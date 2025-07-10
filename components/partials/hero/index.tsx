@@ -18,7 +18,9 @@ const Hero = ({
     <div
       className="w-full min-h-dvh"
       style={{
-        background: `linear-gradient(0deg, rgba(5, 6, 33, 0.50) 0%, rgba(5, 6, 33, 0.50) 100%), url(${data?.image}) lightgray 50% / cover no-repeat`,
+        background: `linear-gradient(90deg, rgba(20, 23, 42, 0.80) 0%, rgba(0, 0, 0, 0.00) 100%), 
+                 linear-gradient(0deg, rgba(26, 26, 26, 0.40) 0%, rgba(26, 26, 26, 0.40) 100%), 
+                 url(${data?.image}) lightgray 50% / cover no-repeat`,
       }}
     >
       <Header batches={batches} />

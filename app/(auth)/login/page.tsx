@@ -1,21 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input, InputPassword } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLoginMutation } from "@/features/auth/authApi";
-import { setToken } from "@/services/storage/authStorage";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-export default function Login() {
+interface LoginFormData {
+  email: string;
+  password: string;
+  remember: boolean;
+}
+
+function LoginForm() {
   const router = useRouter();
-  const [login, { isLoading }] = useLoginMutation();
-  const { handleSubmit, control, setError } = useForm({
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/my-course";
+
+  const {
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors, isValid },
+  } = useForm<LoginFormData>({
     defaultValues: {
       email: "trainee@example.com",
       password: "password",
@@ -24,36 +36,43 @@ export default function Login() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data: any) => {
-    const payload = {
-      email: data.email,
-      password: data.password,
-      remember: data.remember,
-    };
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
     try {
-      const response: any = await login(payload).unwrap();
-      if (response.success) {
-        setToken(response.data.access_token);
-        router.push("/my-course");
-      }
-    } catch (error: any) {
-      const errors = error?.data?.errors;
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+        remember: data.remember,
+        callbackUrl: callbackUrl,
+      });
 
-      if (!errors) return;
-
-      if (errors.email?.length) {
-        setError("email", {
+      if (result?.ok) {
+        if (result.url) {
+          const url = new URL(result.url);
+          if (url.origin === window.location.origin) {
+            router.push(url.pathname + url.search);
+          } else {
+            router.push("/my-course");
+          }
+        } else {
+          router.push("/my-course");
+        }
+      } else if (result?.error) {
+        setError("root", {
           type: "manual",
-          message: errors.email.join(", "),
+          message: result.error || "Invalid credentials",
         });
       }
-
-      if (errors.password?.length) {
-        setError("password", {
-          type: "manual",
-          message: errors.password.join(", "),
-        });
-      }
+    } catch (error) {
+      setError("root", {
+        type: "manual",
+        message: "An unexpected error occurred. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,24 +80,30 @@ export default function Login() {
     <div className="flex flex-col justify-between items-center h-screen px-4 pt-20">
       <div className="flex justify-center items-center">
         <div className="max-w-[600px] w-full">
-          {/* title */}
+          {/* Title */}
           <h2 className="text-primary font-semibold text-3xl lg:text-4xl font-inter mb-3 lg:mb-4">
             Welcome <span className="italic font-normal">Back</span>
           </h2>
 
-          {/* subtitle  */}
+          {/* Subtitle */}
           <p className="text-slate-800 text-base lg:text-lg font-normal mb-6 lg:mb-8">
             Log in to continue your training and access your personalized
             dashboard.
           </p>
 
-          {/* form */}
+          {/* Root Error Display */}
+          {errors.root && (
+            <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-md">
+              {errors.root.message}
+            </div>
+          )}
+
+          {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* email */}
+            {/* Email Field */}
             <div className="mb-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="email">Email *</Label>
-
                 <Controller
                   control={control}
                   name="email"
@@ -100,27 +125,31 @@ export default function Login() {
                       onBlur={onBlur}
                       value={value}
                       errorText={error?.message}
+                      aria-invalid={!!error}
                     />
                   )}
                 />
               </div>
             </div>
 
-            {/* password */}
+            {/* Password Field */}
             <div className="mb-2">
               <Controller
                 control={control}
                 name="password"
                 rules={{
                   required: "Password is required",
-                  minLength: { value: 8, message: "Minimum length is 8" },
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
                 }}
                 render={({
                   field: { onChange, value, onBlur },
                   fieldState: { error },
                 }) => (
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="email">Password *</Label>
+                    <Label htmlFor="password">Password *</Label>
                     <InputPassword
                       id="password"
                       placeholder="Enter password"
@@ -128,13 +157,14 @@ export default function Login() {
                       onBlur={onBlur}
                       value={value}
                       errorText={error?.message}
+                      aria-invalid={!!error}
                     />
                   </div>
                 )}
               />
             </div>
 
-            {/* remember/forget password */}
+            {/* Remember/Forgot Password */}
             <div className="flex justify-between mb-8">
               <div className="flex items-center gap-1.5">
                 <Controller
@@ -144,12 +174,10 @@ export default function Login() {
                     <Checkbox
                       id="remember"
                       checked={value}
-                      onCheckedChange={onChange}
-                      onBlur={onBlur}
+                      onCheckedChange={onBlur}
                     />
                   )}
                 />
-
                 <Label htmlFor="remember">Keep me signed in.</Label>
               </div>
 
@@ -161,31 +189,35 @@ export default function Login() {
               </Link>
             </div>
 
-            {/* submit */}
+            {/* Submit Button */}
             <Button
               className="w-full rounded-full"
               size="2xl"
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !isValid}
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
 
+          {/* Divider */}
           <div className="flex items-center gap-2 my-4">
             <div className="flex-1 border-t border-slate-300"></div>
             <div className="text-gray-800 text-sm font-medium">OR</div>
             <div className="flex-1 border-t border-slate-300"></div>
           </div>
 
+          {/* Organization Login */}
           <Button
             className="w-full rounded-full bg-blue-600 hover:bg-blue-600/90"
             size="2xl"
             type="button"
+            onClick={() => null}
           >
             Login as Organization
           </Button>
 
+          {/* Sign Up Link */}
           <div className="flex justify-center mt-6">
             <p className="lg:text-base text-sm text-slate-800 font-normal">
               Don&apos;t have an Organization account?{" "}
@@ -200,5 +232,14 @@ export default function Login() {
         </div>
       </div>
     </div>
+  );
+}
+
+// The main export wraps the form in Suspense
+export default function Login() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

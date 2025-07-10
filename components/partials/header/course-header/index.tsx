@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Link from "next/link";
@@ -11,7 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import LogOutConfirmation from "@/components/partials/modal/log-out-confirmation";
-import { useMe } from "@/services/hook";
+import { useSession } from "next-auth/react";
 
 const icons = [
   {
@@ -57,7 +58,8 @@ const CoursMenusWithIcons = courseMenus.map((menu) => ({
 }));
 
 const Header = () => {
-  const { data: userData } = useMe({});
+  const { data: session }: { data: any } = useSession();
+  const userData = session?.user;
 
   return (
     <div className="bg-primary font-inter">

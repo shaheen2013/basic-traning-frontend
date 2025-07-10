@@ -11,8 +11,8 @@ import { ArrowRight, Dismiss, Hamburger } from "@/components/icons";
 import { useState } from "react";
 import TrainingSlot from "../modal/training-slot";
 import { usePathname } from "next/navigation";
-import { useMe } from "@/services/hook";
-import { HeaderSkeleton } from "./components/header-skeletons";
+import { useSession } from "next-auth/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Header = ({
   className,
@@ -24,9 +24,8 @@ const Header = ({
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isHomePage = pathname === "/";
-  const { data: userData, isLoading, isFetching } = useMe({});
+  const { status }: any = useSession();
 
-  if (isLoading || isFetching) return <HeaderSkeleton />;
   return (
     <div className={cn(className, open && "bg-primary")}>
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
@@ -74,7 +73,9 @@ const Header = ({
         </div>
         <>
           <div className="flex gap-3 items-center">
-            {!userData ? (
+            {status === "loading" ? (
+              <Skeleton className="h-10 w-18 lg:w-20 rounded-md" />
+            ) : status === "unauthenticated" ? (
               <Link
                 href="/login"
                 className="text-white text-xl font-semibold px-4 py-3"

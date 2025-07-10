@@ -6,25 +6,10 @@ import Modal from "..";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Logout } from "@/components/icons";
-import { useLogoutMutation } from "@/features/auth/authApi";
-import { clearToken } from "@/services/storage/authStorage";
-import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 const LogOutConfirmation = () => {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
-  const [logout, { isLoading }] = useLogoutMutation();
-
-  const handleLogOut = async () => {
-    try {
-      await logout({}).unwrap();
-      clearToken();
-      router.push("/login");
-      setOpen(false);
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -64,8 +49,9 @@ const LogOutConfirmation = () => {
               Cancel
             </Button>
             <Button
-              onClick={handleLogOut}
-              disabled={isLoading}
+              onClick={() => {
+                signOut({ callbackUrl: "/login" });
+              }}
               className="rounded-full w-1/2"
               variant="secondary"
             >

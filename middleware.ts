@@ -1,58 +1,45 @@
-import { NextResponse, type NextRequest } from "next/server";
+// middleware.ts
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("btToken")?.value;
-  const { pathname, searchParams } = request.nextUrl;
+export async function middleware(request: NextRequest) {
+  const token = await getToken({ req: request });
+  const { pathname, origin } = request.nextUrl;
 
-  // Define all protected routes
+  // Protected routes (require auth)
   const protectedRoutes = [
     "/courses",
     "/my-course",
     "/profile",
     "/analytics",
-    "/chats",
     "/settings",
-    "/syllabus",
+    "/chats",
+    "/dashboard",
   ];
 
-  // Define public routes
-  const publicRoutes = ["/login", "/register", "/api/auth"];
+  // Auth routes (should not be accessible when logged in)
+  const authRoutes = ["/login", "/forget-password", "/reset-password"];
 
-  // Check if current path is protected
+  // Check if route is protected
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   );
 
-  // Check if current path is public auth route
-  const isPublicAuthRoute = publicRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  // Check if route is auth route
+  const isAuthRoute = authRoutes.includes(pathname);
 
-  // Redirect to login if trying to access protected route without token
+  // If trying to access auth page while authenticated
+  if (token && isAuthRoute) {
+    return NextResponse.redirect(new URL("/my-course", origin));
+  }
+
+  // If trying to access protected route without authentication
   if (isProtectedRoute && !token) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set(
-      "redirect",
-      pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "")
-    );
+    const loginUrl = new URL("/login", origin);
+    // Store the attempted URL for redirect after login
+    loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
-  }
-
-  // Redirect to dashboard if logged-in user tries to access auth pages
-  if (isPublicAuthRoute && token) {
-    return NextResponse.redirect(new URL("/my-course", request.url));
-  }
-
-  // Add token to API requests
-  if (pathname.startsWith("/api") && token) {
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("Authorization", `Bearer ${token}`);
-
-    return NextResponse.next({
-      request: {
-        headers: requestHeaders,
-      },
-    });
   }
 
   return NextResponse.next();
@@ -60,20 +47,15 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Protected routes
+    "/login",
+    "/forget-password",
+    "/reset-password",
     "/courses/:path*",
     "/my-course/:path*",
     "/profile/:path*",
     "/analytics/:path*",
-    "/chats/:path*",
     "/settings/:path*",
-    "/syllabus/:path*",
-
-    // Auth routes
-    "/login",
-    "/register",
-
-    // API routes
-    "/api/:path*",
+    "/chats/:path*",
+    "/dashboard/:path*",
   ],
 };
