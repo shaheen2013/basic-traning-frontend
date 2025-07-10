@@ -29,13 +29,14 @@ const Header = ({
   return (
     <div className={cn(className, open && "bg-primary")}>
       <div className="container flex justify-between items-center relative py-4 lg:py-8">
-        <Link href={"/"} className="flex flex-col gap-0.5 cursor-pointer">
+        <Link href={"/"} className="cursor-pointer flex flex-col gap-0.5">
           <Image
-            src="/logo1.png"
+            src="/logo.png"
             alt="logo"
-            width={1000}
-            height={700}
-            className="w-full max-w-[212px] filter brightness-0 invert"
+            width={212}
+            height={40}
+            className="w-full h-auto max-w-[212px]"
+            priority
           />
           <p className="text-white text-xs font-inter">
             By Trophy Club Consulting

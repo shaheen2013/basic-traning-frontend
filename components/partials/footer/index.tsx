@@ -14,20 +14,22 @@ const Footer = () => {
     <footer className="bg-gray-800 py-6 lg:py-16 font-neue-haas-display">
       <div className="container flex flex-col gap-8 lg:gap-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="order-1 flex flex-col gap-1 cursor-pointer">
-            <Link href={"/"} className="flex flex-col gap-0.5 cursor-pointer">
-              <Image
-                src="/logo1.png"
-                alt="logo"
-                width={1000}
-                height={700}
-                className="w-full max-w-[212px] filter brightness-0 invert"
-              />
-              <p className="text-white text-xs font-inter">
-                By Trophy Club Consulting
-              </p>
-            </Link>
-          </div>
+          <Link
+            href={"/"}
+            className="order-1 cursor-pointer flex flex-col gap-0.5"
+          >
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={212}
+              height={40}
+              className="w-full h-auto max-w-[212px]"
+              priority
+            />
+            <p className="text-white text-xs font-inter">
+              By Trophy Club Consulting
+            </p>
+          </Link>
           <div className="order-3 lg:order-2 flex items-center lg:justify-center gap-4 lg:gap-8">
             {menus.map((menu) => (
               <Link
