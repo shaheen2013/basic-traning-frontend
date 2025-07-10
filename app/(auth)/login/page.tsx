@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 interface LoginFormData {
@@ -17,7 +17,7 @@ interface LoginFormData {
   remember: boolean;
 }
 
-export default function Login() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/my-course";
@@ -50,9 +50,7 @@ export default function Login() {
       });
 
       if (result?.ok) {
-        // Handle successful login
         if (result.url) {
-          // Safely redirect to callbackUrl or default
           const url = new URL(result.url);
           if (url.origin === window.location.origin) {
             router.push(url.pathname + url.search);
@@ -234,5 +232,14 @@ export default function Login() {
         </div>
       </div>
     </div>
+  );
+}
+
+// The main export wraps the form in Suspense
+export default function Login() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
