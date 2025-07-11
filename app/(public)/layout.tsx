@@ -7,7 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <main className="font-neue-haas-display">{children}</main>
+      <main className="font-inter">{children}</main>
       {/* Footer component */}
       <Footer />
     </>

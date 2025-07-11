@@ -11,9 +11,10 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import moment from "moment";
-import { ClipboardListIcon, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import { toast } from "sonner";
 import { useGetUpcomingBatchesQuery } from "@/features/cms/cmsApi";
+import { QuestionCircle } from "@/components/icons";
 
 const price = 549;
 
@@ -226,29 +227,12 @@ const TrainingSlot = ({ children, className, batches = [] }: any) => {
           >
             <div className="flex flex-col gap-3">
               <h3 className="text-primary text-2xl lg:text-4xl font-semibold">
-                Add Trainees & Review Cost ${price}/p
+                Add Trainees & Review Cost ${price}/person
               </h3>
               <p className="text-slate-600 text-base lg:text-xl">
                 Enter how many trainees you’re enrolling to calculate your total
                 fee.
               </p>
-            </div>
-
-            {/* Information Collection Redirection Notice */}
-            <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <ClipboardListIcon className="flex-shrink-0 text-blue-600 mt-0.5" />
-              <div>
-                <p className="text-sm text-blue-600">
-                  We&apos;ll redirect you to securely complete your team&apos;s
-                  training registration.
-                </p>
-                {process.env.NEXT_PUBLIC_ADMIN_PANEL_URL && (
-                  <p className="text-xs text-blue-500 mt-1">
-                    Secure connection:{" "}
-                    {new URL(process.env.NEXT_PUBLIC_ADMIN_PANEL_URL).hostname}
-                  </p>
-                )}
-              </div>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -281,7 +265,7 @@ const TrainingSlot = ({ children, className, batches = [] }: any) => {
                       max="10000"
                       step="1"
                       placeholder="Enter number of trainees"
-                      className="rounded-full"
+                      className="rounded-lg"
                       value={value ?? ""}
                       onChange={(e) =>
                         onChange(
@@ -305,7 +289,19 @@ const TrainingSlot = ({ children, className, batches = [] }: any) => {
                 <div>= ${price * numberOfTrainees}</div>
               </div>
             )}
+            {/* Information Collection Redirection Notice */}
+            <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <QuestionCircle className="flex-shrink-0 text-blue-600 mt-0.5" />
 
+              <p className="text-sm text-blue-600">
+                We&apos;ll redirect you
+                {process.env.NEXT_PUBLIC_ADMIN_PANEL_URL &&
+                  ` to ${
+                    new URL(process.env.NEXT_PUBLIC_ADMIN_PANEL_URL).hostname
+                  }`}{" "}
+                to securely complete your organization registration.
+              </p>
+            </div>
             <div className="mt-4 flex justify-between gap-4 w-full">
               <Button
                 type="button"
