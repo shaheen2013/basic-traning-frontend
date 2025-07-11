@@ -16,7 +16,7 @@ export default function CourseInfo() {
   const data = response?.data;
 
   return (
-    <div className="min-h-screen overflow-x-hidden font-neue-haas-display">
+    <div className="min-h-screen overflow-x-hidden font-inter">
       <Hero
         isLoading={loader}
         data={data?.hero}

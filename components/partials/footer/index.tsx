@@ -11,7 +11,7 @@ const Footer = () => {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   return (
-    <footer className="bg-gray-800 py-6 lg:py-16 font-neue-haas-display">
+    <footer className="bg-gray-800 py-6 lg:py-16 font-inter">
       <div className="container flex flex-col gap-8 lg:gap-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <Link

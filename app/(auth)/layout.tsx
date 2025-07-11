@@ -5,16 +5,16 @@ import "../globals.css";
 export default function AuthLayout({ children }: React.PropsWithChildren) {
   return (
     <>
-      <main className="overflow-x-hidden">
-        <Header className="bg-primary font-neue-haas-display" />
-        <div className="grid grid-cols-12 font-inter">
+      <main className="overflow-x-hidden font-inter">
+        <Header className="bg-primary" />
+        <div className="grid grid-cols-12">
           <div className="col-span-12 lg:col-span-6">{children}</div>
           <div className="lg:block hidden lg:col-span-6">
             <AuthRightSidebar />
           </div>
         </div>
       </main>
-      <footer className="bg-gray-800 font-neue-haas-display">
+      <footer className="bg-gray-800">
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 container py-4 lg:py-6">
           <p className="text-white text-base lg:text-lg font-normal lg:font-medium">
             © {new Date().getFullYear()} Basic Training. All rights reserved.
