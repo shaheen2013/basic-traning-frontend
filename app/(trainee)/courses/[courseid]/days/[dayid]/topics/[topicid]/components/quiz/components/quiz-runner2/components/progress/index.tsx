@@ -12,15 +12,20 @@ import {
 import { Check, X, ChevronUp, ChevronRight } from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
 
-const Progress = ({ total, setCurrentQuizIndex, answers, timeLeft }: any) => {
-  console.log("answers", answers);
+const Progress = ({
+  total,
+  currentIndex,
+  answeredQuestions,
+  setCurrentQuizIndex,
+  timeLeft,
+}: {
+  total: number;
+  currentIndex: number;
+  answeredQuestions: Set<number>;
+  setCurrentQuizIndex: (index: number) => void;
+  timeLeft: number;
+}) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-
-  // Mock data - replace with your actual quiz submission status
-  const quizStatus = Array.from({ length: total }, (_, i) => ({
-    id: i + 1,
-    submitted: false,
-  }));
 
   return (
     <Drawer direction={isDesktop ? "right" : "bottom"}>
@@ -48,8 +53,7 @@ const Progress = ({ total, setCurrentQuizIndex, answers, timeLeft }: any) => {
               <div>
                 <DrawerTitle>Your Quiz Progress</DrawerTitle>
                 <DrawerDescription>
-                  {quizStatus.filter((q) => q.submitted).length}/{total}{" "}
-                  Question completed
+                  {answeredQuestions.size}/{total} Questions answered
                 </DrawerDescription>
               </div>
               <DrawerClose asChild>
@@ -60,39 +64,44 @@ const Progress = ({ total, setCurrentQuizIndex, answers, timeLeft }: any) => {
             </div>
           </DrawerHeader>
 
-          {/* Quiz Grid */}
           <div className="mt-4 lg:mt-6 h-[calc(100vh-350px)] lg:h-[calc(100vh-200px)] overflow-y-auto">
             <div className="grid grid-cols-5 gap-3">
-              {quizStatus.map((quiz, index) => (
-                <div
-                  key={quiz.id}
-                  onClick={() => setCurrentQuizIndex(index)}
-                  className={`cursor-pointer flex flex-col items-center justify-center h-12 rounded border ${
-                    quiz.submitted
-                      ? "bg-green-50 border-green-200 text-green-600"
-                      : "bg-gray-50 border-gray-200 text-gray-400"
-                  }`}
-                >
-                  <span className="text-sm font-medium">{quiz.id}</span>
-                  {quiz.submitted ? (
-                    <Check className="h-3 w-3 mt-1" />
-                  ) : (
-                    <X className="h-3 w-3 mt-1" />
-                  )}
-                </div>
-              ))}
+              {Array.from({ length: total }, (_, i) => {
+                const isAnswered = answeredQuestions.has(i);
+                const isCurrent = i === currentIndex;
+
+                return (
+                  <div
+                    key={i}
+                    onClick={() => setCurrentQuizIndex(i)}
+                    className={`cursor-pointer flex flex-col items-center justify-center h-12 rounded border ${
+                      isCurrent
+                        ? "border-blue-500 bg-blue-50 text-blue-600"
+                        : isAnswered
+                        ? "bg-green-50 border-green-200 text-green-600"
+                        : "bg-gray-50 border-gray-200 text-gray-400"
+                    }`}
+                  >
+                    <span className="text-sm font-medium">{i + 1}</span>
+                    {isAnswered ? (
+                      <Check className="h-3 w-3 mt-1" />
+                    ) : (
+                      <X className="h-3 w-3 mt-1" />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Stats Summary */}
           <div className="mt-6 pt-4 border-t flex justify-between">
             <div className="text-sm">
-              <span className="font-medium">Completed:</span>{" "}
-              {quizStatus.filter((q) => q.submitted).length}
+              <span className="font-medium">Answered:</span>{" "}
+              {answeredQuestions.size}
             </div>
             <div className="text-sm">
               <span className="font-medium">Remaining:</span>{" "}
-              {quizStatus.filter((q) => !q.submitted).length}
+              {total - answeredQuestions.size}
             </div>
           </div>
         </div>

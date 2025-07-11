@@ -27,13 +27,16 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   const courseID = params.courseid;
 
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(
+    new Set()
+  );
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const totalQuiz = test?.total_quiz || 0;
   const currentQuiz = test?.quizzes?.[currentQuizIndex];
 
-  const [timeLeft, setTimeLeft] = useState(2 * 60 || 0);
+  const [timeLeft, setTimeLeft] = useState(160 * 60 || 0);
 
   const { control, handleSubmit, reset, getValues } = useForm({
     defaultValues: {
@@ -114,15 +117,16 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
   };
 
   const handleNextQuestion = (formData: any) => {
+    console.log("formData clicked", formData);
     saveCurrentAnswer(formData);
     setCurrentQuizIndex((prev) => prev + 1);
   };
 
   const saveCurrentAnswer = (formData: any) => {
-    console.log("curremt Index", currentQuizIndex);
     if (!currentQuiz) return;
 
     let questionsPayload;
+    let hasAnswer = false;
 
     if (currentQuiz.type === "matching") {
       questionsPayload = Object.entries(formData.matching_answers || {}).map(
@@ -131,6 +135,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
           option_id: [optionId].filter(Boolean),
         })
       );
+      hasAnswer = Object.keys(formData.matching_answers || {}).length > 0;
     } else if (currentQuiz.type === "multiple_choice") {
       questionsPayload = [
         {
@@ -140,6 +145,7 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
           option_id: formData.multiple_answer || [],
         },
       ];
+      hasAnswer = formData.multiple_answer?.length > 0;
     } else {
       questionsPayload = [
         {
@@ -149,7 +155,19 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
           option_id: formData.single_answer ? [formData.single_answer] : [],
         },
       ];
+      hasAnswer = !!formData.single_answer;
     }
+
+    // Update answered questions set
+    setAnsweredQuestions((prev) => {
+      const newSet = new Set(prev);
+      if (hasAnswer) {
+        newSet.add(currentQuizIndex);
+      } else {
+        newSet.delete(currentQuizIndex);
+      }
+      return newSet;
+    });
 
     const newAnswer = {
       quiz_id: currentQuiz.id,
@@ -184,8 +202,9 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
         </div>
         <Progress
           total={totalQuiz}
+          currentIndex={currentQuizIndex}
+          answeredQuestions={answeredQuestions}
           setCurrentQuizIndex={setCurrentQuizIndex}
-          answers={answers}
           timeLeft={timeLeft}
         />
         <Timer
