@@ -151,4 +151,8 @@
     animation: gradient-shift 2s linear infinite;
     background-size: 200% 100%;
   }
+  .not-prose-markers :where(ol > li)::marker {
+    color: inherit;
+    font-weight: inherit;
+  }
 }

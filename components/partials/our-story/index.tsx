@@ -14,7 +14,7 @@ const OurStory = ({ isLoading, data }: { isLoading: boolean; data: any }) => {
           </span>
         </h3>
         <div
-          className="text-slate-800 text-base lg:text-3xl font-medium prose max-w-none [&_ul>li]:marker:text-slate-700"
+          className="text-slate-800 text-base lg:text-3xl font-medium prose max-w-none not-prose-markers"
           dangerouslySetInnerHTML={{ __html: data.description }}
         ></div>
       </div>

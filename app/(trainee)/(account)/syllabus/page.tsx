@@ -38,7 +38,7 @@ const Syllabus = () => {
           Course Overview
         </h5>
         <div
-          className="prose mb-4 lg:mb-6 max-w-full"
+          className="prose mb-4 lg:mb-6 max-w-full not-prose-markers"
           dangerouslySetInnerHTML={{ __html: content.overview }}
         />
         <div className="mb-4 lg:mb-6">
@@ -55,7 +55,7 @@ const Syllabus = () => {
                       {block.title}
                     </h5>
                     <div
-                      className="prose max-w-full"
+                      className="prose max-w-full not-prose-markers"
                       dangerouslySetInnerHTML={{ __html: block.description }}
                     />
                   </div>

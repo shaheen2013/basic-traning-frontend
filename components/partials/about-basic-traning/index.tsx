@@ -25,7 +25,7 @@ const AboutBasicTraning = ({
           </span>
         </h3>
         <div
-          className="prose max-w-none [&_ul>li]:marker:text-slate-700 text-slate-800 text-base lg:text-3xl font-medium"
+          className="prose max-w-none text-base lg:text-3xl font-medium not-prose-markers"
           dangerouslySetInnerHTML={{ __html: data.description }}
         ></div>
         <Button className="w-full lg:w-fit rounded-full" size="2xl" asChild>
