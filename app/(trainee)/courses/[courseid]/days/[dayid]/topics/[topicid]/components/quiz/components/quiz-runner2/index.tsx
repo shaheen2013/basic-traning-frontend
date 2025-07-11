@@ -200,18 +200,20 @@ const QuizRunner = ({ handleStatus }: { handleStatus: any }) => {
             Question {currentQuizIndex + 1}/{totalQuiz}
           </h3>
         </div>
-        <Progress
-          total={totalQuiz}
-          currentIndex={currentQuizIndex}
-          answeredQuestions={answeredQuestions}
-          setCurrentQuizIndex={setCurrentQuizIndex}
-          timeLeft={timeLeft}
-        />
-        <Timer
-          timeLeft={timeLeft}
-          setTimeLeft={setTimeLeft}
-          submitAllAnswers={submitAllAnswers}
-        />
+        <div className="flex items-center gap-4">
+          <Progress
+            total={totalQuiz}
+            currentIndex={currentQuizIndex}
+            answeredQuestions={answeredQuestions}
+            setCurrentQuizIndex={setCurrentQuizIndex}
+            timeLeft={timeLeft}
+          />
+          <Timer
+            timeLeft={timeLeft}
+            setTimeLeft={setTimeLeft}
+            submitAllAnswers={submitAllAnswers}
+          />
+        </div>
       </div>
 
       <p className="text-lg text-primary font-semibold mb-4 px-4 lg:px-6">

@@ -23,12 +23,12 @@ const Timer = ({ timeLeft, setTimeLeft, submitAllAnswers }: any) => {
     <>
       {timeLeft <= 0 ? (
         <div className="flex gap-2">
-          <TimerIcon className="size-5 text-red-500" />
+          <TimerIcon className="size-5 text-red-500 shrink-0" />
           <span className="text-red-500">Time&apos;s up!</span>{" "}
         </div>
       ) : (
         <div className="flex gap-2 text-blue-500">
-          <TimerIcon className="size-5" />
+          <TimerIcon className="size-4 lg:size-5 shrink-0" />
           Time left {formatSecondsToReadableTime(timeLeft)}
         </div>
       )}
