@@ -31,7 +31,7 @@ const Progress = ({
     <Drawer direction={isDesktop ? "right" : "bottom"}>
       <DrawerTrigger asChild>
         <Button variant="outline" className="gap-2" disabled={timeLeft <= 0}>
-          Quiz Progress
+          Progress
           {isDesktop ? (
             <ChevronRight className="h-4 w-4" />
           ) : (
