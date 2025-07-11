@@ -185,7 +185,7 @@ export default function ProfileOverview() {
 
         <div className="lg:mb-12 mb-6">
           <div className="flex gap-6 items-end">
-            <div className="relative group w-36 h-36 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200">
+            <div className="relative group size-[120px] rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200">
               {previewImage?.includes(
                 process.env.NEXT_PUBLIC_API_BASE_URL ?? ""
               ) && (
@@ -208,7 +208,7 @@ export default function ProfileOverview() {
                       fill
                       className="object-cover"
                       priority
-                      sizes="144px"
+                      sizes="120px"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300" />
                   </>
@@ -220,7 +220,7 @@ export default function ProfileOverview() {
               disabled={isUploading}
               type="button"
               onClick={triggerFileInput}
-              className="has-[>svg]:px-6"
+              className="has-[>svg]:px-4"
             >
               <span>Upload</span>
               <Upload className="size-5 text-white ml-2" />

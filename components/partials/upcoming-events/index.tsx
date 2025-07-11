@@ -17,7 +17,7 @@ const UpcomingEvents = ({ batches }: { batches: any }) => {
           batches.map((batch: any) => (
             <li
               key={batch.id}
-              className="px-6 py-3 lg:py-4 text-lg lg:text-xl font-semibold text-primary border-b border-slate-100"
+              className="px-6 py-3 lg:py-4 text-lg lg:text-xl font-medium text-primary border-b border-slate-100"
             >
               {moment(batch.start_date).format("MMMM DD")} -{" "}
               {moment(batch.end_date).format("MMMM DD")}

@@ -53,3 +53,4 @@ export { default as Download } from "./Download";
 export { default as Lock } from "./Lock";
 export { default as Unlock } from "./LockOpen";
 export { default as MagnifyingGlass } from "./MagnifyingGlass";
+export { default as HalfStar } from "./HalfStar";

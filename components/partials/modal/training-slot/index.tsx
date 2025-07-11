@@ -9,9 +9,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import moment from "moment";
-import { Loader } from "lucide-react";
+import { Check, Loader } from "lucide-react";
 import { toast } from "sonner";
 import { useGetUpcomingBatchesQuery } from "@/features/cms/cmsApi";
 import { QuestionCircle } from "@/components/icons";
@@ -106,50 +105,68 @@ const TrainingSlot = ({ children, className, batches = [] }: any) => {
 
       <Modal open={open} onOpenChange={setOpen}>
         <div className="flex items-center justify-center gap-2 lg:gap-4">
+          {/* Step 1 Indicator */}
           <div className="flex gap-2 items-center">
-            <Image
-              src="/icons/batch-step.svg"
-              alt="select batch"
-              width={32}
-              height={32}
-              className="h-auto max-w-6 lg:max-w-8 w-full object-contain object-center"
-            />
-
-            <span className="text-blue-600 text-base font-semibold">
+            <div
+              className={cn(
+                "size-6 lg:size-8 rounded-full flex items-center justify-center",
+                step >= 1
+                  ? "bg-blue-600 border-blue-600"
+                  : "bg-transparent border-2 border-slate-300"
+              )}
+            >
+              {step > 1 ? (
+                <Check className="size-3.5 lg:size-5 text-white" />
+              ) : (
+                <div className="size-2.5 lg:size-3 rounded-full bg-white"></div>
+              )}
+            </div>
+            <span
+              className={cn(
+                "text-base font-semibold",
+                step >= 1 ? "text-blue-600" : "text-slate-500"
+              )}
+            >
               Select batch
             </span>
           </div>
 
+          {/* Connector Line */}
           <div
             className={cn(
-              "w-8 lg:w-12 bg-slate-300 h-0.5",
-              step === 2 && "bg-blue-600"
+              "w-8 lg:w-12 h-0.5",
+              step >= 2 ? "bg-blue-600" : "bg-slate-300"
             )}
           />
+
+          {/* Step 2 Indicator */}
           <div className="flex gap-2 items-center">
             <div
               className={cn(
-                "size-6 lg:size-8 rounded-full bg-transparent border-2 border-slate-300 flex items-center justify-center",
-                step === 2 && "bg-blue-600 border-blue-200"
+                "size-6 lg:size-8 rounded-full flex items-center justify-center",
+                step >= 2
+                  ? "bg-blue-600 border-blue-600"
+                  : "bg-transparent border-2 border-slate-300"
               )}
             >
               <div
                 className={cn(
-                  "size-2.5 lg:size-3 rounded-full bg-slate-300",
-                  step === 2 && "bg-white"
+                  "size-2.5 lg:size-3 rounded-full",
+                  step >= 2 ? "bg-white" : "bg-slate-300"
                 )}
               ></div>
             </div>
             <span
               className={cn(
-                "text-primary text-base font-semibold",
-                step === 2 && "text-blue-600"
+                "text-base font-semibold",
+                step >= 2 ? "text-blue-600" : "text-slate-500"
               )}
             >
               Number of trainee
             </span>
           </div>
         </div>
+
         {step === 1 && (
           <form
             className="flex flex-col gap-4 lg:gap-6 mt-2.5"
@@ -230,8 +247,8 @@ const TrainingSlot = ({ children, className, batches = [] }: any) => {
                 Add Trainees & Review Cost ${price}/person
               </h3>
               <p className="text-slate-600 text-base lg:text-xl">
-                Enter how many trainees you’re enrolling to calculate your total
-                fee.
+                Enter how many trainees you&apos;re enrolling to calculate your
+                total fee.
               </p>
             </div>
 

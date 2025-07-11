@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Star, StarHalfIcon } from "lucide-react";
+import { HalfStar, Star } from "@/components/icons";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -28,19 +28,8 @@ const TestimonialCard = ({ data }: any) => {
 
           {/* Render half star if needed */}
           {hasHalfStar && (
-            <StarHalfIcon
-              key="half"
-              className="text-[#FFBB00] size-4 lg:size-8"
-            />
+            <HalfStar key="half" className="text-[#FFBB00] size-4 lg:size-8" />
           )}
-
-          {/* Render empty stars */}
-          {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, index) => (
-            <Star
-              key={`empty-${index}`}
-              className="text-gray-300 size-4 lg:size-8"
-            />
-          ))}
           <Link
             href="https://www.trophyclubconsulting.com"
             target="_blank"
@@ -64,7 +53,7 @@ const TestimonialCard = ({ data }: any) => {
           )}
 
           <div className="flex flex-col gap-y-1 lg:gap-y-2">
-            <h3 className="text-slate-800 text-xl lg:text-3xl font-semibold">
+            <h3 className="text-slate-800 text-xl lg:text-3xl font-semibold capitalize">
               {data?.user_name}
             </h3>
             <p className="text-slate-800 text-base lg:text-2xl font-medium">
